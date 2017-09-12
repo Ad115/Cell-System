@@ -2,10 +2,10 @@ from CellLine import CellLine
 from Site import Site
 
 class System:
-    """The whole biological system, aware of cells, space (as a grid) and the passage
+    """The whole biological system, aware of cells, space (as a grid) and the passage \
     of time (steps).
-    It is the main struture of the program, being the main observable and controller.
-    It coordinates all processes and automatas.
+    It is the main struture of the program, being the only observable and given it \
+    coordinates all processes and automatas.
     
     Attributes
     ----------
@@ -28,7 +28,8 @@ class System:
         """
         self.rows, self.cols = gridDimensions
         self.grid = [ [ Site(self, i,j) for j in range(self.cols) ] for i in range(self.rows) ]
-        self.cells = CellLine(genome)
+        self.cells = CellLine(genome = genome, 
+                              system = self)
         
     def seedAt(self, i, j):
         """ Seed automaton with a cell at the given position
@@ -37,7 +38,7 @@ class System:
         site = self.grid[i][j]
         
         # Create a new cell
-        self.cells.addNew(site = site, system = self, state = "alive")
+        self.cells.addNew(site = site, state = "alive")
         
     def seed(self):
         """ Default seeding of the automata, place one cell in the middle of the grid.

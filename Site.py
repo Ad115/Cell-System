@@ -19,7 +19,7 @@ class Site:
         """Add the given cell as a new guest to this site.
         """
         self.guests.append( guest )
-        guest.setPosition(self)
+        guest.setSite(self)
         
     def guestCount(self):
         """ Return the number of cells (a.k.a. guests) in this site

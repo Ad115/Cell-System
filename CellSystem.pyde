@@ -3,9 +3,9 @@ system = PSystem()
 t=0
 
 def setup():
-    fullScreen()
+    size(600, 600)
     background(100)
-    system.init( gridDimensions=(50,70) )
+    system.init( gridDimensions=(50,50) )
     system.seed()
     system.draw()
     

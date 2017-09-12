@@ -23,5 +23,5 @@ class PSystem(System):
             for j in range(cols):
                 cellsHere = self.cellCountAt(i, j)
                 if cellsHere:
-                    fill( 5*cellsHere % 255 )
+                    fill( 10*log(cellsHere+5) % 255 )
                     ellipse(i*rowSize, j*colSize, r, r)

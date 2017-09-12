@@ -5,46 +5,56 @@ class Cell:
     Attributes
     ----------
             + Index: A label that identifies it among others in the same lineage.
+            + Father: The index (lineage label) of it's father
+            + CellLine: The lineage this cell belongs to.
             + State: Is it alive or death?
             + System: The system this cell forms part of.
-            + Position: The site this cell inhabits.
+            + Site: The place in the grid this cell inhabits in.
     """
     
-    def __init__(self, system = None, position = None, state = None, cellLine = None, father = 0, index = 0):
+    def __init__(self, system=None, site=None, state=None, cellLine=None, father=0, index=0):
         self.index = index
         self.father = father
         self.cellLine = cellLine
         self.system = system
-        self.position = position
+        self.site = site
         self.state = state
         
-    def initialize(self, system = None, position = None, state = None):
+    def initialize(self, site=None, state=None):
+        """Initialize with grid site and state
         """
-        """
-        self.system = system
-        self.setPosition(position)
+        self.setSite(site)
         self.setState(state)
         
     def divide(self):
-        """
+        """Get a new daughter of this cell and place it in a nearby neighboring site.
         """
         # Create the daughter cell
         daughter = self.newDaughter()
         # Search for the site to place the daughter
-        site = self.position.getRandomNeighbor()
+        site = self.site.getRandomNeighbor()
         # Divide
         site.addGuest(daughter)
         daughter.setState("alive")
         
     def newDaughter(self):
+        """Get a new cell that has been set as daughter of this cell 
+        """
         daughter = self.cellLine.getNewCell()
-        daughter.initialize(system = self.system, state = "dividing")
+        daughter.initialize(state = "alive")
         daughter.setFather(self.index)
         return daughter
     
-    def setPosition(self, site):
-        if site != None:
-            self.position = site
+    #..........Setter / Getter methods ...............................
+    
+    def setSite(self, site=None, coords=None): 
+        # Site can be assigned by coordinates or by passing the site structure
+        if site:
+            self.site = site
+        elif coords:
+            self.site = self.system.at(coords)
+        else:
+            pass
         
     def setState(self, state):
         self.state = state

@@ -26,18 +26,20 @@ class CellLine:
         self.system = system
         self.genome = genome
         
-    def addNew(self, site = None, system = None, state = None):
+    def addNew(self, site = None, state = None):
         """Get a new, initialized cell
         """
         new = self.getNewCell()
-        new.initialize(system = system, position = site, state = state)
+        new.initialize(site = site, state = state)
         return new
         
     def getNewCell(self):
-        """ Get a new blank cell
+        """ Get a new blank cell in this lineage and system.
         """
         self.currentIndex += 1
-        new = Cell(cellLine = self, index = self.currentIndex)
+        new = Cell(system = self.system, 
+                   cellLine = self, 
+                   index = self.currentIndex)
         self.cells.append( new )
         return new
     
