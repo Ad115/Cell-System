@@ -10,6 +10,7 @@ class Cell:
             + State: Is it alive or death?
             + System: The system this cell forms part of.
             + Site: The place in the grid this cell inhabits in.
+            + Age: The timesteps this cell has passed through
     """
     
     def __init__(self, system, cellLine, index):
