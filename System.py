@@ -73,5 +73,5 @@ class System:
     def totalCells(self):
         """Returns the total number of cells in the system.
         """
-        return len(self.cells)
+        return self.cells.totalCells()
     # ---

@@ -27,7 +27,7 @@ class PSystem(System):
             index = cell.getIndex()
             
             i += r/10.0 * noise( 0.0005*frames + 10*index)
-            j += r/10.0 * noise( 0.0005*frames + 100*index)
+            j += r/10.0 * noise( 0.0005*frames + 20*index)
             fill( 255*exp(-0.2*age) )
             ellipse(i*rowSize, j*colSize, r, r)    
     # ---

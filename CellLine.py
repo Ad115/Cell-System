@@ -50,21 +50,16 @@ class CellLine:
         return new
     # ---
     
-    def __len__(self):
-        """Get the total of cells in this lineage
-        """
-        return len(self.cells)
-    # ---
-    
-    def __getitem__(self, item):
-        return self.cells[item]
-    # ---
-    
     def aliveCells(self):
         return self.cells
     # ---
     
+    def totalCells(self):
+        return len(self.cells)
+    # ---
+    
     def pickRandomCell(self):
         return rnd.choice(self.cells)
+    # ---
         
         
