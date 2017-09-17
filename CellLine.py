@@ -1,3 +1,4 @@
+import random as rnd
 from Cell import Cell
 
 class CellLine:
@@ -25,29 +26,46 @@ class CellLine:
         self.cells = []
         self.system = system
         self.genome = genome
+    # ---
         
-    def addNew(self, site = None, state = None):
+    def addCellTo(self, site, state = None):
         """Get a new, initialized cell
         """
-        new = self.getNewCell()
-        new.initialize(site = site, state = state)
-        return new
+        # Create the new cell
+        new = self.newCell()
+        new.init(site = site, state = state)
         
-    def getNewCell(self):
+        site.addGuest(new) # Make the host aware
+        
+        return new # Return the new cell
+    # ---
+        
+    def newCell(self):
         """ Get a new blank cell in this lineage and system.
         """
-        self.currentIndex += 1
         new = Cell(system = self.system, 
                    cellLine = self, 
                    index = self.currentIndex)
         self.cells.append( new )
+        self.currentIndex += 1
         return new
+    # ---
     
     def __len__(self):
         """Get the total of cells in this lineage
         """
         return len(self.cells)
+    # ---
     
     def __getitem__(self, item):
         return self.cells[item]
+    # ---
+    
+    def aliveCells(self):
+        return self.cells
+    # ---
+    
+    def pickRandomCell(self):
+        return rnd.choice(self.cells)
+        
         

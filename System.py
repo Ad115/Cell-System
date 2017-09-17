@@ -20,8 +20,9 @@ class System:
         self.cells = None
         self.grid = None
         # Initialize if all necessary things are given 
-        if gridDimensions and genome:
+        if gridDimensions:
             self.init(gridDimensions, genome)
+    # ---
         
     def init(self, gridDimensions=(10,10), genome=None):
         """Initialize the automata's grid and cell lineage
@@ -30,39 +31,47 @@ class System:
         self.grid = [ [ Site(self, i,j) for j in range(self.cols) ] for i in range(self.rows) ]
         self.cells = CellLine(genome = genome, 
                               system = self)
+    # ---
         
     def seedAt(self, i, j):
         """ Seed automaton with a cell at the given position
         """
-        # Get the site we're add the cell to
+        # Get the site we're adding the cell to
         site = self.grid[i][j]
-        
-        # Create a new cell
-        self.cells.addNew(site = site, state = "alive")
+        # Add a new cell
+        self.cells.addCellTo(site, state="alive")
+    # ---
         
     def seed(self):
         """ Default seeding of the automata, place one cell in the middle of the grid.
         """
         self.seedAt(self.rows//2, self.cols//2)
+    # ---
         
     def cellCountAt(self, i, j):
         """Returns the number of cells in a given site
         """
         return self.grid[i][j].guestCount()
+    # ---
     
     def step(self):
         """ Move the state of the system one step forward in time
         """
-        i = int( random(len(self.cells)) )
-        cell = self.cells[i]
+        # Pick one random cell
+        cell = self.cells.pickRandomCell()
+        # Perform an action on the cell
+        cell.growOlder()
         cell.divide()
+    # ---
         
     def at(self, coords):
         """Get the site at the specified coordinates
         """
         return self.grid[coords[0]][coords[1]]
+    # ---
            
     def totalCells(self):
         """Returns the total number of cells in the system.
         """
         return len(self.cells)
+    # ---

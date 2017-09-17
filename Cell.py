@@ -12,38 +12,54 @@ class Cell:
             + Site: The place in the grid this cell inhabits in.
     """
     
-    def __init__(self, system=None, site=None, state=None, cellLine=None, father=0, index=0):
+    def __init__(self, system, cellLine, index):
         self.index = index
-        self.father = father
         self.cellLine = cellLine
         self.system = system
-        self.site = site
-        self.state = state
+        self.father = None
+        self.site = None
+        self.state = None
+        self.age = 0
+    # ---
         
-    def initialize(self, site=None, state=None):
+    def init(self, site=None, state=None, father=None):
         """Initialize with grid site and state
         """
         self.setSite(site)
         self.setState(state)
+        self.setFather(father)
+    # ---
         
     def divide(self):
         """Get a new daughter of this cell and place it in a nearby neighboring site.
         """
         # Create the daughter cell
         daughter = self.newDaughter()
-        # Search for the site to place the daughter
+        # Search for the site to place the daughter in
         site = self.site.getRandomNeighbor()
-        # Divide
-        site.addGuest(daughter)
-        daughter.setState("alive")
+        daughter.addTo(site)
+    # ---
         
     def newDaughter(self):
         """Get a new cell that has been set as daughter of this cell 
         """
-        daughter = self.cellLine.getNewCell()
-        daughter.initialize(state = "alive")
-        daughter.setFather(self.index)
+        daughter = self.cellLine.newCell()
+        daughter.init(state = "alive", 
+                      father = self.index)
         return daughter
+    # ---
+    
+    def growOlder(self):
+        """ Increase the age of the current cell
+        """
+        self.age += 1
+    # ---
+        
+    def addTo(self, site):
+        """ Add the cell to the site `site`
+        """
+        self.setSite(site)
+        site.addGuest(self)
     
     #..........Setter / Getter methods ...............................
     
@@ -53,14 +69,33 @@ class Cell:
             self.site = site
         elif coords:
             self.site = self.system.at(coords)
-        else:
-            pass
+    # ---
         
     def setState(self, state):
         self.state = state
+    # ---
         
     def setFather(self, father):
-        self.father = father 
+        if father:
+            self.father = father
+    # ---
     
     def getFather(self):
         return self.father
+    # ---
+    
+    def isDead(self):
+        return self.state == 'dead'
+    # ---
+    
+    def getCoordinates(self):
+        return self.site.getCoordinates()
+    # ---
+    
+    def getAge(self):
+        return self.age
+    # ---
+    
+    def getIndex(self):
+        return self.index
+    # ---

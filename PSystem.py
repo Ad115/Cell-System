@@ -9,19 +9,25 @@ class PSystem(System):
     def draw(self):
         """Display the current automaton's state on-screen
         """
-        rows = self.rows
-        cols = self.cols
-        rowSize = width/rows
-        colSize = height/cols
+        rowSize = width/self.rows
+        colSize = height/self.cols
             
         # Set the size of the cells to draw
-        r = (colSize + rowSize)/2
+        r = 0.8*(colSize + rowSize)/2
+        
+        # Prepare to draw
         ellipseMode(CENTER)
+        frames = frameCount
             
-        # Draw the grid state
-        for i in range(rows):
-            for j in range(cols):
-                cellsHere = self.cellCountAt(i, j)
-                if cellsHere:
-                    fill( 10*log(cellsHere+5) % 255 )
-                    ellipse(i*rowSize, j*colSize, r, r)
+        # Draw cell by cell
+        for cell in self.cells.aliveCells():
+            # Get cell data
+            i,j = cell.getCoordinates()
+            age = cell.getAge()
+            index = cell.getIndex()
+            
+            i += r/10.0 * noise( 0.0005*frames + 10*index)
+            j += r/10.0 * noise( 0.0005*frames + 100*index)
+            fill( 255*exp(-0.2*age) )
+            ellipse(i*rowSize, j*colSize, r, r)    
+    # ---

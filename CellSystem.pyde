@@ -3,11 +3,12 @@ system = PSystem()
 t=0
 
 def setup():
-    size(600, 600)
+    size(800, 800)
     background(100)
     system.init( gridDimensions=(50,50) )
     system.seed()
     system.draw()
+# ---
     
 def draw():
     background(100)
@@ -19,4 +20,5 @@ def draw():
     
     system.step()
     system.draw()
+# ---
     
