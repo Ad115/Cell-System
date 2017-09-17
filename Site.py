@@ -34,7 +34,7 @@ class Site:
         """
         i,j = self.coordinates
         coords = (i+rnd.randint(-1,1), j+rnd.randint(-1,1))
-        return self.system.at(coords)
+        return self.system.at(*coords)
     # ---
     
     def getFirstGuest(self):

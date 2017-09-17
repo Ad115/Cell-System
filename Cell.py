@@ -68,7 +68,7 @@ class Cell:
         if site:
             self.site = site
         elif coords:
-            self.site = self.system.at(coords)
+            self.site = self.system.at(*coords)
     # ---
         
     def setState(self, state):

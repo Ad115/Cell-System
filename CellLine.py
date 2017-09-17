@@ -33,9 +33,8 @@ class CellLine:
         """
         # Create the new cell
         new = self.newCell()
-        new.init(site = site, state = state)
-        
-        site.addGuest(new) # Make the host aware
+        new.init(state = state)
+        new.addTo(site)
         
         return new # Return the new cell
     # ---

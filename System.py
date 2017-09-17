@@ -37,7 +37,7 @@ class System:
         """ Seed automaton with a cell at the given position
         """
         # Get the site we're adding the cell to
-        site = self.grid[i][j]
+        site = self.at(i,j)
         # Add a new cell
         self.cells.addCellTo(site, state="alive")
     # ---
@@ -51,7 +51,7 @@ class System:
     def cellCountAt(self, i, j):
         """Returns the number of cells in a given site
         """
-        return self.grid[i][j].guestCount()
+        return self.at(i,j).guestCount()
     # ---
     
     def step(self):
@@ -64,10 +64,10 @@ class System:
         cell.divide()
     # ---
         
-    def at(self, coords):
+    def at(self, i, j):
         """Get the site at the specified coordinates
         """
-        return self.grid[coords[0]][coords[1]]
+        return self.grid[i][j]
     # ---
            
     def totalCells(self):
