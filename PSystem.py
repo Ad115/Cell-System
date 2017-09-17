@@ -20,14 +20,14 @@ class PSystem(System):
         frames = frameCount
             
         # Draw cell by cell
-        for cell in self.cells.aliveCells():
+        for cell in self.cells.getAliveCells():
             # Get cell data
             i,j = cell.getCoordinates()
             age = cell.getAge()
             index = cell.getIndex()
             
-            i += r/10.0 * noise( 0.0005*frames + 10*index)
-            j += r/10.0 * noise( 0.0005*frames + 20*index)
+            i += r/10.0 * noise( 10*index )
+            j += r/10.0 * noise( 20*index )
             fill( 255*exp(-0.2*age) )
             ellipse(i*rowSize, j*colSize, r, r)    
     # ---

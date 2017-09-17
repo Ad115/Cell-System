@@ -14,7 +14,9 @@ class CellLine:
     ---------    
             + Ancestral genome: A string to which all cells genomes come from.
             
-            + Cells: The group of cells belonging to this cell line.
+            + Cells: The group cells belonging to this cell line.
+            
+            + Alive cells and Dead cells: The cells that are respectively currently alive or dead
             
             + System: The system this cells form a part of.
             
@@ -24,16 +26,17 @@ class CellLine:
     def __init__(self, system = None, genome = ""):
         self.currentIndex = 0
         self.cells = []
+        self.aliveCells = set()
+        self.deadCells = set()
         self.system = system
         self.genome = genome
     # ---
         
-    def addCellTo(self, site, state = None):
+    def addCellTo(self, site):
         """Get a new, initialized cell
         """
         # Create the new cell
         new = self.newCell()
-        new.init(state = state)
         new.addTo(site)
         
         return new # Return the new cell
@@ -46,20 +49,32 @@ class CellLine:
                    cellLine = self, 
                    index = self.currentIndex)
         self.cells.append( new )
+        self.aliveCells.add( new )
         self.currentIndex += 1
         return new
     # ---
     
-    def aliveCells(self):
-        return self.cells
+    def getAliveCells(self):
+        return self.aliveCells
     # ---
     
     def totalCells(self):
-        return len(self.cells)
+        return len(self.aliveCells)
     # ---
     
-    def pickRandomCell(self):
-        return rnd.choice(self.cells)
+    def pickRandomCell(self, n=1):
+        if n == 1:
+            return rnd.sample(self.aliveCells, n) [0]
+        else:
+            return rnd.sample(self.aliveCells, n)    
+        
     # ---
         
-        
+    def handleDeath(self, dying):
+        """ Process the dying cell. This means removing from the alive cells\
+        and adding to the dead ones, maybe to recicle it when another is born.
+        """
+        self.aliveCells.remove(dying)
+        self.deadCells.add(dying)
+        # Cell is now officially dead
+    # ---

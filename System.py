@@ -1,3 +1,4 @@
+import random as rnd
 from CellLine import CellLine
 from Site import Site
 
@@ -39,7 +40,7 @@ class System:
         # Get the site we're adding the cell to
         site = self.at(i,j)
         # Add a new cell
-        self.cells.addCellTo(site, state="alive")
+        self.cells.addCellTo(site)
     # ---
         
     def seed(self):
@@ -59,9 +60,12 @@ class System:
         """
         # Pick one random cell
         cell = self.cells.pickRandomCell()
-        # Perform an action on the cell
         cell.growOlder()
-        cell.divide()
+        
+        # Perform an action on the cell
+        actions = cell.availableActions()
+        action = rnd.choice(actions)
+        cell.performAction(action)
     # ---
         
     def at(self, i, j):

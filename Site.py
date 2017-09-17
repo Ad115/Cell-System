@@ -1,8 +1,8 @@
 import random as rnd
 
 class Site:
-    """A unit of space. Cells inhabitate in these spaces and interact with cells \
-    in their neighborhood.
+    """A unit of space. Cells inhabitate in these spaces and interact with \
+    their neighborhood.
      
     Attributes
     ----------
@@ -13,14 +13,21 @@ class Site:
     def __init__(self, system, i, j):
         self.system = system
         self.coordinates = [i,j]
-        self.guests = []
+        self.guests = set()
     # ---
         
     def addGuest(self, guest):
         """Add the given cell as a new guest to this site.
         """
-        self.guests.append( guest )
+        self.guests.add( guest )
         guest.setSite(self)
+    # ---
+    
+    def removeGuest(self, guest):
+        """Remove the given cell as guest for this site, \
+        throw error if the cell is not currently in this site.  
+        """
+        self.guests.remove(guest)
     # ---
         
     def guestCount(self):
@@ -32,25 +39,9 @@ class Site:
     def getRandomNeighbor(self):
         """ Returns a random site in the neighborhood of the current site
         """
-        i,j = self.coordinates
+        i,j = self.getCoordinates()
         coords = (i+rnd.randint(-1,1), j+rnd.randint(-1,1))
         return self.system.at(*coords)
-    # ---
-    
-    def getFirstGuest(self):
-        """
-        """
-        if len(self.guests) > 0:
-            return self.guests[0]
-        else:
-            return None
-    # ---
-        
-    def getLastGuest(self):
-        if len(self.guests) > 0:
-            return self.guests[-1]
-        else:
-            return None
     # ---
     
     def getCoordinates(self):

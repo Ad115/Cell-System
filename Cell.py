@@ -1,3 +1,5 @@
+import random as rnd
+
 class Cell:
     """ A single cell. It performs action according to it's state, and the states of \
     nearby cells and sites.
@@ -19,15 +21,13 @@ class Cell:
         self.system = system
         self.father = None
         self.site = None
-        self.state = None
         self.age = 0
     # ---
         
-    def init(self, site=None, state=None, father=None):
-        """Initialize with grid site and state
+    def init(self, site=None, father=None):
+        """Initialize with grid site and father
         """
         self.setSite(site)
-        self.setState(state)
         self.setFather(father)
     # ---
         
@@ -45,8 +45,7 @@ class Cell:
         """Get a new cell that has been set as daughter of this cell 
         """
         daughter = self.cellLine.newCell()
-        daughter.init(state = "alive", 
-                      father = self.index)
+        daughter.init(father = self.index)
         return daughter
     # ---
     
@@ -61,7 +60,25 @@ class Cell:
         """
         self.setSite(site)
         site.addGuest(self)
+    # ---
     
+    def die(self):
+        """Cellular death
+        """
+        if rnd.random() > 0.7:
+            self.site.removeGuest(self)
+            self.cellLine.handleDeath(self)
+        
+    def availableActions(self):
+        """Return a list with the possible actions to take for this cell
+        """
+        return [self.divide, self.die]
+    
+    def performAction(self, action):
+        """Perform the given action
+        """
+        action()
+        
     #..........Setter / Getter methods ...............................
     
     def setSite(self, site=None, coords=None): 
@@ -70,10 +87,6 @@ class Cell:
             self.site = site
         elif coords:
             self.site = self.system.at(*coords)
-    # ---
-        
-    def setState(self, state):
-        self.state = state
     # ---
         
     def setFather(self, father):
@@ -85,10 +98,6 @@ class Cell:
         return self.father
     # ---
     
-    def isDead(self):
-        return self.state == 'dead'
-    # ---
-    
     def getCoordinates(self):
         return self.site.getCoordinates()
     # ---
@@ -96,6 +105,9 @@ class Cell:
     def getAge(self):
         return self.age
     # ---
+    
+    def olderThan(self, age):
+        return self.age > age
     
     def getIndex(self):
         return self.index
