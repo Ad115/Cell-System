@@ -1,7 +1,7 @@
 import random as rnd
 
 class Cell:
-    """ A single cell. It performs action according to it's state, and the states of \
+    """ A single cell. It acts according to it's state, and the states of \
     nearby cells and sites.
     
     Attributes
@@ -9,11 +9,23 @@ class Cell:
             + Index: A label that identifies it among others in the same lineage.
             + Father: The index (lineage label) of it's father
             + CellLine: The lineage this cell belongs to.
-            + State: Is it alive or death?
             + System: The system this cell forms part of.
             + Site: The place in the grid this cell inhabits in.
             + Age: The timesteps this cell has passed through
     """
+    
+    # --- --- --- --- --- ------ --- --- --- --- ---
+    # Mini class used to represent an action that the cell could perform
+    class _Action:
+        def __init__(self, action, actionProbability):
+            self.action = action
+            self.actionProbability = actionProbability
+            
+        def tryAction(self):
+            # Sample according to the probability
+            if rnd.random() < self.actionProbability():
+                self.action()
+    # --- --- --- --- --- ------ --- --- --- --- ---
     
     def __init__(self, system, cellLine, index):
         self.index = index
@@ -40,6 +52,12 @@ class Cell:
         site = self.site.getRandomNeighbor()
         daughter.addTo(site)
     # ---
+    
+    def divisionProbability(self):
+        """This return the probability that this cell will divide if it was selected for division
+        """
+        return 1
+    # ---
         
     def newDaughter(self):
         """Get a new cell that has been set as daughter of this cell 
@@ -65,19 +83,44 @@ class Cell:
     def die(self):
         """Cellular death
         """
-        if rnd.random() > 0.7:
-            self.site.removeGuest(self)
-            self.cellLine.handleDeath(self)
-        
+        self.site.removeGuest(self)
+        self.cellLine.handleDeath(self)
+    # ---
+    
+    def deathProbability(self):
+        """Cellular death
+        """
+        aliveCells = self.cellLine.totalAliveCells() 
+        if aliveCells > 1:
+            return 0.7
+        else:
+            return 0
+    # ---
+                
     def availableActions(self):
         """Return a list with the possible actions to take for this cell
         """
-        return [self.divide, self.die]
+        # Death action
+        death = Cell._Action(self.die, 
+                        self.deathProbability)
+        # Division action
+        division = Cell._Action(self.divide, 
+                           self.divisionProbability)
+        
+        return [death, division]
+    # ---
     
-    def performAction(self, action):
-        """Perform the given action
+    def step(self):
+        """Select an action and perform it
         """
-        action()
+        # Make the cell older
+        self.growOlder()
+        # Select an action
+        action = rnd.choice( self.availableActions() )
+        # Perform the action according to it's respective probability
+        action.tryAction()
+    # ---
+        
         
     #..........Setter / Getter methods ...............................
     
@@ -111,4 +154,8 @@ class Cell:
     
     def getIndex(self):
         return self.index
+    # ---
+    
+    def setIndex(self, index):
+        self.index = index
     # ---

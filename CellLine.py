@@ -23,7 +23,8 @@ class CellLine:
             + Current cell index: Each cell has a unique identification label (index). 
                                   This is the label to place in the next cell to be born
     """
-    def __init__(self, system = None, genome = ""):
+    def __init__(self, system = None, genome = "", recycleDeadCells=True):
+        self.recycleDeadCells = recycleDeadCells
         self.currentIndex = 0
         self.cells = []
         self.aliveCells = set()
@@ -45,29 +46,55 @@ class CellLine:
     def newCell(self):
         """ Get a new blank cell in this lineage and system.
         """
-        new = Cell(system = self.system, 
-                   cellLine = self, 
-                   index = self.currentIndex)
-        self.cells.append( new )
+        # Fetch a blank cell
+        # Try to fetch a dead cell to recycle
+        if self.recycleDeadCells and self.deadCells:
+            new = self.fetchCellToRecycle(index = self.currentIndex) 
+        else:
+            new = Cell(system = self.system, 
+                       cellLine = self, 
+                       index = self.currentIndex)
+            self.cells.append( new )
+            
+        # Update state to take new cell into account
         self.aliveCells.add( new )
         self.currentIndex += 1
         return new
     # ---
+    
+    def fetchCellToRecycle(self, index=None):
+        recycled = self.deadCells.pop()
+        recycled.setIndex(index)
+        return recycled
+    # ---
+        
     
     def getAliveCells(self):
         return self.aliveCells
     # ---
     
     def totalCells(self):
+        return len(self.cells)
+    # ---
+    
+    def totalAliveCells(self):
         return len(self.aliveCells)
     # ---
     
-    def pickRandomCell(self, n=1):
-        if n == 1:
+    def totalDeadCells(self):
+        return len(self.deadCells)
+    # ---
+    
+    def sampleCells(self, all=False, n=1):
+        # If it is asked for all cells, 
+        # take a sample of the whole size
+        if all==True:
+            n = len(self.aliveCells)
+        # If the default argument is set, return a single cell
+        elif n == 1:
             return rnd.sample(self.aliveCells, n) [0]
-        else:
-            return rnd.sample(self.aliveCells, n)    
-        
+        # Return a sample of size n
+        return rnd.sample(self.aliveCells, n)    
     # ---
         
     def handleDeath(self, dying):

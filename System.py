@@ -55,17 +55,18 @@ class System:
         return self.at(i,j).guestCount()
     # ---
     
-    def step(self):
+    def step(self, singleCell=False):
         """ Move the state of the system one step forward in time
         """
-        # Pick one random cell
-        cell = self.cells.pickRandomCell()
-        cell.growOlder()
-        
-        # Perform an action on the cell
-        actions = cell.availableActions()
-        action = rnd.choice(actions)
-        cell.performAction(action)
+        # Advance a single cell
+        if singleCell:
+            cell = self.cells.sampleCells()
+            cell.step()
+        else:
+            # Advance all cells
+            for cell in self.cells.sampleCells(all=True):
+                # Perform an action on the cell
+                cell.step()
     # ---
         
     def at(self, i, j):
@@ -79,3 +80,17 @@ class System:
         """
         return self.cells.totalCells()
     # ---
+    
+    def totalDeadCells(self):
+        """Returns the total number of cells in the system.
+        """
+        return self.cells.totalDeadCells()
+    # ---
+    
+    def totalAliveCells(self):
+        """Returns the total number of cells in the system.
+        """
+        return self.cells.totalAliveCells()
+    # ---
+    
+    
