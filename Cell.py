@@ -12,7 +12,6 @@ class Cell:
             + System: The system this cell forms part of.
             + Site: The place in the grid this cell inhabits in.
             + Age: The timesteps this cell has passed through
-            + Mutations: Mutations in the cell's genome, relative to the cell-line reference.
     """
     
     # --- --- --- --- --- ------ --- --- --- --- ---

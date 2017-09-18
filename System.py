@@ -13,6 +13,7 @@ class System:
             + Grid: The sites the action develops in
             + Cells: The cells that live, die and interact in the grid
             + Dimensions <rows, cols>: The number of rows and columns of the grid
+            + Neighborhood: The relative positions of the neighbors of a grid site 
     """
     
     # --- --- --- --- --- ------ --- --- --- --- ---
@@ -33,6 +34,7 @@ class System:
         self.cols = None
         self.cells = None
         self.grid = None
+        self.neighborhood = None
         # Initialize if all necessary things are given 
         if gridDimensions:
             self.init(gridDimensions, genome)
@@ -41,10 +43,17 @@ class System:
     def init(self, gridDimensions=(10,10), genome=None):
         """Initialize the automata's grid and cell lineage
         """
+        # Set dimensions
         self.rows, self.cols = gridDimensions
+        # Initialize grid
         self.grid = [ [ Site(self, i,j) for j in range(self.cols) ] for i in range(self.rows) ]
+        # Initialize cells
         self.cells = CellLine(genome = genome, 
                               system = self)
+        # Initialize neighborhood
+        self.neighborhood = [ [-1,-1], [-1, 0], [-1, 1],
+                              [ 0,-1], [ 0, 0], [ 0, 1],
+                              [ 1,-1], [ 1, 0], [ 1, 1] ]
     # ---
         
     def seedAt(self, i, j):
@@ -117,5 +126,10 @@ class System:
         """
         return self.cells.totalAliveCells()
     # ---
+    
+    def getNeighborhood(self):
+        """ Return the relative coordinates of the neighborhood of a site in the grid
+        """
+        return self.neighborhood
     
     

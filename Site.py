@@ -39,9 +39,14 @@ class Site:
     def getRandomNeighbor(self):
         """ Returns a random site in the neighborhood of the current site
         """
-        i,j = self.getCoordinates()
-        coords = (i+rnd.randint(-1,1), j+rnd.randint(-1,1))
-        return self.system.at(*coords)
+        # Get your actual coordinates
+        i, j = self.getCoordinates()
+        # Get a glimpse of your neighborhood
+        neighborhood = self.system.getNeighborhood()
+        # Select a neighbor
+        n_i, n_j = rnd.choice(neighborhood)
+        # Fetch the neighbor
+        return self.system.at( i+n_i, j+n_j )
     # ---
     
     def getCoordinates(self):
