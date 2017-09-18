@@ -28,6 +28,6 @@ class PSystem(System):
             
             i += r/10.0 * noise( 10*index )
             j += r/10.0 * noise( 20*index )
-            fill( 255*exp(-0.2*age) )
+            fill( 255*exp(-0.0001*index) )
             ellipse(i*rowSize, j*colSize, r, r)    
     # ---

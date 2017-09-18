@@ -14,6 +14,19 @@ class System:
             + Cells: The cells that live, die and interact in the grid
             + Dimensions <rows, cols>: The number of rows and columns of the grid
     """
+    
+    # --- --- --- --- --- ------ --- --- --- --- ---
+    # Auxiliary class function
+    @classmethod
+    def wrap(cls, n, maxValue):
+        """ Auxiliary function to wrap an integer on maxValue 
+        """
+        if n < 0:
+            n += maxValue
+        if n >= maxValue:
+            n -= maxValue
+        return n
+    # --- --- --- --- --- ------ --- --- --- --- ---
 
     def __init__(self, gridDimensions=None, genome=None):
         self.rows = None
@@ -69,11 +82,23 @@ class System:
                 cell.step()
     # ---
         
-    def at(self, i, j):
+    def at(self, i, j, wrap=True):
         """Get the site at the specified coordinates
         """
+        # Wrap (toroidal coordinates)
+        if wrap:
+            i,j = self.wrapCoordinates(i,j)
+            
         return self.grid[i][j]
     # ---
+    
+    def wrapCoordinates(self, i, j):
+        """ Return i,j wrapped on the grid dimensions
+        """
+        # Wrap the coordinates
+        i = System.wrap(i, self.rows)
+        j = System.wrap(j, self.cols)
+        return i,j 
            
     def totalCells(self):
         """Returns the total number of cells in the system.

@@ -12,6 +12,7 @@ class Cell:
             + System: The system this cell forms part of.
             + Site: The place in the grid this cell inhabits in.
             + Age: The timesteps this cell has passed through
+            + Mutations: Mutations in the cell's genome, relative to the cell-line reference.
     """
     
     # --- --- --- --- --- ------ --- --- --- --- ---
@@ -31,7 +32,7 @@ class Cell:
         self.index = index
         self.cellLine = cellLine
         self.system = system
-        self.father = None
+        self.father = -1
         self.site = None
         self.age = 0
     # ---
@@ -43,7 +44,7 @@ class Cell:
         self.setFather(father)
     # ---
         
-    def divide(self):
+    def divide(self, preserveFather=False):
         """Get a new daughter of this cell and place it in a nearby neighboring site.
         """
         # Create the daughter cell
@@ -51,6 +52,17 @@ class Cell:
         # Search for the site to place the daughter in
         site = self.site.getRandomNeighbor()
         daughter.addTo(site)
+        
+        # If the preserveFather flag is set, we want a
+        # father cell and a daughter cell after the division,
+        # else, we want both resulting cells to be daughters of the
+        # father cell, so this cell will migrate, set to age 0 and 
+        # migrate.
+        if not preserveFather:
+            self.resetAge()
+            self.setFather(self.index)
+            self.cellLine.recycleCell(self)
+            self.migrate()
     # ---
     
     def divisionProbability(self):
@@ -92,9 +104,26 @@ class Cell:
         """
         aliveCells = self.cellLine.totalAliveCells() 
         if aliveCells > 1:
-            return 0.7
+            return 0.8
         else:
             return 0
+    # ---
+    
+    def migrate(self):
+        """Migrate to a neighboring cell
+        """
+        # Get the destination site
+        nextSite = self.site.getRandomNeighbor()
+        # Migrate to the new site
+        self.site.removeGuest(self)
+        nextSite.addGuest(self)
+        self.setSite(nextSite)
+    # ---
+    
+    def migrationProbability(self):
+        """The migration probability for this cell
+        """
+        return 1
     # ---
                 
     def availableActions(self):
@@ -102,12 +131,16 @@ class Cell:
         """
         # Death action
         death = Cell._Action(self.die, 
-                        self.deathProbability)
+                             self.deathProbability)
         # Division action
         division = Cell._Action(self.divide, 
-                           self.divisionProbability)
+                                self.divisionProbability)
         
-        return [death, division]
+        # Migration action
+        migration = Cell._Action(self.migrate,
+                                 self.migrationProbability)
+        
+        return [migration, division, death]
     # ---
     
     def step(self):
@@ -147,6 +180,10 @@ class Cell:
     
     def getAge(self):
         return self.age
+    # ---
+    
+    def resetAge(self):
+        self.age=0
     # ---
     
     def olderThan(self, age):

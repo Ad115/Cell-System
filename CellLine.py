@@ -47,26 +47,30 @@ class CellLine:
         """ Get a new blank cell in this lineage and system.
         """
         # Fetch a blank cell
-        # Try to fetch a dead cell to recycle
         if self.recycleDeadCells and self.deadCells:
-            new = self.fetchCellToRecycle(index = self.currentIndex) 
+            # Fetch a dead cell to recycle
+            new = self.fetchCellToRecycle()
+            self.recycleCell(new) 
         else:
             new = Cell(system = self.system, 
                        cellLine = self, 
                        index = self.currentIndex)
+            self.currentIndex += 1
             self.cells.append( new )
             
         # Update state to take new cell into account
         self.aliveCells.add( new )
-        self.currentIndex += 1
         return new
     # ---
     
-    def fetchCellToRecycle(self, index=None):
+    def fetchCellToRecycle(self):
         recycled = self.deadCells.pop()
-        recycled.setIndex(index)
         return recycled
     # ---
+    
+    def recycleCell(self, cell):
+        cell.setIndex(self.currentIndex)
+        self.currentIndex += 1
         
     
     def getAliveCells(self):
