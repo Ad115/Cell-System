@@ -41,9 +41,8 @@ class Site:
         """
         # Get your actual coordinates
         i, j = self.getCoordinates()
-        # Get a glimpse of your neighborhood
-        neighborhood = self.system.getNeighborhood()
         # Select a neighbor
+        neighborhood = self.system.getNeighborhood()
         n_i, n_j = rnd.choice(neighborhood)
         # Fetch the neighbor
         return self.system.at( i+n_i, j+n_j )

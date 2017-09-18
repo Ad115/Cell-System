@@ -21,7 +21,7 @@ def draw():
     text("Total cells : %d, Alive: %d, Dead: %d" % (total, alive, dead), 
          10, 30) 
     
-    system.step(singleCell=False)
+    system.step(singleCell=True)
     system.draw()
 # ---
     

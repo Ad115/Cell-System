@@ -13,24 +13,43 @@ class CellLine:
     Atributes
     ---------    
             + Ancestral genome: A string to which all cells genomes come from.
-            
             + Cells: The group cells belonging to this cell line.
-            
             + Alive cells and Dead cells: The cells that are respectively currently alive or dead
-            
             + System: The system this cells form a part of.
-            
             + Current cell index: Each cell has a unique identification label (index). 
                                   This is the label to place in the next cell to be born
     """
-    def __init__(self, system = None, genome = "", recycleDeadCells=True):
+    
+    def __init__(self, 
+                 system, 
+                 genome = None, 
+                 recycleDeadCells=True, 
+                 genomeAlphabet=None):
+        """ A cell line is instantiated with an obligatory system, \
+        to which the cell line belongs. Optionals are the genome and the \
+        genome alphabet. If a custom genome is passed, the genome alphabet \
+        should be passed too unless it is formed of the letters in "ACGT".
+        Also, dead cells are recycled by default, this helps to improve \
+        memory usage. 
+        """
         self.recycleDeadCells = recycleDeadCells
         self.currentIndex = 0
         self.cells = []
         self.aliveCells = set()
         self.deadCells = set()
         self.system = system
+        # Set the default genome
+        if not genome:
+            genome = 10*'A'
         self.genome = genome
+        # Check if the genome alphabet option was set
+        if not genomeAlphabet:
+            genomeAlphabet = "ACGT"
+        self.genomeAlphabet = genomeAlphabet
+        # Validate the resulting genome/genome alphabet combination
+        for letter in genome:
+            if letter not in genomeAlphabet:
+                raise ValueError('`genome` must contain only letters present in the `genomeAlphabet`')
     # ---
         
     def addCellTo(self, site):
@@ -109,3 +128,15 @@ class CellLine:
         self.deadCells.add(dying)
         # Cell is now officially dead
     # ---
+    
+    def getGenomeAlphabet(self):
+        return self.genomeAlphabet
+    # ---
+    
+    def getBaseGenome(self):
+        return self.genome
+    # ---
+    
+    def getGenomeLength(self):
+        return len(self.genome)
+    

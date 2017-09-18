@@ -12,6 +12,7 @@ class Cell:
             + System: The system this cell forms part of.
             + Site: The place in the grid this cell inhabits in.
             + Age: The timesteps this cell has passed through
+            + Mutations: The mutations in this cell relative to the cell lineage's reference
     """
     
     # --- --- --- --- --- ------ --- --- --- --- ---
@@ -34,18 +35,25 @@ class Cell:
         self.father = -1
         self.site = None
         self.age = 0
+        self._genomeCache = None
+        self.mutations = []
     # ---
         
-    def init(self, site=None, father=None):
+    def init(self, site=None, father=None, mutations=None):
         """Initialize with grid site and father
         """
         self.setSite(site)
         self.setFather(father)
+        # Default mutations
+        if mutations:
+            self.setMutations(mutations) # copy
     # ---
         
     def divide(self, preserveFather=False):
         """Get a new daughter of this cell and place it in a nearby neighboring site.
         """
+        print("Cell {} dividing".format(self.index))
+        
         # Create the daughter cell
         daughter = self.newDaughter()
         # Search for the site to place the daughter in
@@ -62,6 +70,8 @@ class Cell:
             self.setFather(self.index)
             self.cellLine.recycleCell(self)
             self.migrate()
+            
+        print("\tNew cells: {} and {}".format(self.index, daughter.index))
     # ---
     
     def divisionProbability(self):
@@ -74,7 +84,9 @@ class Cell:
         """Get a new cell that has been set as daughter of this cell 
         """
         daughter = self.cellLine.newCell()
-        daughter.init(father = self.index)
+        daughter.init(father = self.index,
+                      mutations = self.mutations # Copy under the hood
+                      )
         return daughter
     # ---
     
@@ -94,6 +106,7 @@ class Cell:
     def die(self):
         """Cellular death
         """
+        self.flushGenomeCache()
         self.site.removeGuest(self)
         self.cellLine.handleDeath(self)
     # ---
@@ -103,7 +116,7 @@ class Cell:
         """
         aliveCells = self.cellLine.totalAliveCells() 
         if aliveCells > 1:
-            return 0.8
+            return 0.6
         else:
             return 0
     # ---
@@ -124,6 +137,39 @@ class Cell:
         """
         return 1
     # ---
+    
+    def mutate(self):
+        """ Do a single site mutation. Note: The genome may not represent a
+        nucleotide sequence, so these mutations may not be SNPs
+        """
+        print("Mutating cell no. {} (father {}):\n \
+              \t Base genome: {} \n \
+              \t Current genome: {} \n \
+              \t Current mutations: {}".format(self.index, self.father, 
+                                               self.getBaseGenome(), 
+                                               self.getGenome(),
+                                               self.mutations)
+              )
+        
+        # Get the genome characteristics
+        alphabet = self.cellLine.getGenomeAlphabet()
+        genomeLength = self.getGenomeLength()
+        # Assemble the mutation
+        position = rnd.randint(0, genomeLength-1 ) # Pick a random position in the genome
+        mutated = rnd.choice(alphabet)
+        # Mutate
+        self.mutations.append( (position, mutated) )
+        self.flushGenomeCache()
+        
+        print("\t\t Final mutations: {}\n \
+               \t Final genome: {}".format(self.mutations,
+                                           self.getGenome())
+              )
+    # ---
+    
+    def mutationProbability(self):
+        return 0.5
+    # ---
                 
     def availableActions(self):
         """Return a list with the possible actions to take for this cell
@@ -139,7 +185,11 @@ class Cell:
         migration = Cell._Action(self.migrate,
                                  self.migrationProbability)
         
-        return [migration, division, death]
+        # Mutation action
+        mutation = Cell._Action(self.mutate,
+                                self.mutationProbability)
+        
+        return [mutation, migration, division, death]
     # ---
     
     def step(self):
@@ -152,7 +202,6 @@ class Cell:
         # Perform the action according to it's respective probability
         action.tryAction()
     # ---
-        
         
     #..........Setter / Getter methods ...............................
     
@@ -195,3 +244,34 @@ class Cell:
     def setIndex(self, index):
         self.index = index
     # ---
+    
+    def getGenomeLength(self):
+        return self.cellLine.getGenomeLength()
+    # ---
+    
+    def getBaseGenome(self):
+        return self.cellLine.getBaseGenome()
+    # ---
+    
+    def getGenome(self):
+        if self._genomeCache:
+            return self._genomeCache
+        else:
+            # Get the original genome
+            bases = list( self.getBaseGenome() )
+            # Add mutations one by one
+            for pos, mutated in self.mutations:
+                bases[pos] = mutated
+            # Assemble the final genome
+            genome = ''.join(bases)
+            self._genomeCache = genome
+            return genome
+    # ---
+    
+    def flushGenomeCache(self):
+        self._genomeCache = None
+    # ---
+    
+    def setMutations(self, mutations):
+        self.mutations = mutations[:] # COPY
+    
