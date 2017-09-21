@@ -1,7 +1,7 @@
-from System import System
+from . import system
 
-class PSystem(System):
-    """ System subclass intended for use with Processing. 
+class PSystem(system.System):
+    """ `System` subclass intended for use with Processing. 
     It extends the raw System class with graphical methods for interactive \
     displaying of the state of the system.
     """

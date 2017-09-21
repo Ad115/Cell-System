@@ -1,2 +1,4 @@
 sketch.properties 
 **.class
+**/__pycache__
+
