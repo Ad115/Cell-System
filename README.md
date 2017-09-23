@@ -9,11 +9,13 @@ If you don't want a graphical output, all `*.py` files (except PSystem.py) are p
 you can type in the python console:
 
 ```
->>> import System    # Import main class
+>>> from cellSystem.system import System    # Import main class
 
->>> system = System( gridDimensions=(10,10) )  # Create a system
+>>> system = System( gridDimensions=(10,10) )  # Create an empty system
 
 >>> system.seed()    # Place an initial cell
 
->>> system.step()    # Take a step
+>>> for _ in range(10): system.step()    # Take 10 steps forward in time
+
+>>> system.totalAliveCells()  # How many cells are now?
 ```
