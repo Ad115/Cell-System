@@ -1,4 +1,4 @@
-from cellSystem.Processing import PSystem
+from cellsystem.psystem import PSystem
 system = PSystem()
 
 def setup():
