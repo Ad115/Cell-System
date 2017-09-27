@@ -14,7 +14,7 @@ class Site:
     """
     def __init__(self, system, i, j):
         self.system = system
-        self.coordinates = [i,j]
+        self.coordinates = (i,j)
         self.guests = set()
     # ---
         
@@ -119,6 +119,8 @@ class System:
         site = self.at(i,j)
         # Add a new cell
         self.cells.addCellTo(site)
+        
+        print("New cell added @ {}".format((i,j)))
     # ---
         
     def seed(self):
@@ -133,7 +135,14 @@ class System:
         return self.at(i,j).guestCount()
     # ---
     
-    def step(self, singleCell=False):
+    def step(self, steps=1, singleCell=False):
+        """Move the state of the system `steps` steps forward in time
+        """
+        for _ in range(steps):
+            self.singleStep(singleCell)
+    # ---
+    
+    def singleStep(self, singleCell=False):
         """ Move the state of the system one step forward in time
         """
         # Advance a single cell
@@ -165,10 +174,18 @@ class System:
         j = System.wrap(j, self.cols)
         return i,j 
            
-    def totalCells(self):
-        """Returns the total number of cells in the system.
+    def totalCells(self, state='alive'):
+        """Returns the total number of cells of type `state` in the system.
         """
-        return self.cells.totalCells()
+        if state == 'alive':
+            # Total count of alive cells
+            return self.cells.totalAliveCells()
+        elif state == 'dead':
+            # Total count of dead cells (makes sense only if the recycle dead cells option is not set)
+            return self.cells.totalDeadCells()
+        elif state == 'all':
+            # Total count of cells in the system (this is usually for debug purposes)
+            return self.cells.totalCells()
     # ---
     
     def totalDeadCells(self):

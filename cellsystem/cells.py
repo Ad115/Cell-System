@@ -176,7 +176,7 @@ class Cell:
         self.index = index
         self.cellLine = cellLine
         self.system = system
-        self.father = -1
+        self.father = None
         self.site = None
         self.age = 0
         self._genomeCache = None
@@ -196,7 +196,7 @@ class Cell:
     def divide(self, preserveFather=False):
         """Get a new daughter of this cell and place it in a nearby neighboring site.
         """
-        print("Cell {} dividing".format(self.index))
+        print("Cell no. {} dividing @ {}".format(self.index, self.getCoordinates()))
         
         # Create the daughter cell
         daughter = self.newDaughter()
@@ -213,9 +213,12 @@ class Cell:
             self.resetAge()
             self.setFather(self.index)
             self.cellLine.recycleCell(self)
-            self.migrate()
+            self.migrate(log=False)
             
-        print("\tNew cells: {} and {}".format(self.index, daughter.index))
+        print("\tNew cells: {} @ {} and {} @ {}".format(self.index, self.getCoordinates(),
+                                                        daughter.index, daughter.getCoordinates()
+                                                        )
+        )
     # ---
     
     def divisionProbability(self):
@@ -250,6 +253,10 @@ class Cell:
     def die(self):
         """Cellular death
         """
+        print("Cell no. {} dying @ site {} (father {})".format(self.index,
+                                                               self.getCoordinates(),
+                                                               self.father)
+        )
         self.flushGenomeCache()
         self.site.removeGuest(self)
         self.cellLine.handleDeath(self)
@@ -265,15 +272,23 @@ class Cell:
             return 0
     # ---
     
-    def migrate(self):
+    def migrate(self, log=True):
         """Migrate to a neighboring cell
         """
+        if log:
+            print("Cell no. {} migrating from site {} (father {})".format(self.index,
+                                                                          self.getCoordinates(),
+                                                                          self.father)
+            )
         # Get the destination site
         nextSite = self.site.getRandomNeighbor()
         # Migrate to the new site
         self.site.removeGuest(self)
         nextSite.addGuest(self)
         self.setSite(nextSite)
+        
+        if log:
+            print("\t New site: {}".format(self.getCoordinates()))
     # ---
     
     def migrationProbability(self):
@@ -286,10 +301,10 @@ class Cell:
         """ Do a single site mutation. Note: The genome may not represent a
         nucleotide sequence, so these mutations may not be SNPs
         """
-        print("Mutating cell no. {} (father {}):\n \
+        print("Mutating cell no. {} @ site {} (father {}):\n \
               \t Base genome: {} \n \
               \t Current genome: {} \n \
-              \t Current mutations: {}".format(self.index, self.father, 
+              \t Current mutations: {}".format(self.index, self.getCoordinates(), self.father, 
                                                self.getBaseGenome(), 
                                                self.getGenome(),
                                                self.mutations)
