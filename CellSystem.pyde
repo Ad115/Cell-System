@@ -1,9 +1,11 @@
+#! /usr/bin/env pyprocessing
+
 from cellsystem.psystem import PSystem
 system = PSystem()
 
 def setup():
 	# Prepare window
-    size(600, 600)
+    size(700, 700)
     frameRate(10)
     
     # Initialize the system
