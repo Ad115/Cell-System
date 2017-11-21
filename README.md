@@ -10,7 +10,9 @@ you can type in the python console:
 
 ```python
 >>> from cellsystem import System    # Import main class
+
 >>> sys = System( gridDimensions=(10,10) )  # Create system of 10x10
+
 >>> sys.seed()    # Place an initial cell
     # New cell added @ (50, 50)
 
