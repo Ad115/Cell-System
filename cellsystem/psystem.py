@@ -1,7 +1,7 @@
-from . import system
+from . import System
 
 
-class PSystem(system.System):
+class PSystem(System):
     """ `System` subclass intended for use with Processing.
     It extends the raw System class with graphical methods for interactive \
     displaying of the state of the system.
@@ -23,9 +23,9 @@ class PSystem(system.System):
         # Draw cell by cell
         for cell in self.cells.getAliveCells():
             # Get cell data
-            i, j = cell.getCoordinates()
-            age = cell.getAge()
-            index = cell.getIndex()
+            i, j = cell.coordinates
+            age = cell.age
+            index = cell.index
 
             i += r / 10.0 * noise(10 * index)
             j += r / 10.0 * noise(20 * index)

@@ -1,7 +1,7 @@
 #! /usr/bin/env pyprocessing
 
 from cellsystem.psystem import PSystem
-system = PSystem()
+system = PSystem( gridDimensions=(40, 40) )
 
 def setup():
 	# Prepare window
@@ -9,7 +9,6 @@ def setup():
     frameRate(10)
     
     # Initialize the system
-    system.init( gridDimensions=(40,40) )
     system.seed()
     
     # Display
@@ -26,8 +25,7 @@ def draw():
     # How many cells are there?
     total = system.totalCells()
     alive = system.totalAliveCells()
-    dead = system.totalDeadCells()
-    text("Total cells : %d, Alive: %d, Dead: %d" % (total, alive, dead), 
+    text("Total cells : %d, Alive: %d" % (total, alive), 
          10, 30) 
     
     # Draw next step
