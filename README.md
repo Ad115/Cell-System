@@ -10,15 +10,11 @@ you can type in the python console:
 
 ```python
 >>> from cellsystem import System    # Import main class
-
 >>> sys = System( gridDimensions=(10,10) )  # Create system of 10x10
-
 >>> sys.seed()    # Place an initial cell
-
     # New cell added @ (50, 50)
 
 >>> sys.step(10)    # Take 10 steps forward in time
-
     # Cell no. 0 migrating from site (5, 5) (father None)
     #        New site: (4, 4)
     # Cell no. 0 migrating from site (4, 4) (father None)
@@ -36,6 +32,5 @@ you can type in the python console:
     # Cell no. 2 dying @ site (4, 5) (father 0)
 
 >>> sys.totalCells()  # How many cells are alive now?
-
     # 2
 ```
