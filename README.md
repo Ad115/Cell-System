@@ -9,13 +9,33 @@ If you don't want a graphical output, all `*.py` files (except PSystem.py) are p
 you can type in the python console:
 
 ```
->>> from cellSystem.system import System    # Import main class
+>>> from cellsystem import System    # Import main class
 
->>> system = System( gridDimensions=(10,10) )  # Create an empty system
+>>> sys = System( gridDimensions=(10,10) )  # Create system of 10x10
 
->>> system.seed()    # Place an initial cell
+>>> sys.seed()    # Place an initial cell
 
->>> for _ in range(10): system.step()    # Take 10 steps forward in time
+    New cell added @ (50, 50)
 
->>> system.totalAliveCells()  # How many cells are now?
+>>> sys.step(10)    # Take 10 steps forward in time
+
+    Cell no. 0 migrating from site (5, 5) (father None)
+            New site: (4, 4)
+    Cell no. 0 migrating from site (4, 4) (father None)
+            New site: (3, 3)
+    Cell no. 0 migrating from site (3, 3) (father None)
+            New site: (3, 4)
+    Cell no. 0 dividing @ (3, 4)
+            New cells: 2 @ (4, 5) and 1 @ (2, 4)
+    Mutating cell no. 1 @ site (2, 4) (father None):
+                    Base genome: AAAAAAAAAA 
+                    Final mutations: [(2, 'C')]
+                    Final genome: AACAAAAAAA
+    Cell no. 1 dividing @ (2, 4)
+            New cells: 4 @ (1, 3) and 3 @ (1, 3)
+    Cell no. 2 dying @ site (4, 5) (father 0)
+
+>>> sys.totalCells()  # How many cells are alive now?
+
+    2
 ```
