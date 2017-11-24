@@ -1,7 +1,7 @@
 Bitácora: Estancia de Investigación VII
 ===============================
 
-20 de Agosto de 2017
+24 de Noviembre de 2017
 > Alumno: __Andrés García García__
 
 ****
