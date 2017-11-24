@@ -85,5 +85,48 @@ Terminada actividad:
 
  El registro de los cambios se encuentra en la [historia del proyecto](https://github.com/Ad115/Cell-System/commits/master).
 
+### 2 de Octubre de 2017
+Añadido ejemplo de uso al README del repositorio.
+
+Se limpió el código con PyLint para encontrar segmentos de código que podrían ocasionar algún problema en el futuro.
+
+El registro de los cambios se encuentra en la [historia del proyecto](https://github.com/Ad115/Cell-System/commits/master).
+
+---
+
+> __Nota__: Este proyecto es parte de un proyecto más grande registrado en CONACYT como: "__DNA-mutation simulation of tumor growth and reconstruction of cancer evolution__". Este proyecto está registrado por mi tutora Maribel Hernández Rosales del Instituto de Matemáticas en la modalidad de Joven Investigador. Otra parte importante de este proyecto es el análisis de datos ya existentes sobre cáncer y yo me encuentro involucrado en esa parte también. El producto (hasta ahora) de esa parte se encuentra en la página web del [ICGC Data Parser](icgc-data-parser.readthedocs.io) y el código para ello está en [el repositorio de GitHub](github.com/Ad115/ICGC-data-parser).
+
+> Durante el mes de Octubre y principios de Noviembre se requirió atención a la parte del análisis de datos. Por lo que se muestra a continuación es trabajo realizado en ese momento. También se puede consultar el [historial de cambios](https://github.com/Ad115/ICGC-data-parser/commits/python).
+
+### 11 de Octubre de 2017
+Se limpió la documentación en la página web.
+Se reestructuró el repositorio y se limpió el código como medida de mantenimiento.
+Las medidas anteriores permitieron una mayor usabilidad, ya que es más fácil ahora para el usuario y para el programador saber dónde se encuentran las cosas.
+
+### 17 de Octubre de 2017
+Se continuaron los cambios anteriores (limpieza y reestructuración del repositorio y de la documentación).
+Se detectó la necesidad de utilizar un manejador de base de datos para hacer los procesos más eficientes, así que también ha comenzado el proceso de planeación para implementarlo.
+
+### 3 de Noviembre de 2017
+Continúa el proceso de planeación de la base de datos. Además, debido al creciente desuso del lenguaje Perl y a la flexibilidad y manejabilidad de Python en cuanto a procesamiento general de texto, librerías de uso general y de manejo de bases de datos, se ha decidido implementar en Python la parte de base de datos del módulo. Lo cual, si funciona como se espera, dejaría obsoleta la mayor parte del código en Perl que se tiene hasta ahora y convertiría el proyecto en un proyecto de Python.
+
+### 5 de Noviembre de 2017
+Se han provado los primeros prototipos con Python, SQLite y PonyORM para el manejo de la base de datos y parecen prometedores con una pequeña cantidad de datos. Por ello, se ha iniciado la carga de todos los datos (~50Gb) a la base de datos, lo cual se estima, tendrá una duración de 10hrs.
+
+### 13 de Noviembre de 2017
+Debido a problemas con la carga, la base de datos apenas ha terminado de colocarse adecuadamente. Por lo que ya está lista para usarse y las primeras pruebas funcionaron bien.
+
+### 15 de Noviembre
+Se detectaron problemas, la base de datos resultó ser mucho más grande de lo que se esperaba, y pruebas adicionales detectaron problemas con datos repetidos. Esto aunado a la lenta carga de la base de datos hace que requiera una revisión. Se trabajará en el nuevo diseño en paralelo a un colaborador para detectar el modo más eficiente de hacer los cambios mientras se continúa trabajando en el proyecto de simulación.
+
+### 20 de Noviembre
+Se limpió el código con _pydocstyle_ y _pycodestyle_ para ajustarlo a las convenciones en Python. Además, se trabajó en unificar la API y en limpiar y reestructurar lo que ya está escrito.
+Se modificó el script de Processing para ajustar los nuevos cambios.
+
+### 21 de Noviembre
+Se ha detectado la necesidad de añadir más de un tipo de células y de que el modelo no sólo sirva para cáncer, sino que pueda reutilizarse para otro tipo de simulaciones basadas en agentes, por lo que el código requiere una reestructuración general. Esta semana se trabajará en el nuevo diseño.
+
+### 22 de Noviembre
+Se ha elegido basarse en el paradigma llamado [Clean Arquitecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html) de Bob Martin para estructurar el código. Este paradigma promueve la desacoplació del modelo en sí, el núcleo, de los casos de uso y de la interfaz externa. Esto permite una gran reusabilidad, facilidad de modificación y para realizar tests.
 
 > Written with [StackEdit](https://stackedit.io/).
