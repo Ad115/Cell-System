@@ -1,7 +1,7 @@
 #! /usr/bin/env pyprocessing
 
 from cellsystem.psystem import PSystem
-system = PSystem( gridDimensions=(40, 40) )
+system = PSystem( gridDimensions=(100, 100) )
 
 def setup():
 	# Prepare window
@@ -12,13 +12,13 @@ def setup():
     system.seed()
     
     # Display
-    background(100)
+    background(200)
     system.draw()
 # ---
     
 def draw():
 	# Prepare canvas
-    background(100)
+    background(200)
     fill(0)
     text("Framerate : %d" % frameRate, 10, 10)
     

@@ -13,4 +13,4 @@ system.seed()
 system.step(10)
 
 # How is the system now?
-system.totalCells(state='alive')
+print( system.totalCells(state = 'alive') )
