@@ -119,14 +119,27 @@ Debido a problemas con la carga, la base de datos apenas ha terminado de colocar
 ### 15 de Noviembre
 Se detectaron problemas, la base de datos resultó ser mucho más grande de lo que se esperaba, y pruebas adicionales detectaron problemas con datos repetidos. Esto aunado a la lenta carga de la base de datos hace que requiera una revisión. Se trabajará en el nuevo diseño en paralelo a un colaborador para detectar el modo más eficiente de hacer los cambios mientras se continúa trabajando en el proyecto de simulación.
 
+> En lo siguiente, se regresa a trabajar en el código de simulación de crecimiento canceroso.
+
 ### 20 de Noviembre
 Se limpió el código con _pydocstyle_ y _pycodestyle_ para ajustarlo a las convenciones en Python. Además, se trabajó en unificar la API y en limpiar y reestructurar lo que ya está escrito.
-Se modificó el script de Processing para ajustar los nuevos cambios.
+Se modificó el script de Processing para ajustar los nuevos cambios. Se puede consultar el [historial de cambios](https://github.com/Ad115/ICGC-data-parser/commits/python).
 
 ### 21 de Noviembre
-Se ha detectado la necesidad de añadir más de un tipo de células y de que el modelo no sólo sirva para cáncer, sino que pueda reutilizarse para otro tipo de simulaciones basadas en agentes, por lo que el código requiere una reestructuración general. Esta semana se trabajará en el nuevo diseño.
+Se ha detectado la necesidad de añadir más de un tipo de células y de que el modelo no sólo sirva para cáncer, sino que pueda reutilizarse para otro tipo de simulaciones basadas en agentes, por lo que el código requiere una reestructuración general. Esta semana se trabajará en el nuevo diseño. También se puede consultar el [historial de cambios](https://github.com/Ad115/ICGC-data-parser/commits/python).
 
 ### 22 de Noviembre
-Se ha elegido basarse en el paradigma llamado [Clean Arquitecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html) de Bob Martin para estructurar el código. Este paradigma promueve la desacoplació del modelo en sí, el núcleo, de los casos de uso y de la interfaz externa. Esto permite una gran reusabilidad, facilidad de modificación y para realizar tests.
+Se ha elegido basarse en el paradigma llamado [Clean Arquitecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html) de Bob Martin para estructurar el código. Este paradigma promueve la desacoplación de la lógica del modelo, es decir, el núcleo de la simulación, de los casos especificos de uso y de la interfaz externa. Esto permite una gran reusabilidad, y facilidad para modificar y realizar tests.
+
+> En los días 24-27 de Noviembre se han hecho cambios en la parte del análisis de datos:
+
+## 24 de Noviembre
+Se notó que al cargar la base de datos como se hizo en tre el 5 y 13 de Noviembre había redundancia no buscada en los datos, y estos requerían una limpieza. Por otro lado la carga de datos es muy lenta, por lo que se están imlementando cambios en cómo se procesan los datos.
+
+## 25 de Noviembre
+Al intentar cargar la base de datos con los nuevos cambios, se ha observado un decremento notable (cuadrático) en la eficiencia. Esto es probablemente debido a un caso del [problema del N+1](https://secure.phabricator.com/book/phabcontrib/article/n_plus_one/). El cual puede requerir un cambio mayor de diseño. Se continúan haciendo pruebas. El historial de cambios se puede consultar [aquí](https://github.com/Ad115/ICGC-data-parser/commits/python).
+
+## 27 de Noviembre
+Se logró optimizar la carga de datos por un factor muy grande, ahora los datos se cargan en ~1h, comparado a las >24hrs de las estrategias anteriores esto es un gran logro. La forma en que esto se logró es dejando completamente de lado los ORM durante el proceso de carga de datos y utilizar una librería especializada en transferencia de datos, [ODO](http://odo.readthedocs.io/en/latest/). Se trabajó sobre la base de datos y parece que funciona bien. El problema es que no se ha logrado desglozar las subtablas de consequencias y occurrencias de los datos en tablas reales de SQL. El historial de cambios se puede consultar [aquí](https://github.com/Ad115/ICGC-data-parser/commits/python).
 
 > Written with [StackEdit](https://stackedit.io/).
