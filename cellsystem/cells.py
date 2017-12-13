@@ -368,15 +368,16 @@ class Cell:
         self.age = 0
     # ---
 
-    def divide(self, preserveFather=False):
+    def divide(self, preserveFather=False, log=None):
         """Cell division.
 
         Get a new daughter of this cell and place it in a nearby
         neighboring site.
 
         """
-        print("Cell no. {} dividing @ {}".format(self.index,
-                                                 self.coordinates))
+        if log:
+            log.preparefor('division', self)
+        
 
         # Create the daughter cell
         daughter = self.newDaughter()
@@ -393,11 +394,10 @@ class Cell:
             self.resetAge()
             self.father = self.index
             self.cellLine.recycleCell(self)
-            self.migrate(log=False)
-
-        print("\tNew cells: {} @ {} and {} @ {}".format(
-            self.index,
-            self.coordinates, daughter.index, daughter.coordinates))
+            self.migrate()
+    
+        if log:
+            log.log('division', self, daughter)
     # ---
 
     def divisionProbability(self):
@@ -428,10 +428,10 @@ class Cell:
         site.addGuest(self)
     # ---
 
-    def die(self):
+    def die(self, log=None):
         """Cellular death."""
-        print("Cell no. {} dying @ site {} (father {})".format(
-            self.index, self.coordinates, self.father))
+        if log:
+            log.log('death', self)
         self.site.removeGuest(self)
         self.cellLine.handleDeath(self)
     # ---
@@ -445,11 +445,11 @@ class Cell:
             return 0
     # ---
 
-    def migrate(self, log=True):
+    def migrate(self, log=None):
         """Migrate to a neighboring cell."""
         if log:
-            print("Cell no. {} migrating from site {} (father {})".format(
-                self.index, self.coordinates, self.father))
+            log.preparefor('migration', self)
+           
         # Get the destination site
         nextSite = self.site.randomNeighbor()
         # Migrate to the new site
@@ -458,7 +458,7 @@ class Cell:
         self.site = nextSite
 
         if log:
-            print("\t New site: {}".format(self.coordinates))
+            log.log('migration', self)
     # ---
 
     def migrationProbability(self):
@@ -467,34 +467,29 @@ class Cell:
 
     # ---
 
-    def mutate(self):
+    def mutate(self, log=None):
         """Do a single site mutation.
 
         Note: The genome may not represent a nucleotide sequence, so these
         mutations may not represent SNPs.
 
         """
-        print("Mutating cell no. {} @ site {} (father {}):\n \
-              \t Base genome: {} \n \
-              \t Current genome: {} \n \
-              \t Current mutations: {}"
-              .format(self.index,
-                      self.coordinates, self.father,
-                      self.ancestralGenome, self.genome, self.mutations))
+        if log:
+            log.preparefor('mutation', self)
 
         # Get the genome characteristics
         # Convert alphabet to tuple to call rnd.choice with it
         alphabet = tuple(self.cellLine.genomeAlphabet)
         genomeLength = self.genomeLength()
         # Assemble the mutation
-        position = rnd.randint(
-            0, genomeLength - 1)  # Pick a random position in the genome
+        position = rnd.randint(0, 
+                               genomeLength - 1)  # Pick a random position in the genome
         mutated = rnd.choice(alphabet)
         # Mutate
         self.mutations.append((position, mutated))
 
-        print("\t\t Final mutations: {}\n \
-               \t Final genome: {}".format(self.mutations, self.genome))
+        if log:
+            log.log('mutation', self)
     # ---
 
     def mutationProbability(self):
@@ -518,14 +513,14 @@ class Cell:
         return [mutation, migration, division, death]
     # ---
 
-    def step(self):
+    def step(self, log=None):
         """Select an action and perform it."""
         # Make the cell older
         self.growOlder()
         # Select an action
         action = rnd.choice(self.availableActions)
         # Perform the action according to it's respective probability
-        action.tryAction()
+        action.tryAction(log=log)
     # ---
 # --- Cell
 
@@ -550,9 +545,9 @@ class CellAction:
         self.action = action
         self.actionProbability = actionProbability
 
-    def tryAction(self):
+    def tryAction(self, log=None):
         """Perform the action according to it's probability."""
         # Sample according to the probability
         if rnd.random() < self.actionProbability():
-            self.action()
+            self.action(log = log)
 # --- CellAction

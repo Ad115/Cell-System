@@ -171,23 +171,23 @@ class System:
         return self.at(i,j).guestCount()
     # ---
 
-    def step(self, steps=1, singleCell=False):
+    def step(self, steps=1, singleCell=False, log=None):
         """Move the state of the system `steps` steps forward in time."""
         for _ in range(steps):
-            self.singleStep(singleCell)
+            self.singleStep(singleCell, log=log)
     # ---
 
-    def singleStep(self, singleCell=False):
+    def singleStep(self, singleCell=False, log=None):
         """Move the state of the system one step forward in time."""
         # Advance a single cell
         if singleCell:
             cell = self.cells.sampleCells()
-            cell.step()
+            cell.step(log=log)
         else:
             # Advance all cells
             for cell in self.cells.sampleCells(all=True):
                 # Perform an action on the cell
-                cell.step()
+                cell.step(log=log)
     # ---
 
     def at(self, i, j):
