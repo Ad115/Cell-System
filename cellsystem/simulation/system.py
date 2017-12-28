@@ -1,84 +1,6 @@
-"""System related classes.
+from .cells import CellLine
+from .site import Site
 
-This module handles the classes Site and System. Related to the non-biological
-part of the simulation.
-"""
-
-from . import cells  # Import the classes related to the biological units
-import random as rnd
-
-
-class Site:
-    """
-    A unit of space.
-
-    Cells inhabitate in these spaces and interact with their neighborhood.
-
-    Is aware of:
-            + System: The system it forms a part of.
-            + Coordinates <i,j>: Coordinates in the matrix.
-            + Guests: <List of cells>: The cells currently in this site.
-
-    """
-
-    def __init__(self, system, i, j):
-        """Assemble a site in which agents may inhabit.
-
-        :param system: The system in which this system resides.
-        :param i: Vertical position.
-        :param j: Horizontal position.
-
-        """
-        self.system = system
-        self._coordinates = (i, j)  # Set variable only once
-        self.guests = set()
-    # ---
-
-    @property
-    def coordinates(self):
-        """Getter for the site's coordinates."""
-        return self._coordinates
-    # ---
-
-    def addGuest(self, guest):
-        """Add the given cell as a new guest to this site."""
-        self.guests.add(guest)
-        guest.site = self
-    # ---
-
-    def removeGuest(self, guest):
-        """Remove the given cell as guest for this site.
-
-        If the cell is not currently in this site, an error is throwed.
-        
-        """
-        try:
-            self.guests.remove(guest)
-        except KeyError:
-            raise KeyError(
-                    'Guest with index {} is not at site ({},{})'
-                    .format(guest.index, i, j)
-                  )
-    # ---
-
-    def guestCount(self):
-        """Return the number of guests residing in this site."""
-        return len(self.guests)
-    # ---
-
-    def randomNeighbor(self):
-        """Return a random site in the neighborhood of the current site."""
-        # Get your actual coordinates
-        i, j = self.coordinates
-        # Select a neighbor
-        neighborhood = self.system.getNeighborhood()
-        n_i, n_j = rnd.choice(neighborhood)
-        # Fetch the neighbor
-        return self.system.at( i+n_i, j+n_j )
-    # ---
-
-
-# < ---------------------------------------------------------------------------
 
 def wrap(n, maxValue):
     """Auxiliary function to wrap an integer on maxValue.
@@ -109,7 +31,7 @@ def wrap(n, maxValue):
 
 
 # < -----
-class System:
+class CellSystem:
     """
     The global system and event dispatcher.
 
@@ -141,15 +63,15 @@ class System:
                                for i in range(self.rows)
                                    for j in range(self.cols) )
         # Initialize cells
-        self.cells = cells.CellLine(genome = genome,
-                                    system = self)
+        self.cells = CellLine(genome = genome,
+                              system = self)
         # Initialize neighborhood
         self.neighborhood = [ (-1,-1), (-1, 0), (-1, 1),
                               ( 0,-1), ( 0, 0), ( 0, 1),
                               ( 1,-1), ( 1, 0), ( 1, 1) ]
     # ---
 
-    def seed(self, at_coords=None):
+    def seed(self, at_coords=None, log=None):
         """Seed automaton with a cell at the given coordinates.
 
         If explicit coordinates are not given, place a single cell in the
@@ -162,8 +84,7 @@ class System:
         # Get the site we're adding the cell to
         site = self.at(*at_coords)
         # Add a new cell
-        self.cells.addCellTo(site)
-        print( "New cell added @ {}".format(at_coords) )
+        self.cells.addCellTo(site, log=log)
     # ---
 
     def cellCountAt(self, i, j):
@@ -181,11 +102,11 @@ class System:
         """Move the state of the system one step forward in time."""
         # Advance a single cell
         if singleCell:
-            cell = self.cells.sampleCells()
+            cell = self.cells.sample()
             cell.step(log=log)
         else:
             # Advance all cells
-            for cell in self.cells.sampleCells(all=True):
+            for cell in self.cells.sample(all=True):
                 # Perform an action on the cell
                 cell.step(log=log)
     # ---

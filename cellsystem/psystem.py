@@ -1,8 +1,8 @@
-from . import System
+from .simulation import CellSystem
 
 
-class PSystem(System):
-    """ `System` subclass intended for use with Processing.
+class PSystem(CellSystem):
+    """ `CellSystem` subclass intended for use with Processing.
     It extends the raw System class with graphical methods for interactive \
     displaying of the state of the system.
     """
@@ -21,7 +21,7 @@ class PSystem(System):
         frames = frameCount
 
         # Draw cell by cell
-        for cell in self.cells.getAliveCells():
+        for cell in self.cells.aliveCells:
             # Get cell data
             i, j = cell.coordinates
             age = cell.age
