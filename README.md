@@ -23,11 +23,14 @@ log = FullLog()
 
 # Initialize the first cell
 sys.seed(log=log)
+```
 
     New cell 0 added @ (5, 5)
 
+```python
 # Take 35 steps forward in time
 sys.step(30, log=log)
+```
 
     Cell no. 0 dividing @ (5, 5)
     	New cells: 2 @ (4, 5) and 1 @ (6, 6)
@@ -48,6 +51,7 @@ sys.step(30, log=log)
     ...
     ...
 
+```python
 # Tree styling
 from ete3 import TreeStyle
 ts = TreeStyle()
