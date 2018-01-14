@@ -2,45 +2,39 @@ from ..log import Log
 from .treelogs import MutationsLog, AncestryLog
 from .simple import SimpleLog
 
-class MALog(Log):
+class MixedLog(Log):
+    'Logs combination that broadcasts the action.'
+    
+    def preparefor(self, actionname, *args, **kwargs):
+        'Save previous state before the entity takes the given action.'
+        for log in self.logs:
+            log.preparefor(actionname, *args, **kwargs)
+    # ---
+        
+    def log(self, actionname, *args, **kwargs):
+        'Log the action.'
+        for log in self.logs:
+            log.log(actionname, *args, **kwargs)
+    # ---
+
+
+class MALog(MixedLog):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.mutations = MutationsLog()
         self.ancestry = AncestryLog()
-        
-    def preparefor(self, actionname, *args, **kwargs):
-        'Save previous state before the entity takes the given action.'
-        self.mutations.preparefor(actionname, *args, **kwargs)
-        self.ancestry.preparefor(actionname, *args, **kwargs)
-    # ---
-        
-    def log(self, actionname, *args, **kwargs):
-        'Log the action.'
-        self.mutations.log(actionname, *args, **kwargs)
-        self.ancestry.log(actionname, *args, **kwargs)
+        self.logs = [self.mutations, self.ancestry]
     # ---
 
     
-class FullLog(Log):
+class FullLog(MixedLog):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.mutationslog = MutationsLog()
         self.ancestrylog = AncestryLog()
         self.simplelog = SimpleLog()
-        
-    def preparefor(self, actionname, *args, **kwargs):
-        'Save previous state before the entity takes the given action.'
-        self.mutationslog.preparefor(actionname, *args, **kwargs)
-        self.ancestrylog.preparefor(actionname, *args, **kwargs)
-        self.simplelog.preparefor(actionname, *args, **kwargs)
-    # ---
-        
-    def log(self, actionname, *args, **kwargs):
-        'Log the action.'
-        self.mutationslog.log(actionname, *args, **kwargs)
-        self.ancestrylog.log(actionname, *args, **kwargs)
-        self.simplelog.log(actionname, *args, **kwargs)
+        self.logs = [self.mutationslog, self.ancestrylog, self.simplelog]
     # ---
     
     def mutations(self, prune_death=False):        
