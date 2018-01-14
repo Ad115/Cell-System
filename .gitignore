@@ -2,3 +2,5 @@ sketch.properties
 **.class
 **/__pycache__
 **ipynb_checkpoints/
+**.directory
+
