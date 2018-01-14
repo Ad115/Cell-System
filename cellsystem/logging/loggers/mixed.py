@@ -1,6 +1,5 @@
 from ..log import Log
-from .ancestry import AncestryLog
-from .mutations import MutationsLog
+from .treelogs import MutationsLog, AncestryLog
 from .simple import SimpleLog
 
 class MALog(Log):
@@ -44,32 +43,30 @@ class FullLog(Log):
         self.simplelog.log(actionname, *args, **kwargs)
     # ---
     
-    def ancestry(self, prune_death=False):
-        t = self.ancestrylog.ancestry
-        
-        if prune_death:
-            alive_nodes = {k for k in self.ancestrylog.alive.keys()}
-            return self.prune_death(t, alive_nodes)
-        
-        return t
+    def mutations(self, prune_death=False):        
+        return self.fetch_tree(self.mutationslog, prune_death)
+    # ---
     
-    def mutations(self, prune_death=False):
-        t = self.mutationslog.mutations
+    def ancestry(self, prune_death=False):
+        return self.fetch_tree(self.ancestrylog, prune_death)
+    # ---
+    
+    def fetch_tree(self, log, prune_death):
+        t = log.tree.copy()
         
         if prune_death:
-            alive_nodes = {v.name for v in self.mutationslog.alive.values()}
-            return self.prune_death(t, alive_nodes)
+            alive_nodes = {node.name for node in log.alive_nodes}
+            t = self.prune_death(t, alive_nodes)
         
         return t
     
     @staticmethod
     def prune_death(tree, alive_nodes):
         # Prunning tree to represent only alive cells 
-        t = tree.copy()
-        ancestors = set([t])
-        for node in t.traverse():
+        ancestors = set([tree])
+        for node in tree.traverse():
             if node.name in alive_nodes:
                 ancestors |= set(node.get_descendants())
                 ancestors.add(node)
-        t.prune(ancestors)
-        return t
+        tree.prune(ancestors)
+        return tree

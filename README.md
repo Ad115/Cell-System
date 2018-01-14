@@ -53,7 +53,6 @@ sys.step(30, log=log)
 
 
 # Tree styling
-from ete3 import TreeStyle
 ts = TreeStyle()
 ts.show_leaf_name = True
 ts.mode = "c"
