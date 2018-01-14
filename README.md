@@ -60,28 +60,28 @@ ts.arc_span = 270
 log.ancestry().show(tree_style=ts)
 ```
 
-![png](output_6_0.png)
+![png](assets/output_6_0.png)
 
 ```python
 # Now, remove cells that are no longer alive
 log.ancestry(prune_death=True).show(tree_style=ts)
 ```
 
-![png](output_7_0.png)
+![png](assets/output_7_0.png)
 
 ```python
 # Now, check out the tree formed by the mutations 
 log.mutations().show(tree_style=ts)
 ```
 
-![png](output_8_0.png)
+![png](assets/output_8_0.png)
 
 ```python
 # Remove genomes whose representatives are no longer alive
 log.mutations(prune_death=True).show(tree_style=ts)
 ```
 
-![png](output_9_0.png)
+![png](assets/output_9_0.png)
 
 _For more examples and usage, please refer to the [Wiki](wikigoeshere.com)._
 
