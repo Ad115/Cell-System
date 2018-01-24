@@ -1,10 +1,8 @@
 # CellSystem
 
-> Let cells do their own thing while you silently observe them.
+A simple framework to simulate dinamical systems flexible enough to allow adding custom 'loggers', that is, observer classes that record the relevant steps of the simulations.
 
-A simple framework that allows (or will allow) you to couple seamlessly a custom observer (logger) to your simulations.
-
-This was created to simulate cancer growth, while allowing to couple mutations and ancestry logging to study tumour philogeny reconstruction algorithms.
+This was created to simulate cancer growth, while allowing to couple mutations and ancestry logging to study tumour phylogeny reconstruction algorithms.
 
 ![Use case](assets/sidebyside.png)
 
@@ -17,19 +15,19 @@ A use case integrated in the repository:
 from cellsystem import *
 
 # The cell system will simulate cell growth
-# while the log tracks the steps in that process.
-sys = CellSystem()
-log = FullLog()
+# while tracking the steps in that process.
+system = CellSystem(grid_dimensions=(10, 10))
 
 # Initialize the first cell
-sys.seed(log=log)
+# in the middle of the grid
+system.seed()
 
 
    # New cell 0 added @ (5, 5)
 
 
 # Take 35 steps forward in time
-sys.step(30, log=log)
+system.run(steps=30)
 
 
     # Cell no. 0 dividing @ (5, 5)
@@ -60,28 +58,29 @@ ts.arc_start = -135 # 0 degrees = 3 o'clock
 ts.arc_span = 270
 
 # Lookup the tree formed by cellular division
-log.ancestry().show(tree_style=ts)
+history = system['log']
+history.ancestry().show(tree_style=ts)
 ```
 
 ![png](assets/output_6_0.png)
 
 ```python
 # Now, remove cells that are no longer alive
-log.ancestry(prune_death=True).show(tree_style=ts)
+history.ancestry(prune_death=True).show(tree_style=ts)
 ```
 
 ![png](assets/output_7_0.png)
 
 ```python
 # Now, check out the tree formed by the mutations 
-log.mutations().show(tree_style=ts)
+history.mutations().show(tree_style=ts)
 ```
 
 ![png](assets/output_8_0.png)
 
 ```python
-# Remove genomes whose representatives are no longer alive
-log.mutations(prune_death=True).show(tree_style=ts)
+# Remove genomes with no living representatives.
+history.mutations(prune_death=True).show(tree_style=ts)
 ```
 
 ![png](assets/output_9_0.png)

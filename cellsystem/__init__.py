@@ -1,4 +1,4 @@
-from .simulation import CellSystem
-from .logging import FullLog, TreeStyle
+from .cellsystem import CellSystem
+from .logging import TreeStyle
 
-__all__ = ['CellSystem', 'FullLog', 'TreeStyle']
+__all__ = ['CellSystem', 'TreeStyle']

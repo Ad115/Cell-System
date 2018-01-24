@@ -1,159 +1,189 @@
-from .cells import CellLine
-from .site import Site
+"""
+
+System-related classes.
+
+This module defines a general system that can be used as
+the base of a computation graph.
+
+A system is composed of entities and interactions btw them,
+it coordinates all processes.
+
+"""
+
+import collections
 
 
-def wrap(n, maxValue):
-    """Auxiliary function to wrap an integer on maxValue.
+class Entity:
+    '''An entity is something that resides in the system.
 
-    Examples:
-            >>> # For positives: wrap(n, maxValue) = n % maxValue
-            >>> [ wrap(i,3) for i in range(9) ]
-            [0, 1, 2, 0, 1, 2, 0, 1, 2]
-
-            >>> # For negatives, the pattern is continued in a natural way
-            >>> for i in range(-5, 5+1): print(f'{i} : {wrap(i, 3)}')
-            ...
-            -3 : 0
-            -2 : 1
-            -1 : 2
-            0 : 0
-            1 : 1
-            2 : 2
-
-    """
-    if n >= maxValue:
-        n %= maxValue
-    elif n < 0:
-        # We must offset the integer to the positives
-        n += abs(n//maxValue)*maxValue
-    return n
-# ---
+    It processes information according to it's internal state 
+    and the information flowing through the links it shares with 
+    other entities.
+    
+    An entity registers the following methods:
+        - process(time)
+    '''
+    def __init__(self):
+        self.state = None
+    
+    def process(self, time):
+        pass
+# --- Entity
 
 
-# < -----
-class CellSystem:
+class Interaction:
+    'A structure representing flow of information btw entities.'
+    
+    def __init__(self, entities, effect):
+        self.entities = entities
+        self.effects = [effect]
+        
+    def append(self, effect):
+        'Effects btw the same entities can be appended and executed in order'
+        self.effects.append(effect)
+        
+    def process(self):
+        'Executes the interaction.'
+        for effect in self.effects:
+            effect(*self.entities)
+# --- Interaction
+
+
+'Representing an isolated process.'
+Process = collections.namedtuple('Process', ['entities', 'effects'])
+# --- Process
+
+
+class System:
     """
     The global system and event dispatcher.
 
-    Aware of cells, space (as a grid) and the passage of time (steps). It is
-    the main struture of the program, being the only observable and given it
-    coordinates all processes.
-
-    A system is aware of:
-            - Grid: The sites the action develops in.
-            - Cells: The cells that live, die and interact in the grid.
-            - Neighborhood: How many and which sites may directly influence or
-                            be influenced by another.
+    Aware of the passage of time (steps). A system is 
+    composed of entities and interactions between them,
+    at each time step, the system triggers the proceses 
+    associated with them.
 
     """
 
-    def __init__(self, gridDimensions=(10, 10), genome=None, wrap=True):
-        """Initialize the system.
+    def __init__(self, *args, **kwargs):
+        'Initialize an empty system.'
+        self.entities = set()
+        self.procesable = set()
+        self.toentity = {}
+        self.toentityname = {}
+        
+        self.interactions = {}
+        self.time = None
+        
+        self.inithooks = {}
+        self.prehooks = {}
+        self.hooks = {}
+    # ---
+    
+    def __getitem__(self, entityname):
+        'Access the entities by name.'
+        return self.toentity[entityname]
+    # ---
 
-        :param gridDimensions: Tuple specifying rows and columns.
-        :param genome: Container specifying the allowed 'letters' for a genome.
-        :param wrap: Boolean. Does the grid wraps on the edges? (toroidal)
-
+    def add(self, entity, name, procesable=True, inithook=None):
+        """Add an entity to the graph.
+        
+        If procesable, the entity.process(time) method is called 
+        on each time step.
+        
+        Inithooks are callables called at initialization.
+        
         """
-        # Set dimensions
-        self.rows, self.cols = gridDimensions
-        # Initialize grid
-        self.wrap = wrap  # Toroidal wrapping behavior of the grid
-        self.grid = tuple( Site(self, i,j)
-                               for i in range(self.rows)
-                                   for j in range(self.cols) )
-        # Initialize cells
-        self.cells = CellLine(genome = genome,
-                              system = self)
-        # Initialize neighborhood
-        self.neighborhood = [ (-1,-1), (-1, 0), (-1, 1),
-                              ( 0,-1), ( 0, 0), ( 0, 1),
-                              ( 1,-1), ( 1, 0), ( 1, 1) ]
+        self.entities.add(entity)
+        if procesable:
+            self.procesable.add(entity)
+        self.toentity[name] = entity
+        self.toentityname[entity] = name
+        # Process hooks
+        if inithook:
+            self.add_interaction_to(self.inithooks,
+                                    inithook, 
+                                    [name])
     # ---
-
-    def seed(self, at_coords=None, log=None):
-        """Seed automaton with a cell at the given coordinates.
-
-        If explicit coordinates are not given, place a single cell in the
-        middle of the grid.
-
-        """
-        if at_coords is None:
-            # Seed in the middle of the grid
-            at_coords = self.rows//2, self.cols//2
-        # Get the site we're adding the cell to
-        site = self.at(*at_coords)
-        # Add a new cell
-        self.cells.addCellTo(site, log=log)
+    
+    def process_interactions_in(self, interactions):
+        'From the dict-like container of interactions, process items.'
+        for interaction in interactions.values():
+            interaction.process()
     # ---
-
-    def cellCountAt(self, i, j):
-        """Return the number of cells in a given site."""
-        return self.at(i,j).guestCount()
+        
+    def step(self):
+        'Take a single step forward in time.'
+        # Process pre-step hooks
+        self.process_interactions_in(self.prehooks)
+        
+        # Process linked items
+        self.process_interactions_in(self.interactions)
+        # Process each entity
+        for entity in self.procesable:
+            entity.process(self.time)
+            
+        # Process post-step hooks
+        self.process_interactions_in(self.hooks)
     # ---
-
-    def step(self, steps=1, singleCell=False, log=None):
-        """Move the state of the system `steps` steps forward in time."""
+         
+    def start(self):
+        'Initialize things before starting simulation.'
+        # Init time
+        if self.time is None:
+            self.time = 0
+        # Make the initialization actions
+        self.process_interactions_in(self.inithooks)
+    # ---
+    
+    def update_hooks(self, hooktype, newhooks):
+        'Add the given hooks to the system.'
+        if newhooks:
+            for hook in newhooks:
+                self.add_interaction_to(hooktype, hook.effects, hook.entities)
+    # ---
+         
+    def run(self, steps, init=None, after_step=None, before_step=None):
+        'Start running the simulation.'
+        # Handle hooks
+        self.update_hooks(self.inithooks, init)
+        self.update_hooks(self.hooks, after_step)
+        self.update_hooks(self.prehooks, before_step)
+        
+        # Make sure things are initialized 
+        self.start()
+        
+        # Take steps
         for _ in range(steps):
-            self.singleStep(singleCell, log=log)
+            self.step() 
     # ---
-
-    def singleStep(self, singleCell=False, log=None):
-        """Move the state of the system one step forward in time."""
-        # Advance a single cell
-        if singleCell:
-            cell = self.cells.sample()
-            cell.step(log=log)
+    
+    def stateof(self, entityname):
+        "Ask the entity for it's state"
+        return self[entityname].state
+    # ---
+    
+    def link(self, effect, entitynames):
+        'Add an interation btw named entities.'
+        self.add_interaction_to(self.interactions,
+                                effect, 
+                                entitynames)
+    # ---
+    
+    def add_interaction_to(self, container, effect, entitynames):
+        'Add an interaction btw named entities to a dict-like container.'
+        entities = tuple(self.toentity[ename] 
+                                for ename in entitynames)
+        
+        # Check if there is already some link btw
+        # those same entities.
+        if entities in container:
+            # Add the new effect
+            container[entities].append(effect)
+            
         else:
-            # Advance all cells
-            for cell in self.cells.sample(all=True):
-                # Perform an action on the cell
-                cell.step(log=log)
+            # Else, add the new link
+            interaction = Interaction(entities, effect)
+            container[entities] = interaction
     # ---
-
-    def at(self, i, j):
-        """Get the site at the specified coordinates."""
-        # Wrap (toroidal coordinates)
-        if self.wrap:
-            i,j = self.wrapCoordinates(i,j)
-        # The grid is 1D, so we must convert from 2D
-        ij = self.cols*i + j
-        return self.grid[ij]
-    # ---
-
-    def wrapCoordinates(self, i, j):
-        """Return i,j wrapped on the grid dimensions."""
-        # Wrap the coordinates
-        i = wrap(i, self.rows)
-        j = wrap(j, self.cols)
-        return i,j
-
-    def totalCells(self, state='alive'):
-        """Return the total number of cells of with the given 'state'."""
-        if state == 'alive':
-            # Total count of alive cells
-            return self.cells.totalAliveCells()
-        elif state == 'dead':
-            # Total count of dead cells
-            # (makes sense only if the recycle dead cells option is not set)
-            return self.cells.totalDeadCells()
-        elif state == 'all':
-            # Total count of cells in the system
-            # (this is usually for debug purposes)
-            return self.cells.totalCells()
-    # ---
-
-    def totalAliveCells(self):
-        """Return the total number of cells in the system."""
-        return self.cells.totalAliveCells()
-    # ---
-
-    def getNeighborhood(self):
-        """Return the relative coordinates of the available neighbors.
-
-        Returns a container holding pairs of numbers. the prescence of an item
-        (a,b) means that a site at i,j has a neighbor at (i+a, j+b).
-
-        """
-        return self.neighborhood
-    # ---
+# --- System

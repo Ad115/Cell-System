@@ -1,3 +1,14 @@
+"""
+
+Logging capabilities for entities.
+
+The decorator defined here serves as an interface with the 
+logging classes.
+
+It assumes a log has `preparefor` and `log` methods.
+
+"""
+
 from functools import wraps
 
 def logged(action_name, prepare=True):
@@ -17,6 +28,8 @@ def logged(action_name, prepare=True):
             
             if log:
                 log.log(action_name, result)
+                
+            return result
         # ---
         return logged_action
     return add_logging
