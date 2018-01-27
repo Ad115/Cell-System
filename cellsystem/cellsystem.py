@@ -29,10 +29,13 @@ class CellSystem(System):
                  name='world', 
                  procesable=False)
         # Initialize log
-        self.add(FullLog(), name='log', procesable=False)
+        self.add(FullLog(),
+                 name='log',
+                 procesable=False)
         
         # Initialize the cells
-        self.add(CellLine(), name='cells')
+        self.add(CellLine(),
+                 name='cells')
         self['cells'].register_log(self['log'])
     # ---
     
