@@ -62,7 +62,8 @@ The CFN model in words from the book:
  branches) of the tree. Thus, we associate a parameter p(e) to every 
  edge e in the tree, where p(e) denotes the probability that the 
  endpoints of the edge e have different states. In other words, p(e)
- is the probability of changing state (from 1 to 0, or vice-versa).
+ is the probability of changing state (from 1 to 0, or vice-versa)
+ ... we require 0 < p(e) < 0.5.
 
  Under  the  CFN  model,  a  trait  (which  is  also  called  a  
  “character”)  evolves  down  the tree under this random process, and 
@@ -108,8 +109,11 @@ class CFN_Tree(ete.Tree):
         for i,node in enumerate(self.traverse()):
             node.name = i
             if i > 0:
-                # Add a change probability >= 0.5
+                # Add a change probability < 0.5
                 node.add_feature('probability', rnd.random()/2)
+                # The probability must be associated to the edge (branch),
+                # in this implementation, we associate the probability to
+                # the node downstream of the edge.
             else:
                 # No probability of change before this
                 node.add_feature('probability', 0)
@@ -147,3 +151,4 @@ class CFN_Tree(ete.Tree):
         # Return character's final state
         return trait
     # ---
+# --- CFN_Tree
