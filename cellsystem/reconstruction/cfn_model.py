@@ -17,34 +17,35 @@ cfn = CFN_Tree()
 cfn.populate(5)
 
     # Node: 0, node probability: 0
-    # Node: 1, node probability: 0.45158852704268865
-    # Node: 2, node probability: 0.11424818655999902
-    # Node: 3, node probability: 0.4264051970154286
-    # Node: 4, node probability: 0.459742963797842
-    # Node: 5, node probability: 0.3654757150714647
-    # Node: 6, node probability: 0.4320439824130711
-    # Node: 7, node probability: 0.4988182678649847
-    # Node: 8, node probability: 0.11885743478646316
+    # Node: 1, node probability: 0.2192846999188683
+    # Node: 2, node probability: 0.06144844447962278
+    # Node: 3, node probability: 0.14342505932071808
+    # Node: 4, node probability: 0.1370117188846906
+    # Node: 5, node probability: 0.44060196062669255
+    # Node: 6, node probability: 0.009555798385131098
+    # Node: 7, node probability: 0.48946332859444935
+    # Node: 8, node probability: 0.39505550345399304
     #
-    #          /-7
-    #       /-|
-    #    /-|   \-8
-    #   |  |
-    # --|   \-4
+    #       /-3
+    #    /1|
+    #   |  |   /-7
+    #   |   \4|
+    # -0|      \-8
     #   |
     #   |   /-5
-    #    \-|
+    #    \2|
     #       \-6
 
 # Evolve 5 traits through the tree
 sequences = cfn.evolve_traits([1,1,1,1,1])
 print(sequences)
 
-    # { 3: [1, 0, 0, 0, 1],
-    #   5: [1, 1, 1, 1, 1],
-    #   6: [1, 1, 0, 1, 1],
-    #   7: [1, 0, 0, 1, 1],
-    #   8: [1, 1, 1, 1, 1] }
+    # { 3: [0, 0, 0, 1, 1], 
+    #   7: [1, 0, 1, 0, 1], 
+    #   8: [1, 0, 0, 1, 1], 
+    #   5: [1, 1, 1, 1, 1], 
+    #   6: [1, 1, 1, 1, 1] }
+
 
 ```
 
@@ -150,5 +151,9 @@ class CFN_Tree(ete.Tree):
                 trait = swap(trait)
         # Return character's final state
         return trait
+    # ---
+    
+    def __str__(self):
+        return self.get_ascii(show_internal=True)
     # ---
 # --- CFN_Tree

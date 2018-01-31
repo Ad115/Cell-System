@@ -14,11 +14,15 @@ class CellSystem(System):
         """Initialization process.
         
         A cell system has the same attributes that a system has,
-        with the addition of a 'world' representing the space
-        that the cells inhabit and a 'log' that follows  and makes
-        a record of the cells' actions.
+        with the addition of three main entities:
         
-        At initialization, a new cell lineage is registered.
+            1. Cells represented by a cell line.
+            
+            2. A 'world' representing the space that the cells 
+               inhabit, and;
+               
+            3. A 'log' that follows and makes a record of the 
+               cells' actions.
         
         """
         super().__init__(*args, **kwargs)
@@ -28,6 +32,7 @@ class CellSystem(System):
         self.add(World(grid_dimensions=grid_dim), 
                  name='world', 
                  procesable=False)
+        
         # Initialize log
         self.add(FullLog(),
                  name='log',
