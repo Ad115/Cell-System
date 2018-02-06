@@ -1,6 +1,6 @@
 # C translation attempts
 
-An attempt to translate to C code the code in the `simplecells.py` code (in Python).
+An attempt to translate to the C language the functionality in the `simplecells.py` script (written in Python).
 
 The `simplecells.py` script is a simplified version of the whole simulation. It serves as a proof of concept. 
 
@@ -14,7 +14,7 @@ The `src/main.c` file is the entry point, equivalent to the main routine of the 
  2. Go to this folder (called `c`). 
  3. Execute in a terminal: `python3 simplecells.py`
 
-### The C version
+### The C equivalent
 
  1. Download the code. 
  2. Go to this folder (called `c`). 
