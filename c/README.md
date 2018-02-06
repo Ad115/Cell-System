@@ -8,6 +8,14 @@ The `src/main.c` file is the entry point, equivalent to the main routine of the 
 
 ## How to run it
 
+### The Python version
+
+ 1. Download the code. 
+ 2. Go to this folder (called `c`). 
+ 3. Execute in a terminal: `python3 simplecells.py`
+
+### The C version
+
  1. Download the code. 
  2. Go to this folder (called `c`). 
  3. Type in a terminal: `make` to compile the code.
