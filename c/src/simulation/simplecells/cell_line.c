@@ -7,26 +7,21 @@
  * Implementation file for the CellLine class, 
  * along with methods and auxiliary definitions.
  */
- 
-#pragma once
 
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../../utilities/random.h"
-#include "cell/action_result.h"
-#include "cell/cell.h"
 #include "cell_line.h"
+#include "cell/cell.h"
 
 
 
 // ----- Main structure
 
-// The trailing underscore is meant to represent 
-// that the structure is private and should not be accessed directly 
+// The structure is private and should not be accessed directly 
 // from outside this file, but with the interface described in the 
 // header file.  
-struct CellLine_ { /**
+struct CellLine_struct { /**
     Handles the specimens of a specific cell lineage.
 
     A cell lineage is a group of cells that have a common ancestor, we
@@ -44,24 +39,27 @@ struct CellLine_ { /**
     List *cells;
 };
 
+typedef struct CellLine_struct CellLine;
+
 
 
 // ----- Methods
 
-struct CellLine_ *CellLine_new( ) { /**
-        Creation of a cell lineage.
-        */
-        // Create
-        struct CellLine_ *self = malloc(1 * sizeof(*self));
-        // Initialize
-        self->current_index = 0;
-        self->cells = List_new();
+CellLine *CellLine_new( ) { /**
+    Creation of a cell lineage.
+    */
+    // Create
+    CellLine *self = malloc(1 * sizeof(*self));
+    // Initialize
+    self->current_index = 0;
+    self->cells = List_new();
         
-        return self;
+    return self;
         
 } // --- CellLine_new
 
-void CellLine_del( struct CellLine_ *self ) { /**
+
+void CellLine_del( CellLine *self ) { /**
     Deleter for a cell line object.
     */
     // 1 --- Delete the cells from this cell line
@@ -82,7 +80,8 @@ void CellLine_del( struct CellLine_ *self ) { /**
         
 } // --- CellLine_del
 
-Cell *CellLine_new_cell( struct CellLine_ *self) { /**
+
+Cell *CellLine_new_cell( CellLine *self) { /**
     Get a new blank cell in this lineage and system.
     */
     // Fetch a fresh, new cell
@@ -92,13 +91,14 @@ Cell *CellLine_new_cell( struct CellLine_ *self) { /**
     self->current_index += 1;
         
     // Add to the cells from this cell line
-    List_push(self->cells, cell)
+    List_push(self->cells, cell);
         
     return cell;
     
 } // --- CellLine_new_cell
-    
-Cell *CellLine_recycle_cell(struct CellLine_ *self, 
+
+
+Cell *CellLine_recycle_cell(CellLine *self, 
                             Cell *cell, 
                             int father) { /**
     Clear previous information from a cell.
@@ -112,8 +112,9 @@ Cell *CellLine_recycle_cell(struct CellLine_ *self,
     return cell;
         
 } // --- CellLine_recycle_cell
-        
-struct CellLine *CellLine_process( struct CellLine_ *self ) { /**
+
+
+CellLine *CellLine_process( CellLine *self ) { /**
     Move a step forward in time.
     */
     List *cells = self->cells;
@@ -130,6 +131,7 @@ struct CellLine *CellLine_process( struct CellLine_ *self ) { /**
             
 } // --- CellLine_process
 
+
 void CellLine_print( CellLine *self ) { /**
     Print the state of the cell line.
     */
@@ -142,7 +144,7 @@ void CellLine_print( CellLine *self ) { /**
         // Fetch the i_th cell
         Cell *cell = List_at(cells, i);
         // Process the cell
-        printf("%d, ", cell->index);
+        printf("%d, ", Cell_index(cell));
     }
     
     printf("]>");

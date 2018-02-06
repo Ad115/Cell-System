@@ -6,23 +6,26 @@
  * Implementation file for the Cell class, along 
  * with methods and auxiliary definitions.
  */
- 
-#pragma once
 
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../../../utilities/random.h"
-#include "../../../utilities/list.h"
-#include "../cell_line.h"
-#include "action_result.h"
-#include "cell_action.h"
 #include "cell.h"
+#include "cell_action.h"
+#include "action_result.h"
+#include "../cell_line.h"
+#include "../../../utilities/list.h"
+#include "../../../utilities/random.h"
 
 #define NO_FATHER (-1)
 
 
-struct Cell_ { /**
+// ----- Main structure
+
+// The structure is private and should not be accessed directly 
+// from outside this file, but with the interface described in the 
+// header file.  
+struct Cell_struct { /**
     
     A single cell.
 
@@ -38,15 +41,21 @@ struct Cell_ { /**
     int father;
     CellLine *lineage;
     List *actions;
+    
 };
 
-struct Cell_ *Cell_new( CellLine *lineage, int index ) { /**
+typedef struct Cell_struct Cell;
+
+
+// ----- Methods
+
+Cell *Cell_new( CellLine *lineage, int index ) { /**
         + Index: A label that identifies it among others in the
                  same lineage.
         + CellLine: The lineage this cell belongs to.
     */
     // Create
-    struct Cell_ *self = malloc(1 * sizeof(*self));
+    Cell *self = malloc(1 * sizeof(*self));
     // Initialize
     self->index = index;
     self->lineage = lineage;
@@ -57,7 +66,7 @@ struct Cell_ *Cell_new( CellLine *lineage, int index ) { /**
     
 } // --- Cell_new
 
-void Cell_del_actions( struct Cell_ *self ) { /**
+void Cell_del_actions( Cell *self ) { /**
     Deleter for the actions list.
     */
     List *actions = self->actions;
@@ -75,7 +84,7 @@ void Cell_del_actions( struct Cell_ *self ) { /**
     
 } // --- Cell_del_actions
     
-void *Cell_del( struct Cell *self ) { /**
+void *Cell_del( Cell *self ) { /**
     Deleter.
     */
     Cell_del_actions(self);
@@ -83,7 +92,7 @@ void *Cell_del( struct Cell *self ) { /**
     
 } // --- Cell_del
 
-struct Cell *Cell_set_father( struct Cell *self, int father ) { /**
+Cell *Cell_set_father( Cell *self, int father ) { /**
     Initialize father.
     */
     self->father = father;
@@ -92,7 +101,14 @@ struct Cell *Cell_set_father( struct Cell *self, int father ) { /**
 
 } // --- Cell_set_father
 
-struct Cell *Cell_set_index( struct Cell *self, int index ) { /**
+int Cell_index( Cell *self ) { /**
+    Getter for the cell index.
+    */
+    return self->index;
+    
+} // --- Cell_index
+
+Cell *Cell_set_index( Cell *self, int index ) { /**
     Initialize index.
     */
     self->index = index;
@@ -101,7 +117,7 @@ struct Cell *Cell_set_index( struct Cell *self, int index ) { /**
 
 } // --- Cell_set_index
 
-ActionResult *Cell_divide( Cell *self, ActionResult *result ) /**
+ActionResult *Cell_divide( Cell *self, ActionResult *result ) { /**
     
     Cell division.
 
@@ -150,8 +166,8 @@ List *Cell_init_actions( Cell *self ) { /**
     */
     // Create each individual action
     CellAction *division = CellAction_new(self, 
-                                          Cell_divide, 
-                                          Cell_division_probability);
+                                          &Cell_divide, 
+                                          &Cell_division_probability);
     // Create the actions array
     List *actions = List_new();
     // Fill it
@@ -168,7 +184,7 @@ ActionResult *Cell_process( Cell *self ) { /**
     CellAction *action = List_random_item(self->actions);
         
     // Perform the action according to it's respective probability
-    return Action_try_action(action);
+    return CellAction_try_action(action);
     
 } // --- Cell_process
 

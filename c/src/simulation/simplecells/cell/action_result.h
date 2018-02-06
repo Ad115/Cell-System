@@ -10,17 +10,7 @@
  
 #pragma once
 
-
-
-// ----- Main structure
-
-typedef struct AResult_ ActionResult /*
-    
-    Cell action result.
-
-    Represents the result of a computation on a biological entity.
-    */;
-
+#include "../type_defs.h"
 
 
 // ----- Methods

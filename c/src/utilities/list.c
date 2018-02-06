@@ -6,6 +6,7 @@
  * Implementation file for the general-purpose List class.
  */
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "random.h"
 #include "list.h"
@@ -14,11 +15,13 @@
 #define GROWTH_FACTOR (3/2.)
 
 
-// The trailing underscore is meant to represent 
-// that the structure is private and should not be accessed directly 
+
+// ----- Main structure
+
+// The structure is private and should not be accessed directly 
 // from outside this file, but with the interface described in the 
 // header file.
-struct List_ { /** 
+struct List_struct { /** 
     A dynamic list that, in principle could hold any data type.
     */
     void **content; // The list
@@ -26,12 +29,17 @@ struct List_ { /**
     int ocupancy;// The number of items currently in the list
 };
 
+typedef struct List_struct List;
 
-struct List_ *List_new() { /**
+
+
+// ----- Methods
+
+List *List_new() { /**
     Create a new empty list with the given data type. 
     */
     // Create the list
-    struct List_ *self = malloc(1 * sizeof(self));
+    List *self = malloc(1 * sizeof(self));
     
     // Initialize the list
     int ocupancy = 0;
@@ -44,21 +52,21 @@ struct List_ *List_new() { /**
     
 } // --- List_new
  
-struct List_ *List_del( struct List_ *self ) { /**
+List *List_del( List *self ) { /**
     Deleter for a dynamic list.
     */
     free(self->content);
     free(self);
 } // --- List_del
 
-int List_size( struct List_ *self ) { /**
+int List_size( List *self ) { /**
     Return the number of items in the list.
     */
     return self->ocupancy;
     
 } // --- List_size
 
-struct List_ *List_grow_( struct List_ *self ) { /**
+List *List_grow_( List *self ) { /**
     Make more room.
     
     Increase the capacity by 3/2 of the current one.
@@ -74,7 +82,7 @@ struct List_ *List_grow_( struct List_ *self ) { /**
     
 } // --- List_grow_
 
-struct List_ *List_push( struct List_ *self, void *item ) { /**
+List *List_push( List *self, void *item ) { /**
     Add an element to the list.
     
     If needed, make more room.
@@ -100,7 +108,7 @@ struct List_ *List_push( struct List_ *self, void *item ) { /**
     
 } // --- List_push
 
-void *List_at( struct List_ *self, int i ) { /**
+void *List_at( List *self, int i ) { /**
     Find the item at the given index.
     
     If the index is not found, return NULL and warn.
@@ -122,7 +130,7 @@ void *List_at( struct List_ *self, int i ) { /**
     
 } // --- List_at
 
-void *List_pop( struct List_ *self) { /**
+void *List_pop( List *self) { /**
     Pop an item from the list.
     */
     int last_index = self->ocupancy - 1;
@@ -135,7 +143,7 @@ void *List_pop( struct List_ *self) { /**
     
 } // --- List_pop
 
-void List_print( struct List_ *self, void(*print_item)(void *) ) { /**
+void List_print( List *self, void(*print_item)(void *) ) { /**
     Print the list.
     
     The print_item parameter is a pointer function that handles
@@ -161,7 +169,7 @@ void List_print( struct List_ *self, void(*print_item)(void *) ) { /**
     
 } // --- List_print
 
-struct List_ *List_empty( struct List_ *self ) { /**
+List *List_empty( List *self ) { /**
     Remove all items.
     */
     self->ocupancy = 0;
@@ -169,7 +177,7 @@ struct List_ *List_empty( struct List_ *self ) { /**
     
 } // --- List_empty
 
-void *List_random_item( struct List_ *self ) { /**
+void *List_random_item( List *self ) { /**
     Return a random item.
     */
     // Select an index

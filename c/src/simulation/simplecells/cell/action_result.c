@@ -6,20 +6,19 @@
  * Implementation file for the ActionResult class,
  * along with methods and auxiliary definitions.
  */
- 
-#pragma once
 
-#include "../../../utilities/list.h"
-#include "cell.h"
+#include <stdlib.h>
+
 #include "action_result.h"
+#include "../../../utilities/list.h"
+
 
 
 // ----- Main structure
-// The trailing underscore is meant to represent 
-// that the structure is private and should not be accessed directly 
+// The structure is private and should not be accessed directly 
 // from outside this file, but with the interface described in the 
 // header file. 
-struct AResult_ { /*
+struct ActionResult_struct { /*
     
     Cell action result.
 
@@ -29,14 +28,15 @@ struct AResult_ { /*
     
     */
     List *cells; // The cells affected.
-    
-} ActionResult; 
+}; 
+
+typedef struct ActionResult_struct ActionResult;
 
 
 
 // ----- Methods
 
-struct AResult_ *ActionResult_new() { /**
+ActionResult *ActionResult_new() { /**
     New cell action result object.
 
     It is initialized with a function that when called will make
@@ -45,7 +45,7 @@ struct AResult_ *ActionResult_new() { /**
 
     */
     // Create
-    struct AResult_ *self = malloc(1 * sizeof(*self));
+    ActionResult *self = malloc(1 * sizeof(*self));
     // Initialize
     self->cells = List_new();
     
@@ -53,7 +53,7 @@ struct AResult_ *ActionResult_new() { /**
     
 } // --- CellAction_new
 
-void ActionResult_del( struct AResult_ *self ) { /**
+void ActionResult_del( ActionResult *self ) { /**
     Deleter for an action object.
     */
     // Delete the cells list
@@ -62,7 +62,7 @@ void ActionResult_del( struct AResult_ *self ) { /**
     free(self);
 }
 
-struct AResult_ *ActionResult_add_cell( struct AResult__ *self, Cell *cell ) { /**
+ActionResult *ActionResult_add_cell( ActionResult *self, Cell *cell ) { /**
     Perform the action according to it's probability.
     */
     List_push( self->cells, cell );
@@ -71,7 +71,7 @@ struct AResult_ *ActionResult_add_cell( struct AResult__ *self, Cell *cell ) { /
     
 } // --- ActionResult_push_cell
 
-Cell *ActionResult_pop_cell( struct AResult_ *self ) { /**
+Cell *ActionResult_pop_cell( ActionResult *self ) { /**
     Remove the last cell and return it.
     */
     
@@ -79,7 +79,7 @@ Cell *ActionResult_pop_cell( struct AResult_ *self ) { /**
     
 } // --- ActionResult_push_cell
 
-struct AResult_ *ActionResult_empty( struct AResult_ *self ) { /**
+ActionResult *ActionResult_empty( ActionResult *self ) { /**
     Clear the state of the structure.
     */
     

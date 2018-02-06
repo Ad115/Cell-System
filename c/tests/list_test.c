@@ -10,6 +10,7 @@ This is a test suite to ensure everything is OK.
 
 #include <stdio.h>
 #include "../src/utilities/list.h"
+#include "../src/utilities/random.h"
 
 void print_int(void *item) {
     int real_item = *(int*)item;

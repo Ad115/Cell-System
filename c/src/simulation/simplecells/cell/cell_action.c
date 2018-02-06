@@ -6,32 +6,21 @@
  * This module defines the CellAction class,
  * along with it's methods and auxiliary definitions.
  */
- 
-#pragma once
 
 #include <stdlib.h>
 
-#include "../../../utilities/random.h"
-#include "action_result.h"
-#include "cell.h"
 #include "cell_action.h"
-
-
-/** Definition of CellAction_fn*/
-typedef ActionResult*(CellAction_fn)(ActionResult *);
-
-/** Definition of CellActionProb_fn*/
-typedef float(CellActionProb_fn)(Cell *);
+#include "action_result.h"
+#include "../../../utilities/random.h"
 
 
 
 // ----- Main structure
 
-// The trailing underscore is meant to represent 
-// that the structure is private and should not be accessed directly 
+// The structure is private and should not be accessed directly 
 // from outside this file, but with the interface described in the 
 // header file.  
-struct CellAction_ { /**
+struct CellAction_struct { /**
     
     Cell action.
 
@@ -48,13 +37,15 @@ struct CellAction_ { /**
     
 }; 
 
+typedef struct CellAction_struct CellAction;
+
 
 
 // ----- Methods
 
-struct CellAction_ *CellAction_new(Cell *cell,
-                                   CellAction_fn *action_fn, 
-                                   CellActionProb_fn *probability_fn) { /**
+CellAction *CellAction_new(Cell *cell,
+                           CellAction_fn *action_fn, 
+                           CellActionProb_fn *probability_fn) { /**
     New cell action object.
 
     It is initialized with a function that when called will make
@@ -63,7 +54,7 @@ struct CellAction_ *CellAction_new(Cell *cell,
 
     */
     // Create
-    struct CellAction_ *self = malloc(1 * sizeof(*self));
+    CellAction *self = malloc(1 * sizeof(*self));
     // Initialize
     self->cell = cell;
     self->action = action_fn;
@@ -74,7 +65,7 @@ struct CellAction_ *CellAction_new(Cell *cell,
     
 } // --- CellAction_new
 
-struct CellAction_ *CellAction_del( struct CellAction_ *self ) { /**
+CellAction *CellAction_del( CellAction *self ) { /**
     Deleter for an action object.
     */
     // Delete the result holder
@@ -83,16 +74,18 @@ struct CellAction_ *CellAction_del( struct CellAction_ *self ) { /**
     free(self);
 }
 
-ActionResult *CellAction_try_action( struct CellAction_ *self ) { /**
+ActionResult *CellAction_try_action( CellAction *self ) { /**
     Perform the action according to it's probability.
     */
     ActionResult *result = self->result;
+    Cell *cell = self->cell;
+    
     // Clear previous results information
     ActionResult_empty(result);
     
-    if random_trial( self->probability() ){
+    if ( random_trial(self->probability(cell)) ){
         // Perform the action and save the result
-        self->action(result);
+        self->action(cell, result);
     }
     
     return result;

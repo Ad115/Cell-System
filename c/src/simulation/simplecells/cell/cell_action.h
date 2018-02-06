@@ -10,24 +10,15 @@
  
 #pragma once
 
+#include "../type_defs.h"
+
 
 
 // Definition of CellAction_fn:
-typedef CellActionResult*(CellAction_fn)(CellActionResult *);
+typedef ActionResult*(CellAction_fn)(Cell *, ActionResult *);
 
 // Definition of CellActionProb_fn:
 typedef float(CellActionProb_fn)(Cell *);
-
-
-
-// ----- Main structure
- 
-typedef struct CellAction_ CellAction /**
-    
-    Cell action.
-
-    Class used to represent actions that the cell could perform.
-    */; 
 
 
 

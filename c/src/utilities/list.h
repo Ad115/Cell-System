@@ -9,13 +9,11 @@
 
 #pragma once
 
-#include <stdlib.h>
-
 
 
 // ----- Main structure
 
-typedef struct List_ List /** 
+typedef struct List_struct List /** 
     A dynamic list that, in principle could hold any data type.
     */;
 

@@ -4,17 +4,18 @@
  * =========
  * 
  * Implementation file for the random module.
+ *
+ * The naming convention represents that the current module
+ * is called random, and the functions in the module have as names
+ * <module name>_<function name>
  */
-// The naming convention represents that the current module
-// is called random, and the functions in the module have as names
-// <module name>_<function name>
 
-#pragma once
 
 #include <stdlib.h>
 #include <time.h>
 
 #include "random.h"
+
 
 
 void random_seed() { /**

@@ -10,22 +10,8 @@
  
 #pragma once
 
-
-
-// ----- Main structure
- 
-typedef struct Cell_ Cell /**
-    
-    A single cell.
-
-    It acts according to it's state, and the states of nearby cells and sites.
-
-    Attributes:
-        + Index: A label that identifies it among others in the
-                 same lineage.
-        + Father: The index (lineage label) of it's father.
-        + CellLine: The lineage this cell belongs to.
-    */;
+#include "../../../utilities/list.h"
+#include "../type_defs.h"
 
 
 
@@ -40,15 +26,18 @@ void *Cell_del( Cell *self ) /**
     */;
 
 Cell *Cell_set_father( Cell *self, int father ) /**
-    Initialize father.
+    Setter for cell father.
+    */;
+
+int Cell_index( Cell *self ) /**
+    Getter for cell index.
     */;
     
 Cell *Cell_set_index( Cell *self, int index ) /**
-    Initialize index.
+    Setter for cell index.
     */;
 
 ActionResult *Cell_divide( Cell *self, ActionResult *result ) /**
-    
     Cell division.
 
     Two new cells are created from a single parent.
