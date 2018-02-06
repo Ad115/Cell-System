@@ -3,4 +3,5 @@ sketch.properties
 **/__pycache__
 **ipynb_checkpoints/
 **.directory
+**build/
 

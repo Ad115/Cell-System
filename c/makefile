@@ -12,6 +12,6 @@ link:
 	gcc -o main $(BUILD_DIR)/*.o	 
 
 clean:
-	rm -fv $(BUILD_DIR)/*
+	rm -fv $(BUILD_DIR)/* ./main
 
 .PHONY: clean
