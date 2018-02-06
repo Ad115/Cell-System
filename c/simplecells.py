@@ -202,18 +202,20 @@ if __name__ == '__main__':
     
     # Create a new cell line
     cells = CellLine()
-    print(f"Cell line: {cells}")
+    print(f"Cell line: {cells.cells}\n")
     
     # Create the first cell
     c = cells.new_cell()
-    print(f"First cell: {c}, {c.index}")
+    print(f"First cell: <index:{c.index}, father:{c.father}>\n")
     
     # Let it take an action (division)
     c, result = c.process()
-    print(f"After division, cells are {c.index}(son of {c.father}), and {result.index} (son of {result.father})")
+    print(f"After division, cells are {c.index} (son of {c.father}), and {result.index} (son of {result.father})\n")
     
     # Let every cell take an action
+    print("Now, let the system process every cell...")
     cells.process()
     
     # How is the system now?
-    print([cell.index for cell in cells.sample(all=True)])
+    cell_indices = [cell.index for cell in cells.sample(all=True)]
+    print(f"The cells in the system after that: {cell_indices}")

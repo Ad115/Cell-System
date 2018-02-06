@@ -25,6 +25,19 @@ The translation is done following the next guidelines:
  1. Download the code. 
  2. Go to this folder (called `c`). 
  3. Execute in a terminal: `python3 simplecells.py`
+ 
+Output:
+
+```
+Cell line: []
+
+First cell: <index:0, father:None>
+
+After division, cells are 2 (son of 0), and 1 (son of 0)
+
+Now, let the system process every cell...
+The cells in the system after that: [6, 3, 5, 4]
+```
 
 ### The C equivalent
 
@@ -33,3 +46,19 @@ The translation is done following the next guidelines:
  3. Type in a terminal: `make` to compile the code.
  4. Excecute the `main` binary that was created.
     
+Output:
+
+```
+New cell line created: 
+<CellLine object. Cells: []>
+
+The first cell of the cell line: 
+<Cell object. Index: 0, father: -1>
+
+Now, the cell will take an action:
+The cell has divided into: <Cell object. Index: 1, father: 0> and <Cell object. Index: 2, father: 0>
+
+Now, let the system process every cell...
+How is the system now?
+<CellLine object. Cells: [4, 6, 3, 5, ]>
+```
