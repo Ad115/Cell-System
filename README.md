@@ -1,8 +1,8 @@
 # CellSystem
 
-A simple framework to simulate dinamical systems flexible enough to allow adding custom 'loggers', that is, observer classes that record the relevant steps of the simulations.
+An agent-based framework for the simulation of biological cell systems (although it could conceivably do more).
 
-This was created to simulate cancer growth, while allowing to couple mutations and ancestry logging to study tumour phylogeny reconstruction algorithms.
+This was created to simulate cancer growth, taking into account nutrients and cell migration while allowing to couple mutations and ancestry logging to study tumour phylogeny reconstruction algorithms.
 
 ![Use case](assets/sidebyside.png)
 
@@ -50,37 +50,38 @@ system.run(steps=30)
     # ...
 
 
-# Tree styling
-ts = TreeStyle()
-ts.show_leaf_name = True
-ts.mode = "c"
-ts.arc_start = -135 # 0 degrees = 3 o'clock
-ts.arc_span = 270
+# Prepare to explore the simulation logs
+history = system['log']
+
+tree_style = {'show_leaf_name' : True,
+              'mode' : 'c',        # Circular tree
+              'arc_start' : -135,  # Degrees
+              'arc_span' : 270 }   # Degrees also
+
 
 # Lookup the tree formed by cellular division
-history = system['log']
-history.ancestry().show(tree_style=ts)
+history.ancestry().show(styling=tree_style)
 ```
 
 ![png](assets/output_6_0.png)
 
 ```python
 # Now, remove cells that are no longer alive
-history.ancestry(prune_death=True).show(tree_style=ts)
+history.ancestry(prune_death=True).show(styling=tree_style)
 ```
 
 ![png](assets/output_7_0.png)
 
 ```python
 # Now, check out the tree formed by the mutations 
-history.mutations().show(tree_style=ts)
+history.mutations().show(styling=tree_style)
 ```
 
 ![png](assets/output_8_0.png)
 
 ```python
 # Remove genomes with no living representatives.
-history.mutations(prune_death=True).show(tree_style=ts)
+history.mutations(prune_death=True).show(styling=tree_style)
 ```
 
 ![png](assets/output_9_0.png)

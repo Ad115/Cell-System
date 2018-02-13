@@ -2,65 +2,50 @@ from ..log import Log
 from .treelogs import MutationsLog, AncestryLog
 from .simple import SimpleLog
 
-class MixedLog(Log):
-    'Logs combination that broadcasts the action.'
+class MultiLog(Log):
+    'An aggregate of logs.'
+    
+    def __init__(self):
+        self.logs = dict()
+    # ---
+    
+    def register(self, log, name):
+        'Register a named log entity.'
+        
+        # Overwriting is fatal
+        if name in self.logs:
+            raise ValueError(f"Log with name '{name}' already registered.")
+        
+        self.logs[name] = log
+    # ---
     
     def preparefor(self, actionname, *args, **kwargs):
         'Save previous state before the entity takes the given action.'
-        for log in self.logs:
+        for log in self.logs.values():
             log.preparefor(actionname, *args, **kwargs)
     # ---
         
     def log(self, actionname, *args, **kwargs):
         'Log the action.'
-        for log in self.logs:
+        for log in self.logs.values():
             log.log(actionname, *args, **kwargs)
     # ---
-
-
-class MALog(MixedLog):
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.mutations = MutationsLog()
-        self.ancestry = AncestryLog()
-        self.logs = [self.mutations, self.ancestry]
-    # ---
+# --- MultiLog
 
     
-class FullLog(MixedLog):
+class FullLog(MultiLog):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.mutationslog = MutationsLog()
-        self.ancestrylog = AncestryLog()
-        self.simplelog = SimpleLog()
-        self.logs = [self.mutationslog, self.ancestrylog, self.simplelog]
+        # Register the relevant logs
+        self.register(MutationsLog(), name='mutations')
+        self.register(AncestryLog(), name='ancestry')
+        self.register(SimpleLog(), name='simple')
     # ---
     
     def mutations(self, prune_death=False):        
-        return self.fetch_tree(self.mutationslog, prune_death)
+        return self.logs['mutations'].fetch_tree(prune_death)
     # ---
     
     def ancestry(self, prune_death=False):
-        return self.fetch_tree(self.ancestrylog, prune_death)
+        return self.logs['ancestry'].fetch_tree(prune_death)
     # ---
-    
-    def fetch_tree(self, log, prune_death):
-        t = log.tree.copy()
-        
-        if prune_death:
-            alive_nodes = {node.name for node in log.alive_nodes}
-            t = self.prune_death(t, alive_nodes)
-        
-        return t
-    
-    @staticmethod
-    def prune_death(tree, alive_nodes):
-        # Prunning tree to represent only alive cells 
-        ancestors = set([tree])
-        for node in tree.traverse():
-            if node.name in alive_nodes:
-                ancestors |= set(node.get_descendants())
-                ancestors.add(node)
-        tree.prune(ancestors)
-        return tree
