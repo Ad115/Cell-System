@@ -35,10 +35,10 @@ class Tree:
                 
         # Inline Jupyter output
         if inline:
-            return self.render('%%inline', *args, **kwargs)
+            return self.tree.render('%%inline', *args, **kwargs)
         else:
             # Tree GUI rendering
-            return super().show(*args, **kwargs)
+            return self.tree.show(*args, **kwargs)
     # ---
     
     def prune_leaves(self, to_stay):
