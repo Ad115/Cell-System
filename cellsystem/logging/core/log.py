@@ -1,5 +1,5 @@
 class Log:
-    "A logger class that works as a register of the actions of a cell system."
+    "A logger class that registers certain actions."
     
     def __init__(self, *args, **kwargs):
         pass

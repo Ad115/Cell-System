@@ -55,4 +55,8 @@ class Tree:
         
         return self
     # ---
+    
+    def __str__(self):
+        return self.tree.__str__()
+    # ---
 # --- Tree

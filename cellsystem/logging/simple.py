@@ -1,4 +1,4 @@
-from ..log import Log
+from .core import Log
 
 class SimpleLog(Log):
     'Simple logger that limits to print the action.'

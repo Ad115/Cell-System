@@ -128,7 +128,7 @@ class World:
 
     """
 
-    def __init__(self, grid_dimensions=(10, 10), wrap=toroidal_wrap):
+    def __init__(self, grid_dimensions=None, wrap=toroidal_wrap):
         """Initialize the world.
 
         :param grid_dimensions: Tuple specifying rows and columns.
@@ -136,6 +136,8 @@ class World:
 
         """
         # Set dimensions
+        if grid_dimensions is None:
+            grid_dimensions = (10, 10)
         self.rows, self.cols = grid_dimensions
         # Initialize grid
         self.wrap_function = wrap  # Toroidal wrapping behavior of the grid

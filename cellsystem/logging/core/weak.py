@@ -1,4 +1,4 @@
-from ..log import Log
+from .log import Log
 
 class WeakLog(Log):
     'Ignore silently calls to not implemented log methods.'

@@ -1,5 +1,5 @@
-from ...utils import Tree
-from .weak import WeakLog
+from ..utils import Tree
+from .core import WeakLog
 
 class TreeLog(WeakLog):
     'Base class for logs that grow trees.'
@@ -53,13 +53,19 @@ class TreeLog(WeakLog):
     # ---
 
     def log_death(self, cell):
+        # No need to keep tracking
         del self.alive[cell.index]
     # ---
 # --- TreeLog
 
     
 class AncestryLog(TreeLog):
+    """A tree log that maintains a \"family tree\".
     
+    Each leaf represents a cell. When that cell divides,
+    the leaf branches into leaves representing the daughters.
+    
+    """
     def add_child(self, *args, **kwargs):
         # First add the node normally to the tree
         child_node = super().add_child(*args, **kwargs)
@@ -90,6 +96,12 @@ class AncestryLog(TreeLog):
 
 
 class MutationsLog(TreeLog):
+    """A tree log that maintains a record of genome branching events.
+    
+    Each leaf represents a genome that may be present in one or more
+    cells. When one of those cells mutates, the new genome is added as
+    a child of that leaf. 
+    """
     
     def log_newcell(self, cell):
         # Add a new child to the tree
@@ -122,4 +134,4 @@ class MutationsLog(TreeLog):
         # for the genome node
         self.alive[cell.index] = child
     # ---
-# ---
+# --- MutationsLog
