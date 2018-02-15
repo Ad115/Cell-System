@@ -48,10 +48,8 @@ class CellSystem(System):
         'Place a single cell in the middle of the world.'
         # Fetch the middle of the grid
         world = self['world']
-        middle = world.at( world.rows//2, 
-                           world.cols//2 )
         # Add cell
-        self['cells'].add_cell_to(middle, 
-                                  log=self['log'])
+        self['cells'].add_cell_to( world.middle, 
+                                   log=self['log'])
     # ---
 # --- CellSystem

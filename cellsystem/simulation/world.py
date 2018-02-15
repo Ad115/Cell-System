@@ -35,12 +35,11 @@ def wrap(n, maxValue):
     return n
 # ---
 
-def toroidal_wrap(grid, i, j):
-    """Return i,j wrapped on the grid dimensions."""
-    # Wrap the coordinates
-    i = wrap(i, grid.rows)
-    j = wrap(j, grid.cols)
-    return i,j
+def toroidal_wrap(grid, coord):
+    """Return the coordinates wrapped on the grid dimensions."""
+    return tuple(wrap(x, dim_size) 
+                    for x,dim_size 
+                        in zip(coord, grid.grid_dimensions) )
 # ---
 
 
@@ -91,8 +90,8 @@ class Site:
         try:
             self.guests.remove(guest)
         except KeyError:
-            raise KeyError('Guest with index {} is not at site ({},{})'
-                                            .format(guest.index, i, j))
+            raise KeyError('Guest with index {} is not at site ({})'
+                                            .format(guest.index, self.coordinates))
     # ---
 
     def guest_count(self):
@@ -102,8 +101,6 @@ class Site:
 
     def random_neighbor(self):
         """Return a random site in the neighborhood of the current site."""
-        # Get your actual coordinates
-        i, j = self.coordinates
         # Select a neighbor
         return self.world.random_neighbor_of(self)
     # ---
@@ -138,25 +135,38 @@ class World:
         # Set dimensions
         if grid_dimensions is None:
             grid_dimensions = (10, 10)
-        self.rows, self.cols = grid_dimensions
+            
+        self.grid_dimensions = grid_dimensions
+        
         # Initialize grid
         self.wrap_function = wrap  # Toroidal wrapping behavior of the grid
+        
+        rows, cols = self.grid_dimensions
         self.grid = tuple( Site(self, coordinates=(i,j))
-                               for i in range(self.rows)
-                                   for j in range(self.cols) )
+                               for i in range(rows)
+                                   for j in range(cols) ) # Stored in 1D
         # Initialize neighborhood
         self.neighborhood = [ (-1,-1), (-1, 0), (-1, 1),
                               ( 0,-1), ( 0, 0), ( 0, 1),
                               ( 1,-1), ( 1, 0), ( 1, 1) ]
     # ---
+    
+    @property
+    def middle(self):
+        """Get the site at the middle of the world."""
+        rows, cols = self.grid_dimensions
+        return self.at( (rows//2, cols//2) )
+    # ---
 
-    def at(self, i, j):
-        """Get the site at the specified coordinates."""
+    def at(self, coordinates):
+        """Get the site at the specified coordinates."""        
         # Wrap (toroidal coordinates)
         if self.wrap_function:
-            i,j = self.wrap_function(self, i,j)
+            i,j = self.wrap_function(self, coordinates)
+            
         # The grid is 1D, so we must convert from 2D
-        ij = self.cols*i + j
+        rows, cols = self.grid_dimensions
+        ij = cols*i + j
         return self.grid[ij]
     # ---
 
@@ -172,6 +182,6 @@ class World:
         # Select a neighbor
         n_i, n_j = rnd.choice(self.neighborhood)
         # Fetch the neighbor
-        return self.at( i+n_i, j+n_j )
+        return self.at( (i+n_i, j+n_j) )
     # ---
 # --- World
