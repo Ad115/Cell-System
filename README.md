@@ -5,6 +5,7 @@ An agent-based framework for the simulation of biological cell systems (although
 This was created to simulate cancer growth, taking into account nutrients and cell migration while allowing to couple mutations and ancestry logging to study tumour phylogeny reconstruction algorithms.
 
 ![Use case](assets/sidebyside.png)
+![Use case](assets/spacetime.png)
 
 ## Example
 
@@ -53,38 +54,50 @@ system.run(steps=30)
 # Prepare to explore the simulation logs
 history = system['log']
 
+
+
+# First, let's see the cells' evolution in time and space!
+history.geometry().show()
+
+# Remove the cells that died somewhere along the way
+history.geometry(prune_death=True).show()
+```
+
+![png](assets/worldlines.png)
+
+![png](assets/worldlines_no_death.png)
+
+
+```python
+# Prepare styling for the trees
 tree_style = {'show_leaf_name' : True,
               'mode' : 'c',        # Circular tree
               'arc_start' : -135,  # Degrees
               'arc_span' : 270 }   # Degrees also
 
-
 # Lookup the tree formed by cellular division
 history.ancestry().show(styling=tree_style)
-```
 
-![png](assets/output_6_0.png)
-
-```python
 # Now, remove cells that are no longer alive
 history.ancestry(prune_death=True).show(styling=tree_style)
 ```
 
-![png](assets/output_7_0.png)
+![png](assets/ancestry.png)
+
+![png](assets/ancestry_no_death.png)
 
 ```python
 # Now, check out the tree formed by the mutations 
 history.mutations().show(styling=tree_style)
-```
 
-![png](assets/output_8_0.png)
-
-```python
 # Remove genomes with no living representatives.
 history.mutations(prune_death=True).show(styling=tree_style)
 ```
 
-![png](assets/output_9_0.png)
+![png](assets/mutations.png)
+
+![png](assets/mutations_no_death.png)
+
 
 _For more examples and usage, please refer to the [Wiki](wikigoeshere.com)._
 

@@ -1,6 +1,20 @@
+"""
+Geometric Logging
+=================
+
+This module defines functionality for following the geometric
+evolution of the cell blob through time.
+
+The classes GeometricLog and WorldLines are defined here.
+"""
+
 from collections import defaultdict
 
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
 from .core import WeakLog
+
 
 class GeometricLog(WeakLog):
     """Registers the geometric positions of the cells."""
@@ -85,35 +99,9 @@ class GeometricLog(WeakLog):
             yield current_state.copy()
     # ---
     
-    def get_timelines(self):
-        "Get the geometric evolution of individual cells."
-        states = self.iter_states()
-        current_state = next(states)
-        t = 0
-        
-        timelines = defaultdict(list, 
-                                {cell:[(t,*site)] for cell,site 
-                                       in current_state.items()})
-        
-        for i,(state,change) in enumerate(zip(states, self.iter_changes())):
-            # Decode change
-            change_type, change = change
-            t = i+1
-            
-            if change_type == "division":
-                cell, daughters = change
-                (d1, s1),(d2, s2) = daughters
-                # Find the time and site of the division
-                division = timelines[cell][-1]
-                # The daughters' timeline starts at the 
-                # site of the division and to their current site
-                timelines[d1].append( division )
-                timelines[d2].append( division )
-                
-            for cell, site in state.items():
-                    timelines[cell].append( (t, *site) )
-        
-        return timelines
+    def worldlines(self, prune_death=False):
+        "Get the geometric evolution of individual cells in space and time."
+        return WorldLines.from_log(self, prune_death)
     # ---
         
     def log_newcell(self, cell):
@@ -147,3 +135,112 @@ class GeometricLog(WeakLog):
         "Register the disappeareance of the cell."
         self.changes.append( (cell.index, None) )
     # ---
+    
+    
+    
+class WorldLines:
+    """A class that represents the worldlines of a set of cells.
+    
+    A worldline is the place in time and space that a cell occupies throughout
+    it's existence.
+    """
+    
+    def __init__(self, initial_state=None, time=0):
+        "Initialize from a state."
+        if initial_state is None:
+            initial_state = dict()
+        
+        self.worldlines = defaultdict(list, 
+                                      {cell:[(time,*site)] 
+                                       for cell,site 
+                                        in initial_state.items()})
+    # ---
+    
+    @classmethod
+    def from_log(cls, geometric_log, prune_death=False):
+        "Initialize from a geometric log."
+        changes = geometric_log.iter_changes()
+        states = geometric_log.iter_states()
+        
+        # Intialize timelines object
+        current_state = next(states)
+        t = 0
+        worldlines = cls(current_state, t)
+        
+        # Assemble timelines
+        for i,(state,change) in enumerate(zip(states, changes)):
+            
+            worldlines.update(state, 
+                              transition=change, 
+                              time=i+1, 
+                              prune_death=prune_death)
+        
+        return worldlines
+    # ---
+    
+    def update(self, state, transition, time, prune_death=False):
+        "Add the event described by the transition, time and final state."
+        change_type, change = transition
+        
+        if prune_death and (change_type == "death"):
+            # Cell is dead, remove it's timeline
+            cell, _ = change
+            self.remove(cell)
+            
+        elif change_type == "division":
+            cell, daughters = change
+            (d1, s1),(d2, s2) = daughters
+            # Find the time and site of the division
+            division = self.last_state_of(cell)
+            # The daughters' timeline starts at the 
+            # site of the division and to their current site
+            self.add_event(d1, division)\
+                .add_event(d2, division)
+            
+        for cell, site in state.items():
+            self.add_event(cell, (time, *site))
+            
+        return self
+    # ---
+    
+    def remove(self, cell):
+        "Remove the given cell's timeline."
+        del self.worldlines[cell]
+    # ---
+    
+    def last_state_of(self, cell):
+        "Return the last recorded event of the given cell."
+        return self.worldlines[cell][-1]
+    # ---
+    
+    def add_event(self, cell, event):
+        "Add an event (a spacetime coordinate) for the cell."
+        self.worldlines[cell].append(event)
+        return self
+    # ---
+    
+    def __getitem__(self, cell):
+        "Get the timeline of a cell."
+        return self.worldlines[cell]
+    # ---
+    
+    def __iter__(self):
+        "Iterate through the cell worldlines."
+        yield from self.worldlines.items()
+    # ---
+    
+    def show(self):
+        "Render the 3D worldlines as a plot."
+        fig = plt.figure()
+        ax = fig.gca(projection='3d')
+
+        for cell,timeline in self:
+            t, x, y = zip(*timeline)
+            ax.plot(t, x, y)
+            ax.scatter(t[0], x[0], y[0], marker='o')   # End point
+            ax.set_xlabel('t')
+            ax.set_ylabel('x')
+            ax.set_zlabel('y')
+        plt.show()
+    # ---
+# --- WorldLines
