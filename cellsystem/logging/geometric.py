@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from .core import WeakLog
 
 class GeometricLog(WeakLog):
@@ -25,34 +27,6 @@ class GeometricLog(WeakLog):
         index, site = self._unpack_info(cell)
         self.changes.append( (index, site) )
     # ---
-    
-    def __iter__(self):
-        "Generate the intermediate states."
-        current_state = self.initial_state.copy()
-        yield current_state.copy()
-        
-        for change in self.changes:
-            # Decode change
-            change_type = self._which_action(change)
-            cell, other = change
-            
-            # Perform change
-            if change_type == "migration":
-                current_state[cell] = other
-            else:
-                del current_state[cell]
-                
-                if change_type == "division":
-                    (d1, s1),(d2, s2) = other
-                    current_state[d1] = s1
-                    current_state[d2] = s2
-                    
-                elif change_type == "death": 
-                    pass
-        
-            yield current_state.copy()
-    # ---
-            
         
     def _which_action(self, change):
         "Decode the event into a concrete action."
@@ -73,6 +47,73 @@ class GeometricLog(WeakLog):
             # Check migration
             except TypeError:
                 return "migration"
+    # ---
+    
+    def iter_changes(self):
+        "Iterate through every action"        
+        for change in self.changes:
+            # Decode change
+            change_type = self._which_action(change)
+        
+            yield change_type, change
+    # ---
+    
+    def iter_states(self):
+        "Generate the intermediate states."
+        current_state = self.initial_state.copy()
+        yield current_state.copy()
+        
+        for change_type, change in self.iter_changes():
+            # Perform change
+            if change_type == "migration":
+                cell, site = change
+                current_state[cell] = site
+                
+            elif change_type == "division":
+                # Unpack
+                cell, daughters = change
+                del current_state[cell]
+                
+                (d1, s1),(d2, s2) = daughters
+                current_state[d1] = s1
+                current_state[d2] = s2
+                    
+            elif change_type == "death": 
+                cell, _ = change
+                del current_state[cell]
+        
+            yield current_state.copy()
+    # ---
+    
+    def get_timelines(self):
+        "Get the geometric evolution of individual cells."
+        states = self.iter_states()
+        current_state = next(states)
+        t = 0
+        
+        timelines = defaultdict(list, 
+                                {cell:[(t,*site)] for cell,site 
+                                       in current_state.items()})
+        
+        for i,(state,change) in enumerate(zip(states, self.iter_changes())):
+            # Decode change
+            change_type, change = change
+            t = i+1
+            
+            if change_type == "division":
+                cell, daughters = change
+                (d1, s1),(d2, s2) = daughters
+                # Find the time and site of the division
+                division = timelines[cell][-1]
+                # The daughters' timeline starts at the 
+                # site of the division and to their current site
+                timelines[d1].append( division )
+                timelines[d2].append( division )
+                
+            for cell, site in state.items():
+                    timelines[cell].append( (t, *site) )
+        
+        return timelines
     # ---
         
     def log_newcell(self, cell):
