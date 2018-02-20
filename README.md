@@ -105,12 +105,11 @@ _For more examples and usage, please refer to the [Wiki](wikigoeshere.com)._
 
 Ad115 – [@Andresio115](https://twitter.com/Andresio115) – a.garcia230395@gmail.com
 
-Distributed under the MIT license. See [LICENSE](LICENSE) for more information.
+Distributed under the MIT license. See [LICENSE](https://github.com/Ad115/Cell-System/blob/master/LICENSE) for more information.
 
 ## Contributing
 
-1. Fork it (<https://github.com/Ad115/Cell-System/fork>)
-2. Create your feature branch (`git checkout -b feature/fooBar`)
-3. Commit your changes (`git commit -am 'Add some fooBar'`)
-4. Push to the branch (`git push origin feature/fooBar`)
-5. Create a new Pull Request
+1. Check for open issues or open a fresh issue to start a discussion around a feature idea or a bug.
+2. Fork [the repository](https://github.com/Ad115/Cell-System/) on GitHub to start making your changes to a feature branch, derived from the **master** branch.
+3. Write a test which shows that the bug was fixed or that the feature works as expected.
+4. Send a pull request and bug the maintainer until it gets merged and published. 
