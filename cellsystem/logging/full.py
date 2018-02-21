@@ -15,14 +15,17 @@ class FullLog(MultiLog):
     
     
     def geometry(self, prune_death=False):
+        "Fetch information of the cells' dynamic in physical space."
         return self.logs['geometry'].worldlines(prune_death)
     # ---
     
-    def mutations(self, prune_death=False):        
+    def mutations(self, prune_death=False):
+        "Fetch information of the cells' mutational history."
         return self.logs['mutations'].fetch_tree(prune_death)
     # ---
     
     def ancestry(self, prune_death=False):
+        "Fetch information of the cells' \"family tree\"."
         return self.logs['ancestry'].fetch_tree(prune_death)
     # ---
 # --- FullLog
