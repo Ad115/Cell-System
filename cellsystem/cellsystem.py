@@ -8,13 +8,10 @@ from   .logging  import FullLog
 
 
 class CellSystem(System):
-    "A system simulating cell growth."
+    """A system simulating cell growth.
     
-    def __init__(self, *args, **kwargs):
-        """Initialization process.
-        
-        A cell system has the same attributes that a system has,
-        with the addition of three main entities:
+    A cell system is a system subclass, with 
+    the automatic initialization of three main entities:
         
             1. Cells represented by a cell line.
             
@@ -23,8 +20,11 @@ class CellSystem(System):
                
             3. A 'log' that follows and makes a record of the 
                cells' actions.
-        
-        """
+
+    """
+    
+    def __init__(self, *args, **kwargs):
+        """Initialization process."""
         super().__init__(*args, **kwargs)
         
         # Initialize world
