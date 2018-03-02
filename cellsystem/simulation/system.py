@@ -85,7 +85,7 @@ class System:
         return self.toentity[entityname]
     # ---
 
-    def add(self, entity, name, procesable=True, inithook=None):
+    def add_entity(self, entity, name, procesable=True, inithook=None):
         """Add an entity to the graph.
         
         If procesable, the entity.process(time) method is called 
@@ -125,6 +125,8 @@ class System:
             
         # Process post-step hooks
         self.process_interactions_in(self.hooks)
+        
+        self.time += 1
     # ---
          
     def start(self):
@@ -150,7 +152,7 @@ class System:
         self.update_hooks(self.hooks, after_step)
         self.update_hooks(self.prehooks, before_step)
         
-        # Make sure things are initialized 
+        # Make sure things are initialized
         self.start()
         
         # Take steps

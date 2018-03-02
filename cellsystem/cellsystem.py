@@ -23,24 +23,23 @@ class CellSystem(System):
 
     """
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, grid_dimensions=(100, 100), **kwargs):
         """Initialization process."""
         super().__init__(*args, **kwargs)
         
         # Initialize world
-        grid_dim = kwargs.get('grid_dimensions', None)
-        self.add(World(grid_dimensions=grid_dim), 
-                 name='world', 
-                 procesable=False)
+        self.add_entity( World(grid_dimensions=grid_dimensions), 
+                         name='world', 
+                         procesable=False)
         
         # Initialize log
-        self.add(FullLog(),
-                 name='log',
-                 procesable=False)
+        self.add_entity( FullLog(),
+                         name='log',
+                         procesable=False)
         
         # Initialize the cells
-        self.add(CellLine(),
-                 name='cells')
+        self.add_entity( CellLine(),
+                         name='cells')
         self['cells'].register_log(self['log'])
     # ---
     

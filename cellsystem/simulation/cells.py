@@ -251,7 +251,7 @@ class Cell:
         return [mutation, migration, division, death]
     # ---
 
-    def process(self, log=None):
+    def process(self, *args, log=None, **kwargs):
         """Select an action and perform it."""
         # Select an action
         action = rnd.choice(self.actions)
@@ -414,7 +414,7 @@ class CellLine:
         self.log = log
     # ---
         
-    def process(self, *args):
+    def process(self, *args, **kwargs):
         'Move a step forward in time.'
         for cell in self.sample(all=True):
             cell.process(log=self.log)
