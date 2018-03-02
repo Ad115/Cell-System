@@ -27,33 +27,37 @@ A use case integrated in the repository:
     # in the middle of the grid
     system.seed()
 
+::
 
-        New cell 0 added @ (5, 5)
-
+    New cell 0 added @ (5, 5)
+        
+.. code-block:: python
 
     # Take 35 steps forward in time
     system.run(steps=30)
+    
+::
 
+    Cell no. 0 dividing @ (5, 5)
+    New cells: 2 @ (4, 5) and 1 @ (6, 6)
+    Cell no. 2 mutating @ site (4, 5) (father 0)
+        Initial mutations: []
+            Initial genome: AAAAAAAAAA
+        Final mutations: [(3, 'C')]
+            Final genome: AAACAAAAAA
+    Cell no. 1 dividing @ (6, 6)
+        New cells: 4 @ (6, 6) and 3 @ (5, 6)
+    Cell no. 2 death @ site (4, 5) (father 0)
+    Cell no. 3 migrating from site (5, 6) (father 1)
+        New site: (4, 5)
+    Cell no. 4 death @ site (6, 6) (father 1)
+    Cell no. 3 dividing @ (4, 5)
+        New cells: 6 @ (3, 6) and 5 @ (3, 5)
+    ...
+    ...
+    ...
 
-        # Cell no. 0 dividing @ (5, 5)
-        # 	New cells: 2 @ (4, 5) and 1 @ (6, 6)
-        # Cell no. 2 mutating @ site (4, 5) (father 0)
-        # 		 Initial mutations: []
-        #                 	 Initial genome: AAAAAAAAAA
-        # 		 Final mutations: [(3, 'C')]
-        #                 	 Final genome: AAACAAAAAA
-        # Cell no. 1 dividing @ (6, 6)
-        # 	New cells: 4 @ (6, 6) and 3 @ (5, 6)
-        # Cell no. 2 death @ site (4, 5) (father 0)
-        # Cell no. 3 migrating from site (5, 6) (father 1)
-        # 	 New site: (4, 5)
-        # Cell no. 4 death @ site (6, 6) (father 1)
-        # Cell no. 3 dividing @ (4, 5)
-        # 	New cells: 6 @ (3, 6) and 5 @ (3, 5)
-        # ...
-        # ...
-        # ...
-
+.. code-block:: python
 
     # Prepare to explore the simulation logs
     history = system['log']
