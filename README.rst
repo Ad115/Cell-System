@@ -13,7 +13,9 @@ This was created to simulate cancer growth, taking into account nutrients and ce
 Example
 -------
 
-A use case integrated in the repository::
+A use case integrated in the repository:
+
+.. code-block:: python
 
     from cellsystem import *
 
@@ -26,7 +28,7 @@ A use case integrated in the repository::
     system.seed()
 
 
-    # New cell 0 added @ (5, 5)
+        New cell 0 added @ (5, 5)
 
 
     # Take 35 steps forward in time
@@ -66,7 +68,9 @@ A use case integrated in the repository::
 
 .. image:: assets/worldlines.png
 
-.. image:: assets/worldlines_no_death.png::
+.. image:: assets/worldlines_no_death.png
+
+.. code-block:: python
 
     # Prepare styling for the trees
     tree_style = {'show_leaf_name' : True,
@@ -82,7 +86,9 @@ A use case integrated in the repository::
 
 .. image:: assets/ancestry.png
 
-.. image:: assets/ancestry_no_death.png::
+.. image:: assets/ancestry_no_death.png
+
+.. code-block:: python
 
     # Now, check out the tree formed by the mutations 
     history.mutations().show(styling=tree_style)
