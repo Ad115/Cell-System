@@ -2,12 +2,14 @@
 CellSystem
 ==========
 
+https://saythanks.io/inbox#badge-modal
+
 An agent-based framework for the simulation of biological cell systems (although it could conceivably do more).
 
 This was created to simulate cancer growth, taking into account nutrients and cell migration while allowing to couple mutations and ancestry logging to study tumour phylogeny reconstruction algorithms.
 
-.. image:: assets/sidebyside.png
-.. image:: assets/spacetime.png
+.. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/sidebyside.png
+.. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/spacetime.png
 
 -------
 Example
@@ -70,9 +72,9 @@ A use case integrated in the repository:
     # Remove the cells that died somewhere along the way
     history.geometry(prune_death=True).show()
 
-.. image:: assets/worldlines.png
+.. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/worldlines.png
 
-.. image:: assets/worldlines_no_death.png
+.. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/worldlines_no_death.png
 
 .. code-block:: python
 
@@ -88,9 +90,9 @@ A use case integrated in the repository:
     # Now, remove cells that are no longer alive
     history.ancestry(prune_death=True).show(styling=tree_style)
 
-.. image:: assets/ancestry.png
+.. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/ancestry.png
 
-.. image:: assets/ancestry_no_death.png
+.. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/ancestry_no_death.png
 
 .. code-block:: python
 
@@ -100,9 +102,9 @@ A use case integrated in the repository:
     # Remove genomes with no living representatives.
     history.mutations(prune_death=True).show(styling=tree_style)
 
-.. image:: assets/mutations.png
+.. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/mutations.png
 
-.. image:: assets/mutations_no_death.png
+.. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/mutations_no_death.png
 
 
 *For more examples and usage, please refer to the [Wiki](wikigoeshere.com).*

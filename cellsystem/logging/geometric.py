@@ -150,10 +150,12 @@ class WorldLines:
         if initial_state is None:
             initial_state = dict()
         
-        self.worldlines = defaultdict(list, 
-                                      {cell:[(time,*site)] 
-                                       for cell,site 
-                                        in initial_state.items()})
+        self.worldlines = defaultdict(list)
+        # Assemble initial state
+        for cell,site in initial_state.items():
+            # A point in spacetime
+            event = tuple( [time]+list(site) )
+            self.worldlines[cell].append(event)
     # ---
     
     @classmethod

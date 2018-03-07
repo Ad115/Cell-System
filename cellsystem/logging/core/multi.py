@@ -13,7 +13,7 @@ class MultiLog(Log):
         
         # Overwriting is fatal
         if name in self.logs:
-            raise ValueError(f"Log with name '{name}' already registered.")
+            raise ValueError("Log with name '{}' already registered.".format(name))
         
         self.logs[name] = log
     # ---
