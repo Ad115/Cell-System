@@ -154,8 +154,15 @@ class WorldLines:
         # Assemble initial state
         for cell,site in initial_state.items():
             # A point in spacetime
-            event = tuple( [time]+list(site) )
+            event = self._event(time, site)
+            
             self.worldlines[cell].append(event)
+    # ---
+    
+    @staticmethod
+    def _event(time, site):
+        "Assemble a point in spacetime."
+        return tuple( [time]+list(site) )
     # ---
     
     @classmethod
@@ -200,7 +207,7 @@ class WorldLines:
                 .add_event(d2, division)
             
         for cell, site in state.items():
-            self.add_event(cell, (time, *site))
+            self.add_event(cell, self._event(time, site))
             
         return self
     # ---
