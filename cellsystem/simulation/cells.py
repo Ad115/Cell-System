@@ -3,7 +3,7 @@
 Structures representing the biological entities.
 """
 
-from .logging import logged
+from ..logging import logged
 import random as rnd
 
 
@@ -27,11 +27,11 @@ class CellAction:
         self.action = action
         self.probability = probability
 
-    def try_action(self, log=None):
+    def try_action(self, cell, *args, **kwargs):
         """Perform the action according to it's probability."""
         # Sample according to the probability
-        if rnd.random() < self.probability():
-            self.action(log=log)
+        if rnd.random() < self.probability(cell):
+            self.action(cell, *args, **kwargs)
 # --- CellAction
 
 
@@ -66,7 +66,7 @@ class Cell:
         self.lineage = lineage
         self.father = None
         self.site = None
-        self.actions = self.init_actions()
+        self.actions = self.lineage.fetch_behaviors()
         self.mutations = []
     # ---
 
@@ -113,6 +113,17 @@ class Cell:
 
         return genome
     # ---
+    
+    @property
+    def genome_alphabet(self):
+        """Genome alphabet of the cell line.
+
+        The set of characters a genome is composed of.
+        (The genome characters may really represent genes, aminoacids, etc...)
+
+        """
+        return self.lineage.genome_alphabet
+    # ---
 
     def initialize(self, site=None, father=None, mutations=None):
         """Initialize grid site, mutations and father."""
@@ -124,97 +135,14 @@ class Cell:
             self.mutations = mutations  # copy
     # ---
     
-    @logged('migration')
-    def migrate(self):
-        """Migrate to a neighboring cell."""
-        # Get the destination site
-        next_site = self.site.random_neighbor()
-        # Migrate to the new site
-        self.site.remove_guest(self)
-        next_site.add_guest(self)
-        self.site = next_site
+    def add_mutation(self, position, mutated):
+        """Add a mutation to the cell in the given position of the genome.
         
-        return self
-    # ---
-
-    def migrationProbability(self):
-        """Migration probability for this cell."""
-        return 1
-    # ---
-    
-    @logged('mutation')
-    def mutate(self):
-        """Do a single site mutation.
-
         Note: The genome may not represent a nucleotide sequence, so these
         mutations may not represent SNPs.
-
         """
-        # Get the genome characteristics
-        # Convert alphabet to tuple to call rnd.choice with it
-        alphabet = tuple(self.lineage.genome_alphabet)
-        genome_length = len(self.genome)
-        # Assemble the mutation
-        position = rnd.randint(0, 
-                               genome_length-1)  # Pick a random position in the genome
-        mutated = rnd.choice(alphabet)
-        # Mutate
-        self.mutations.append((position, mutated))
-        
-        return self
-    # ---
-
-    def mutationProbability(self):
-        """Probability to mutate if selected for it."""
-        return 1
-    # ---
-
-    @logged('death')
-    def die(self):
-        """Cellular death."""
-        self.site.remove_guest(self)
-        self.lineage.handle_death(self)
-        return self
-    # ---
-
-    def deathProbability(self):
-        """Cellular death probability."""
-        # Avoid killing all cells.
-        if self.lineage.total_cells > 1:
-            return 0.6
-        else:
-            return 0
-    # ---
-    
-    @logged('division')
-    def divide(self, preserve_father=False):
-        """Cell division.
-
-        Get a new daughter of this cell and place it in a nearby
-        neighboring site.
-
-        """
-        # Create the daughter cell
-        daughter = self.new_daughter()
-        # Search for the site to place the daughter in
-        site = self.site.random_neighbor()
-        daughter.add_to(site)
-
-        # If the preserveFather flag is set, we want a
-        # father cell and a daughter cell after the division,
-        # else, we want both resulting cells to be daughters of the
-        # father cell.
-        if not preserve_father:
-            self.father = self.index
-            self.lineage.recycle_cell(self)
-            self.migrate()
-            
-        return self, daughter
-    # ---
-
-    def divisionProbability(self):
-        """Probability that this cell will divide if selected for division."""
-        return 1
+        mutation = (position, mutated)
+        self.mutations.append(mutation)
     # ---
 
     def new_daughter(self):
@@ -235,28 +163,12 @@ class Cell:
         site.add_guest(self)
     # ---    
 
-    def init_actions(self):
-        """Return a list with the possible actions to take for this cell."""
-        # Death action
-        death = CellAction(self.die, self.deathProbability)
-        # Division action
-        division = CellAction(self.divide, self.divisionProbability)
-
-        # Migration action
-        migration = CellAction(self.migrate, self.migrationProbability)
-
-        # Mutation action
-        mutation = CellAction(self.mutate, self.mutationProbability)
-
-        return [mutation, migration, division, death]
-    # ---
-
-    def process(self, *args, log=None, **kwargs):
+    def process(self, *args, **kwargs):
         """Select an action and perform it."""
         # Select an action
         action = rnd.choice(self.actions)
         # Perform the action according to it's respective probability
-        action.try_action(log=log)
+        action.try_action(self, *args, **kwargs)
     # ---
 # --- Cell
 
@@ -303,6 +215,7 @@ class CellLine:
         self.recycle_dead = recycle_dead
         self.current_index = 0
         self.cells = []
+        self.behaviors = []
         self.alive_cells = set()
         self.dead_cells = set()
 
@@ -322,6 +235,11 @@ class CellLine:
             raise ValueError('"genome" must contain only letters\
                              present in the "genome_alphabet"' )
     # ---
+        
+    @property
+    def total_cells(self):
+        return len(self.alive_cells)
+    # ---
     
     @staticmethod
     def validate_genome(genome, alphabet):
@@ -332,10 +250,15 @@ class CellLine:
         return all((l in alphabet) for l in letters)
     # ---
     
-    @property
-    def total_cells(self):
-        return len(self.alive_cells)
+    def fetch_behaviors(self):
+        "The behaviors that the cells in this lineage perform."
+        return list(self.behaviors)
     # ---
+    
+    def add_behaviors(self, behaviors):
+        "Add the behaviors defining the cells from this cell line."
+        self.behaviors += behaviors
+    # ---    
 
     @logged('newcell', prepare=False)
     def add_cell_to(self, site):
