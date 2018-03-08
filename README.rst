@@ -73,9 +73,9 @@ A use case integrated in the repository:
     # Remove the cells that died somewhere along the way
     history.geometry(prune_death=True).show()
 
-.. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/worldlines.png
+.. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/geometry.png
 
-.. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/worldlines_no_death.png
+.. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/geometry_no_death.png
 
 .. code-block:: python
 
