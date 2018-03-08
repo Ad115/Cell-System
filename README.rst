@@ -2,11 +2,12 @@
 CellSystem
 ==========
 
-https://saythanks.io/inbox#badge-modal
+.. image:: https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg
+   :target: https://saythanks.io/inbox
 
-An agent-based framework for the simulation of biological cell systems (although it could conceivably do more).
+An agent-based framework for the simulation of biological cell systems.
 
-This was created to simulate cancer growth, taking into account nutrients and cell migration while allowing to couple mutations and ancestry logging to study tumour phylogeny reconstruction algorithms.
+This was created to simulate cancer growth, taking into account nutrients and cell migration while allowing to track mutations, cell division and cell position history to study tumour phylogeny reconstruction algorithms.
 
 .. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/sidebyside.png
 .. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/spacetime.png
