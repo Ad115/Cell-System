@@ -1,0 +1,571 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>cellsystem.logging package &#8212; cellsystem 0.1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cellsystem-logging-package">
+<h1>cellsystem.logging package<a class="headerlink" href="#cellsystem-logging-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cellsystem.logging.core.html">cellsystem.logging.core package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cellsystem.logging.core.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cellsystem.logging.core.html#module-cellsystem.logging.core.log">cellsystem.logging.core.log module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cellsystem.logging.core.html#module-cellsystem.logging.core.multi">cellsystem.logging.core.multi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cellsystem.logging.core.html#module-cellsystem.logging.core.weak">cellsystem.logging.core.weak module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cellsystem.logging.core.html#module-cellsystem.logging.core">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cellsystem.logging.core.html#core-logging-classes">Core logging classes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-cellsystem.logging.full">
+<span id="cellsystem-logging-full-module"></span><h2>cellsystem.logging.full module<a class="headerlink" href="#module-cellsystem.logging.full" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="cellsystem.logging.full.FullLog">
+<em class="property">class </em><code class="descclassname">cellsystem.logging.full.</code><code class="descname">FullLog</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/full.html#FullLog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.full.FullLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="cellsystem.logging.core.html#cellsystem.logging.core.multi.MultiLog" title="cellsystem.logging.core.multi.MultiLog"><code class="xref py py-class docutils literal"><span class="pre">cellsystem.logging.core.multi.MultiLog</span></code></a></p>
+<dl class="method">
+<dt id="cellsystem.logging.full.FullLog.ancestry">
+<code class="descname">ancestry</code><span class="sig-paren">(</span><em>prune_death=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/full.html#FullLog.ancestry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.full.FullLog.ancestry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch information of the cells’ “family tree”.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.full.FullLog.geometry">
+<code class="descname">geometry</code><span class="sig-paren">(</span><em>prune_death=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/full.html#FullLog.geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.full.FullLog.geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch information of the cells’ dynamic in physical space.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.full.FullLog.mutations">
+<code class="descname">mutations</code><span class="sig-paren">(</span><em>prune_death=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/full.html#FullLog.mutations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.full.FullLog.mutations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch information of the cells’ mutational history.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-cellsystem.logging.geometric">
+<span id="cellsystem-logging-geometric-module"></span><h2>cellsystem.logging.geometric module<a class="headerlink" href="#module-cellsystem.logging.geometric" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="geometric-logging">
+<h3>Geometric Logging<a class="headerlink" href="#geometric-logging" title="Permalink to this headline">¶</a></h3>
+<p>This module defines functionality for following the geometric
+evolution of the cell blob through time.</p>
+<p>The classes GeometricLog and WorldLines are defined here.</p>
+<dl class="class">
+<dt id="cellsystem.logging.geometric.GeometricLog">
+<em class="property">class </em><code class="descclassname">cellsystem.logging.geometric.</code><code class="descname">GeometricLog</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.GeometricLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="cellsystem.logging.core.html#cellsystem.logging.core.weak.WeakLog" title="cellsystem.logging.core.weak.WeakLog"><code class="xref py py-class docutils literal"><span class="pre">cellsystem.logging.core.weak.WeakLog</span></code></a></p>
+<p>Registers the geometric positions of the cells.</p>
+<dl class="method">
+<dt id="cellsystem.logging.geometric.GeometricLog.iter_changes">
+<code class="descname">iter_changes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.iter_changes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.GeometricLog.iter_changes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate through every action</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.geometric.GeometricLog.iter_states">
+<code class="descname">iter_states</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.iter_states"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.GeometricLog.iter_states" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the intermediate states.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.geometric.GeometricLog.log_death">
+<code class="descname">log_death</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.log_death"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.GeometricLog.log_death" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register the disappeareance of the cell.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.geometric.GeometricLog.log_division">
+<code class="descname">log_division</code><span class="sig-paren">(</span><em>daughters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.log_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.GeometricLog.log_division" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.geometric.GeometricLog.log_migration">
+<code class="descname">log_migration</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.log_migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.GeometricLog.log_migration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.geometric.GeometricLog.log_newcell">
+<code class="descname">log_newcell</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.log_newcell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.GeometricLog.log_newcell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.geometric.GeometricLog.preparefor_division">
+<code class="descname">preparefor_division</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.preparefor_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.GeometricLog.preparefor_division" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.geometric.GeometricLog.worldlines">
+<code class="descname">worldlines</code><span class="sig-paren">(</span><em>prune_death=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.worldlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.GeometricLog.worldlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the geometric evolution of individual cells in space and time.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.logging.geometric.WorldLines">
+<em class="property">class </em><code class="descclassname">cellsystem.logging.geometric.</code><code class="descname">WorldLines</code><span class="sig-paren">(</span><em>initial_state=None</em>, <em>time=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#WorldLines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.WorldLines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A class that represents the worldlines of a set of cells.</p>
+<p>A worldline is the place in time and space that a cell occupies throughout
+it’s existence.</p>
+<dl class="method">
+<dt id="cellsystem.logging.geometric.WorldLines.add_event">
+<code class="descname">add_event</code><span class="sig-paren">(</span><em>cell</em>, <em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#WorldLines.add_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.WorldLines.add_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an event (a spacetime coordinate) for the cell.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="cellsystem.logging.geometric.WorldLines.from_log">
+<em class="property">classmethod </em><code class="descname">from_log</code><span class="sig-paren">(</span><em>geometric_log</em>, <em>prune_death=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#WorldLines.from_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.WorldLines.from_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize from a geometric log.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.geometric.WorldLines.last_state_of">
+<code class="descname">last_state_of</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#WorldLines.last_state_of"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.WorldLines.last_state_of" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the last recorded event of the given cell.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.geometric.WorldLines.remove">
+<code class="descname">remove</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#WorldLines.remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.WorldLines.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the given cell’s timeline.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.geometric.WorldLines.show">
+<code class="descname">show</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#WorldLines.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.WorldLines.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the 3D worldlines as a plot.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.geometric.WorldLines.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>state</em>, <em>transition</em>, <em>time</em>, <em>prune_death=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#WorldLines.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.geometric.WorldLines.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the event described by the transition, time and final state.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-cellsystem.logging.simple">
+<span id="cellsystem-logging-simple-module"></span><h2>cellsystem.logging.simple module<a class="headerlink" href="#module-cellsystem.logging.simple" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="cellsystem.logging.simple.SimpleLog">
+<em class="property">class </em><code class="descclassname">cellsystem.logging.simple.</code><code class="descname">SimpleLog</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.simple.SimpleLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="cellsystem.logging.core.html#cellsystem.logging.core.log.Log" title="cellsystem.logging.core.log.Log"><code class="xref py py-class docutils literal"><span class="pre">cellsystem.logging.core.log.Log</span></code></a></p>
+<p>Simple logger that limits to print the action.</p>
+<dl class="method">
+<dt id="cellsystem.logging.simple.SimpleLog.log_death">
+<code class="descname">log_death</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.log_death"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.simple.SimpleLog.log_death" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.simple.SimpleLog.log_division">
+<code class="descname">log_division</code><span class="sig-paren">(</span><em>daughters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.log_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.simple.SimpleLog.log_division" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.simple.SimpleLog.log_migration">
+<code class="descname">log_migration</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.log_migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.simple.SimpleLog.log_migration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.simple.SimpleLog.log_mutation">
+<code class="descname">log_mutation</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.log_mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.simple.SimpleLog.log_mutation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.simple.SimpleLog.log_newcell">
+<code class="descname">log_newcell</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.log_newcell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.simple.SimpleLog.log_newcell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.simple.SimpleLog.preparefor_death">
+<code class="descname">preparefor_death</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.preparefor_death"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.simple.SimpleLog.preparefor_death" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.simple.SimpleLog.preparefor_division">
+<code class="descname">preparefor_division</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.preparefor_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.simple.SimpleLog.preparefor_division" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.simple.SimpleLog.preparefor_migration">
+<code class="descname">preparefor_migration</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.preparefor_migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.simple.SimpleLog.preparefor_migration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.simple.SimpleLog.preparefor_mutation">
+<code class="descname">preparefor_mutation</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.preparefor_mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.simple.SimpleLog.preparefor_mutation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-cellsystem.logging.treelogs">
+<span id="cellsystem-logging-treelogs-module"></span><h2>cellsystem.logging.treelogs module<a class="headerlink" href="#module-cellsystem.logging.treelogs" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="cellsystem.logging.treelogs.AncestryLog">
+<em class="property">class </em><code class="descclassname">cellsystem.logging.treelogs.</code><code class="descname">AncestryLog</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#AncestryLog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.treelogs.AncestryLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#cellsystem.logging.treelogs.TreeLog" title="cellsystem.logging.treelogs.TreeLog"><code class="xref py py-class docutils literal"><span class="pre">cellsystem.logging.treelogs.TreeLog</span></code></a></p>
+<p>A tree log that maintains a “family tree”.</p>
+<p>Each leaf represents a cell. When that cell divides,
+the leaf branches into leaves representing the daughters.</p>
+<dl class="method">
+<dt id="cellsystem.logging.treelogs.AncestryLog.add_child">
+<code class="descname">add_child</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#AncestryLog.add_child"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.treelogs.AncestryLog.add_child" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.treelogs.AncestryLog.log_division">
+<code class="descname">log_division</code><span class="sig-paren">(</span><em>daughters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#AncestryLog.log_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.treelogs.AncestryLog.log_division" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add 2 new branches to the father of the cells.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.treelogs.AncestryLog.log_newcell">
+<code class="descname">log_newcell</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#AncestryLog.log_newcell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.treelogs.AncestryLog.log_newcell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.logging.treelogs.MutationsLog">
+<em class="property">class </em><code class="descclassname">cellsystem.logging.treelogs.</code><code class="descname">MutationsLog</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#MutationsLog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.treelogs.MutationsLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#cellsystem.logging.treelogs.TreeLog" title="cellsystem.logging.treelogs.TreeLog"><code class="xref py py-class docutils literal"><span class="pre">cellsystem.logging.treelogs.TreeLog</span></code></a></p>
+<p>A tree log that maintains a record of genome branching events.</p>
+<p>Each leaf represents a genome that may be present in one or more
+cells. When one of those cells mutates, the new genome is added as
+a child of that leaf.</p>
+<dl class="method">
+<dt id="cellsystem.logging.treelogs.MutationsLog.log_division">
+<code class="descname">log_division</code><span class="sig-paren">(</span><em>daughters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#MutationsLog.log_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.treelogs.MutationsLog.log_division" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the father from the alive cells.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.treelogs.MutationsLog.log_mutation">
+<code class="descname">log_mutation</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#MutationsLog.log_mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.treelogs.MutationsLog.log_mutation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new child to the parent genome.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.treelogs.MutationsLog.log_newcell">
+<code class="descname">log_newcell</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#MutationsLog.log_newcell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.treelogs.MutationsLog.log_newcell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.logging.treelogs.TreeLog">
+<em class="property">class </em><code class="descclassname">cellsystem.logging.treelogs.</code><code class="descname">TreeLog</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#TreeLog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.treelogs.TreeLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="cellsystem.logging.core.html#cellsystem.logging.core.weak.WeakLog" title="cellsystem.logging.core.weak.WeakLog"><code class="xref py py-class docutils literal"><span class="pre">cellsystem.logging.core.weak.WeakLog</span></code></a></p>
+<p>Base class for logs that grow trees.</p>
+<dl class="method">
+<dt id="cellsystem.logging.treelogs.TreeLog.add_child">
+<code class="descname">add_child</code><span class="sig-paren">(</span><em>parent=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#TreeLog.add_child"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.treelogs.TreeLog.add_child" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cellsystem.logging.treelogs.TreeLog.alive_nodes">
+<code class="descname">alive_nodes</code><a class="headerlink" href="#cellsystem.logging.treelogs.TreeLog.alive_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.treelogs.TreeLog.fetch_tree">
+<code class="descname">fetch_tree</code><span class="sig-paren">(</span><em>prune_death=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#TreeLog.fetch_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.treelogs.TreeLog.fetch_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a copy of the tree.</p>
+<p>If <cite>prune_death</cite> is True, remove the leaves
+that correspond to death cells.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.treelogs.TreeLog.log_death">
+<code class="descname">log_death</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#TreeLog.log_death"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.treelogs.TreeLog.log_death" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.treelogs.TreeLog.preparefor_division">
+<code class="descname">preparefor_division</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#TreeLog.preparefor_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.treelogs.TreeLog.preparefor_division" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-cellsystem.logging">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-cellsystem.logging" title="Permalink to this headline">¶</a></h2>
+<p>Logging classes.</p>
+<p>Classes related to the recording of the simulation progress,
+analysis and history.</p>
+<dl class="class">
+<dt id="cellsystem.logging.FullLog">
+<em class="property">class </em><code class="descclassname">cellsystem.logging.</code><code class="descname">FullLog</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/full.html#FullLog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.FullLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="cellsystem.logging.core.html#cellsystem.logging.core.multi.MultiLog" title="cellsystem.logging.core.multi.MultiLog"><code class="xref py py-class docutils literal"><span class="pre">cellsystem.logging.core.multi.MultiLog</span></code></a></p>
+<dl class="method">
+<dt id="cellsystem.logging.FullLog.ancestry">
+<code class="descname">ancestry</code><span class="sig-paren">(</span><em>prune_death=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/full.html#FullLog.ancestry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.FullLog.ancestry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch information of the cells’ “family tree”.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.FullLog.geometry">
+<code class="descname">geometry</code><span class="sig-paren">(</span><em>prune_death=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/full.html#FullLog.geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.FullLog.geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch information of the cells’ dynamic in physical space.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.FullLog.mutations">
+<code class="descname">mutations</code><span class="sig-paren">(</span><em>prune_death=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/full.html#FullLog.mutations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.FullLog.mutations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch information of the cells’ mutational history.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.logging.SimpleLog">
+<em class="property">class </em><code class="descclassname">cellsystem.logging.</code><code class="descname">SimpleLog</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.SimpleLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="cellsystem.logging.core.html#cellsystem.logging.core.log.Log" title="cellsystem.logging.core.log.Log"><code class="xref py py-class docutils literal"><span class="pre">cellsystem.logging.core.log.Log</span></code></a></p>
+<p>Simple logger that limits to print the action.</p>
+<dl class="method">
+<dt id="cellsystem.logging.SimpleLog.log_death">
+<code class="descname">log_death</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.log_death"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.SimpleLog.log_death" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.SimpleLog.log_division">
+<code class="descname">log_division</code><span class="sig-paren">(</span><em>daughters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.log_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.SimpleLog.log_division" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.SimpleLog.log_migration">
+<code class="descname">log_migration</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.log_migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.SimpleLog.log_migration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.SimpleLog.log_mutation">
+<code class="descname">log_mutation</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.log_mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.SimpleLog.log_mutation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.SimpleLog.log_newcell">
+<code class="descname">log_newcell</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.log_newcell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.SimpleLog.log_newcell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.SimpleLog.preparefor_death">
+<code class="descname">preparefor_death</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.preparefor_death"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.SimpleLog.preparefor_death" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.SimpleLog.preparefor_division">
+<code class="descname">preparefor_division</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.preparefor_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.SimpleLog.preparefor_division" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.SimpleLog.preparefor_migration">
+<code class="descname">preparefor_migration</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.preparefor_migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.SimpleLog.preparefor_migration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.SimpleLog.preparefor_mutation">
+<code class="descname">preparefor_mutation</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/simple.html#SimpleLog.preparefor_mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.SimpleLog.preparefor_mutation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.logging.MutationsLog">
+<em class="property">class </em><code class="descclassname">cellsystem.logging.</code><code class="descname">MutationsLog</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#MutationsLog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.MutationsLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#cellsystem.logging.treelogs.TreeLog" title="cellsystem.logging.treelogs.TreeLog"><code class="xref py py-class docutils literal"><span class="pre">cellsystem.logging.treelogs.TreeLog</span></code></a></p>
+<p>A tree log that maintains a record of genome branching events.</p>
+<p>Each leaf represents a genome that may be present in one or more
+cells. When one of those cells mutates, the new genome is added as
+a child of that leaf.</p>
+<dl class="method">
+<dt id="cellsystem.logging.MutationsLog.log_division">
+<code class="descname">log_division</code><span class="sig-paren">(</span><em>daughters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#MutationsLog.log_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.MutationsLog.log_division" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the father from the alive cells.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.MutationsLog.log_mutation">
+<code class="descname">log_mutation</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#MutationsLog.log_mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.MutationsLog.log_mutation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new child to the parent genome.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.MutationsLog.log_newcell">
+<code class="descname">log_newcell</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#MutationsLog.log_newcell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.MutationsLog.log_newcell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.logging.AncestryLog">
+<em class="property">class </em><code class="descclassname">cellsystem.logging.</code><code class="descname">AncestryLog</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#AncestryLog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.AncestryLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#cellsystem.logging.treelogs.TreeLog" title="cellsystem.logging.treelogs.TreeLog"><code class="xref py py-class docutils literal"><span class="pre">cellsystem.logging.treelogs.TreeLog</span></code></a></p>
+<p>A tree log that maintains a “family tree”.</p>
+<p>Each leaf represents a cell. When that cell divides,
+the leaf branches into leaves representing the daughters.</p>
+<dl class="method">
+<dt id="cellsystem.logging.AncestryLog.add_child">
+<code class="descname">add_child</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#AncestryLog.add_child"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.AncestryLog.add_child" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.AncestryLog.log_division">
+<code class="descname">log_division</code><span class="sig-paren">(</span><em>daughters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#AncestryLog.log_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.AncestryLog.log_division" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add 2 new branches to the father of the cells.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.AncestryLog.log_newcell">
+<code class="descname">log_newcell</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/treelogs.html#AncestryLog.log_newcell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.AncestryLog.log_newcell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.logging.GeometricLog">
+<em class="property">class </em><code class="descclassname">cellsystem.logging.</code><code class="descname">GeometricLog</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.GeometricLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="cellsystem.logging.core.html#cellsystem.logging.core.weak.WeakLog" title="cellsystem.logging.core.weak.WeakLog"><code class="xref py py-class docutils literal"><span class="pre">cellsystem.logging.core.weak.WeakLog</span></code></a></p>
+<p>Registers the geometric positions of the cells.</p>
+<dl class="method">
+<dt id="cellsystem.logging.GeometricLog.iter_changes">
+<code class="descname">iter_changes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.iter_changes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.GeometricLog.iter_changes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate through every action</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.GeometricLog.iter_states">
+<code class="descname">iter_states</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.iter_states"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.GeometricLog.iter_states" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the intermediate states.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.GeometricLog.log_death">
+<code class="descname">log_death</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.log_death"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.GeometricLog.log_death" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register the disappeareance of the cell.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.GeometricLog.log_division">
+<code class="descname">log_division</code><span class="sig-paren">(</span><em>daughters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.log_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.GeometricLog.log_division" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.GeometricLog.log_migration">
+<code class="descname">log_migration</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.log_migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.GeometricLog.log_migration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.GeometricLog.log_newcell">
+<code class="descname">log_newcell</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.log_newcell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.GeometricLog.log_newcell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.GeometricLog.preparefor_division">
+<code class="descname">preparefor_division</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.preparefor_division"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.GeometricLog.preparefor_division" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.logging.GeometricLog.worldlines">
+<code class="descname">worldlines</code><span class="sig-paren">(</span><em>prune_death=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/logging/geometric.html#GeometricLog.worldlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.logging.GeometricLog.worldlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the geometric evolution of individual cells in space and time.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ad115.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/source/cellsystem.logging.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

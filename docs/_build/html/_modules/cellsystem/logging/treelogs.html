@@ -1,0 +1,222 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>cellsystem.logging.treelogs &#8212; cellsystem 0.1.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for cellsystem.logging.treelogs</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">..utils</span> <span class="k">import</span> <span class="n">Tree</span>
+<span class="kn">from</span> <span class="nn">.core</span> <span class="k">import</span> <span class="n">WeakLog</span>
+
+<div class="viewcode-block" id="TreeLog"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.treelogs.TreeLog">[docs]</a><span class="k">class</span> <span class="nc">TreeLog</span><span class="p">(</span><span class="n">WeakLog</span><span class="p">):</span>
+    <span class="s1">&#39;Base class for logs that grow trees.&#39;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alive</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tmp</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># ---</span>
+        
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">alive_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">alive</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="TreeLog.add_child"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.treelogs.TreeLog.add_child">[docs]</a>    <span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Select node</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parent_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parent_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alive</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span>
+            
+        <span class="c1"># Add child to the current node</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="n">parent_node</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        
+        <span class="k">return</span> <span class="n">child</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="TreeLog.fetch_tree"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.treelogs.TreeLog.fetch_tree">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prune_death</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch a copy of the tree.</span>
+<span class="sd">        </span>
+<span class="sd">        If `prune_death` is True, remove the leaves </span>
+<span class="sd">        that correspond to death cells.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Make a copy of the tree</span>
+        <span class="n">original</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+        <span class="c1"># Remove death cells.</span>
+        <span class="k">if</span> <span class="n">prune_death</span><span class="p">:</span>
+            <span class="n">alive</span> <span class="o">=</span> <span class="p">{</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">alive_nodes</span> <span class="p">}</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">prune_leaves</span><span class="p">(</span><span class="n">to_stay</span><span class="o">=</span><span class="n">alive</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">t</span></div>
+    <span class="c1"># ---</span>
+        
+<div class="viewcode-block" id="TreeLog.preparefor_division"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.treelogs.TreeLog.preparefor_division">[docs]</a>    <span class="k">def</span> <span class="nf">preparefor_division</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="c1"># Save the previous cell state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tmp</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">index</span></div>
+    <span class="c1"># ---</span>
+
+<div class="viewcode-block" id="TreeLog.log_death"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.treelogs.TreeLog.log_death">[docs]</a>    <span class="k">def</span> <span class="nf">log_death</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="c1"># No need to keep tracking</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">alive</span><span class="p">[</span><span class="n">cell</span><span class="o">.</span><span class="n">index</span><span class="p">]</span></div></div>
+    <span class="c1"># ---</span>
+<span class="c1"># --- TreeLog</span>
+
+    
+<div class="viewcode-block" id="AncestryLog"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.treelogs.AncestryLog">[docs]</a><span class="k">class</span> <span class="nc">AncestryLog</span><span class="p">(</span><span class="n">TreeLog</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A tree log that maintains a \&quot;family tree\&quot;.</span>
+<span class="sd">    </span>
+<span class="sd">    Each leaf represents a cell. When that cell divides,</span>
+<span class="sd">    the leaf branches into leaves representing the daughters.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="AncestryLog.add_child"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.treelogs.AncestryLog.add_child">[docs]</a>    <span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># First add the node normally to the tree</span>
+        <span class="n">child_node</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Then register the new cell node</span>
+        <span class="c1"># in the alive cells</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alive</span><span class="p">[</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">child_node</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="AncestryLog.log_newcell"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.treelogs.AncestryLog.log_newcell">[docs]</a>    <span class="k">def</span> <span class="nf">log_newcell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="c1"># Add a new child to the tree</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">cell</span><span class="o">.</span><span class="n">index</span><span class="p">)</span></div>
+    <span class="c1"># ---</span>
+        
+<div class="viewcode-block" id="AncestryLog.log_division"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.treelogs.AncestryLog.log_division">[docs]</a>    <span class="k">def</span> <span class="nf">log_division</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daughters</span><span class="p">):</span>
+        <span class="s1">&#39;Add 2 new branches to the father of the cells.&#39;</span>
+        <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="o">=</span> <span class="n">daughters</span>
+        <span class="n">father</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmp</span>
+        
+        <span class="c1"># Create new tree nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">father</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">d1</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">father</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">d2</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        
+        <span class="c1"># Cleanup</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">alive</span><span class="p">[</span><span class="n">father</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tmp</span> <span class="o">=</span> <span class="kc">None</span></div></div>
+    <span class="c1"># ---</span>
+<span class="c1"># --- AncestryLog</span>
+
+
+<div class="viewcode-block" id="MutationsLog"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.treelogs.MutationsLog">[docs]</a><span class="k">class</span> <span class="nc">MutationsLog</span><span class="p">(</span><span class="n">TreeLog</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A tree log that maintains a record of genome branching events.</span>
+<span class="sd">    </span>
+<span class="sd">    Each leaf represents a genome that may be present in one or more</span>
+<span class="sd">    cells. When one of those cells mutates, the new genome is added as</span>
+<span class="sd">    a child of that leaf. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="MutationsLog.log_newcell"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.treelogs.MutationsLog.log_newcell">[docs]</a>    <span class="k">def</span> <span class="nf">log_newcell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="c1"># Add a new child to the tree</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">cell</span><span class="o">.</span><span class="n">genome</span><span class="p">)</span>
+        <span class="c1"># Register cell as alive representative for the genome node</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alive</span><span class="p">[</span><span class="n">cell</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span></div>
+    <span class="c1"># ---</span>
+
+<div class="viewcode-block" id="MutationsLog.log_division"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.treelogs.MutationsLog.log_division">[docs]</a>    <span class="k">def</span> <span class="nf">log_division</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daughters</span><span class="p">):</span>
+        <span class="s1">&#39;Remove the father from the alive cells.&#39;</span>
+        <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="o">=</span> <span class="n">daughters</span>
+        <span class="n">father</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmp</span>
+        
+        <span class="c1"># Replace the genome representative.</span>
+        <span class="c1"># Now the daughter cells are representatives</span>
+        <span class="c1"># as having the genome of the father.</span>
+        <span class="n">genome_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alive</span><span class="p">[</span><span class="n">father</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alive</span><span class="p">[</span><span class="n">d1</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">genome_node</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alive</span><span class="p">[</span><span class="n">d2</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">genome_node</span>
+        
+        <span class="c1"># Cleanup</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">alive</span><span class="p">[</span><span class="n">father</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tmp</span> <span class="o">=</span> <span class="kc">None</span></div>
+    <span class="c1"># ---</span>
+        
+<div class="viewcode-block" id="MutationsLog.log_mutation"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.treelogs.MutationsLog.log_mutation">[docs]</a>    <span class="k">def</span> <span class="nf">log_mutation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="s1">&#39;Add a new child to the parent genome.&#39;</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">cell</span><span class="o">.</span><span class="n">genome</span><span class="p">)</span> <span class="c1"># New genome</span>
+        <span class="c1"># Register cell as an alive representative </span>
+        <span class="c1"># for the genome node</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alive</span><span class="p">[</span><span class="n">cell</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span></div></div>
+    <span class="c1"># ---</span>
+<span class="c1"># --- MutationsLog</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ad115.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

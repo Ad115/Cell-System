@@ -1,0 +1,340 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>cellsystem.logging.geometric &#8212; cellsystem 0.1.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for cellsystem.logging.geometric</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Geometric Logging</span>
+<span class="sd">=================</span>
+
+<span class="sd">This module defines functionality for following the geometric</span>
+<span class="sd">evolution of the cell blob through time.</span>
+
+<span class="sd">The classes GeometricLog and WorldLines are defined here.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="k">import</span> <span class="n">Axes3D</span>
+
+<span class="kn">from</span> <span class="nn">.core</span> <span class="k">import</span> <span class="n">WeakLog</span>
+
+
+<div class="viewcode-block" id="GeometricLog"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.GeometricLog">[docs]</a><span class="k">class</span> <span class="nc">GeometricLog</span><span class="p">(</span><span class="n">WeakLog</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Registers the geometric positions of the cells.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Maintains a changes record.&quot;&quot;&quot;</span>
+        <span class="c1"># Init as the superclass (Weak)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_state</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># ---</span>
+    
+    <span class="k">def</span> <span class="nf">_unpack_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="s1">&#39;Unpack cell information.&#39;</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">index</span>
+        <span class="n">site</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">coordinates</span>
+        
+        <span class="k">return</span> <span class="n">index</span><span class="p">,</span> <span class="n">site</span>
+    <span class="c1"># ---</span>
+    
+    <span class="k">def</span> <span class="nf">_register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="s2">&quot;Add the cell&#39;s current information to the changes.&quot;</span>
+        <span class="n">index</span><span class="p">,</span> <span class="n">site</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_info</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">site</span><span class="p">)</span> <span class="p">)</span>
+    <span class="c1"># ---</span>
+        
+    <span class="k">def</span> <span class="nf">_which_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
+        <span class="s2">&quot;Decode the event into a concrete action.&quot;</span>
+        
+        <span class="c1"># There are 3 possible actions: </span>
+        <span class="c1">#   division: ( father, ((d1,site), (d2,site)) )</span>
+        <span class="c1">#   death: (cell, None)</span>
+        <span class="c1">#   and migration: (cell, site)</span>
+        <span class="n">cell</span><span class="p">,</span> <span class="n">other</span> <span class="o">=</span> <span class="n">change</span>
+        <span class="k">if</span> <span class="n">other</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;death&quot;</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Check division</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">site</span><span class="p">),</span> <span class="p">(</span><span class="n">d2</span><span class="p">,</span> <span class="n">site</span><span class="p">)</span> <span class="o">=</span> <span class="n">other</span>
+                <span class="k">return</span> <span class="s2">&quot;division&quot;</span>
+            <span class="c1"># Check migration</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;migration&quot;</span>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="GeometricLog.iter_changes"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.GeometricLog.iter_changes">[docs]</a>    <span class="k">def</span> <span class="nf">iter_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;Iterate through every action&quot;</span>        
+        <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">changes</span><span class="p">:</span>
+            <span class="c1"># Decode change</span>
+            <span class="n">change_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_which_action</span><span class="p">(</span><span class="n">change</span><span class="p">)</span>
+        
+            <span class="k">yield</span> <span class="n">change_type</span><span class="p">,</span> <span class="n">change</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="GeometricLog.iter_states"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.GeometricLog.iter_states">[docs]</a>    <span class="k">def</span> <span class="nf">iter_states</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;Generate the intermediate states.&quot;</span>
+        <span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_state</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">yield</span> <span class="n">current_state</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">change_type</span><span class="p">,</span> <span class="n">change</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_changes</span><span class="p">():</span>
+            <span class="c1"># Perform change</span>
+            <span class="k">if</span> <span class="n">change_type</span> <span class="o">==</span> <span class="s2">&quot;migration&quot;</span><span class="p">:</span>
+                <span class="n">cell</span><span class="p">,</span> <span class="n">site</span> <span class="o">=</span> <span class="n">change</span>
+                <span class="n">current_state</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span> <span class="o">=</span> <span class="n">site</span>
+                
+            <span class="k">elif</span> <span class="n">change_type</span> <span class="o">==</span> <span class="s2">&quot;division&quot;</span><span class="p">:</span>
+                <span class="c1"># Unpack</span>
+                <span class="n">cell</span><span class="p">,</span> <span class="n">daughters</span> <span class="o">=</span> <span class="n">change</span>
+                <span class="k">del</span> <span class="n">current_state</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+                
+                <span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">s1</span><span class="p">),(</span><span class="n">d2</span><span class="p">,</span> <span class="n">s2</span><span class="p">)</span> <span class="o">=</span> <span class="n">daughters</span>
+                <span class="n">current_state</span><span class="p">[</span><span class="n">d1</span><span class="p">]</span> <span class="o">=</span> <span class="n">s1</span>
+                <span class="n">current_state</span><span class="p">[</span><span class="n">d2</span><span class="p">]</span> <span class="o">=</span> <span class="n">s2</span>
+                    
+            <span class="k">elif</span> <span class="n">change_type</span> <span class="o">==</span> <span class="s2">&quot;death&quot;</span><span class="p">:</span> 
+                <span class="n">cell</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">change</span>
+                <span class="k">del</span> <span class="n">current_state</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+        
+            <span class="k">yield</span> <span class="n">current_state</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="GeometricLog.worldlines"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.GeometricLog.worldlines">[docs]</a>    <span class="k">def</span> <span class="nf">worldlines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prune_death</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="s2">&quot;Get the geometric evolution of individual cells in space and time.&quot;</span>
+        <span class="k">return</span> <span class="n">WorldLines</span><span class="o">.</span><span class="n">from_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prune_death</span><span class="p">)</span></div>
+    <span class="c1"># ---</span>
+        
+<div class="viewcode-block" id="GeometricLog.log_newcell"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.GeometricLog.log_newcell">[docs]</a>    <span class="k">def</span> <span class="nf">log_newcell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_register</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="GeometricLog.preparefor_division"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.GeometricLog.preparefor_division">[docs]</a>    <span class="k">def</span> <span class="nf">preparefor_division</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="c1"># The index of the dividing cell</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tmp</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">index</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="GeometricLog.log_division"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.GeometricLog.log_division">[docs]</a>    <span class="k">def</span> <span class="nf">log_division</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daughters</span><span class="p">):</span>
+        <span class="c1"># Register the disappeareance of the father</span>
+        <span class="n">father</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmp</span>
+    
+        <span class="c1"># Register the sites of the daughters</span>
+        <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="o">=</span> <span class="n">daughters</span>
+        <span class="n">d1_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_info</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+        <span class="n">d2_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_info</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">changes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">father</span><span class="p">,</span> <span class="p">(</span><span class="n">d1_info</span><span class="p">,</span> <span class="n">d2_info</span><span class="p">))</span> <span class="p">)</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="GeometricLog.log_migration"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.GeometricLog.log_migration">[docs]</a>    <span class="k">def</span> <span class="nf">log_migration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_register</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="GeometricLog.log_death"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.GeometricLog.log_death">[docs]</a>    <span class="k">def</span> <span class="nf">log_death</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="s2">&quot;Register the disappeareance of the cell.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="p">)</span></div></div>
+    <span class="c1"># ---</span>
+    
+    
+    
+<div class="viewcode-block" id="WorldLines"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.WorldLines">[docs]</a><span class="k">class</span> <span class="nc">WorldLines</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A class that represents the worldlines of a set of cells.</span>
+<span class="sd">    </span>
+<span class="sd">    A worldline is the place in time and space that a cell occupies throughout</span>
+<span class="sd">    it&#39;s existence.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="s2">&quot;Initialize from a state.&quot;</span>
+        <span class="k">if</span> <span class="n">initial_state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">initial_state</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">worldlines</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="c1"># Assemble initial state</span>
+        <span class="k">for</span> <span class="n">cell</span><span class="p">,</span><span class="n">site</span> <span class="ow">in</span> <span class="n">initial_state</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># A point in spacetime</span>
+            <span class="n">event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">site</span><span class="p">)</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">worldlines</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+    <span class="c1"># ---</span>
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_event</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">site</span><span class="p">):</span>
+        <span class="s2">&quot;Assemble a point in spacetime.&quot;</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span> <span class="p">[</span><span class="n">time</span><span class="p">]</span><span class="o">+</span><span class="nb">list</span><span class="p">(</span><span class="n">site</span><span class="p">)</span> <span class="p">)</span>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="WorldLines.from_log"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.WorldLines.from_log">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_log</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">geometric_log</span><span class="p">,</span> <span class="n">prune_death</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="s2">&quot;Initialize from a geometric log.&quot;</span>
+        <span class="n">changes</span> <span class="o">=</span> <span class="n">geometric_log</span><span class="o">.</span><span class="n">iter_changes</span><span class="p">()</span>
+        <span class="n">states</span> <span class="o">=</span> <span class="n">geometric_log</span><span class="o">.</span><span class="n">iter_states</span><span class="p">()</span>
+        
+        <span class="c1"># Intialize timelines object</span>
+        <span class="n">current_state</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">worldlines</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">current_state</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        
+        <span class="c1"># Assemble timelines</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">state</span><span class="p">,</span><span class="n">change</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">changes</span><span class="p">)):</span>
+            
+            <span class="n">worldlines</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> 
+                              <span class="n">transition</span><span class="o">=</span><span class="n">change</span><span class="p">,</span> 
+                              <span class="n">time</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> 
+                              <span class="n">prune_death</span><span class="o">=</span><span class="n">prune_death</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">worldlines</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="WorldLines.update"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.WorldLines.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">transition</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">prune_death</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="s2">&quot;Add the event described by the transition, time and final state.&quot;</span>
+        <span class="n">change_type</span><span class="p">,</span> <span class="n">change</span> <span class="o">=</span> <span class="n">transition</span>
+        
+        <span class="k">if</span> <span class="n">prune_death</span> <span class="ow">and</span> <span class="p">(</span><span class="n">change_type</span> <span class="o">==</span> <span class="s2">&quot;death&quot;</span><span class="p">):</span>
+            <span class="c1"># Cell is dead, remove it&#39;s timeline</span>
+            <span class="n">cell</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">change</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+            
+        <span class="k">elif</span> <span class="n">change_type</span> <span class="o">==</span> <span class="s2">&quot;division&quot;</span><span class="p">:</span>
+            <span class="n">cell</span><span class="p">,</span> <span class="n">daughters</span> <span class="o">=</span> <span class="n">change</span>
+            <span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">s1</span><span class="p">),(</span><span class="n">d2</span><span class="p">,</span> <span class="n">s2</span><span class="p">)</span> <span class="o">=</span> <span class="n">daughters</span>
+            <span class="c1"># Find the time and site of the division</span>
+            <span class="n">division</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_state_of</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+            <span class="c1"># The daughters&#39; timeline starts at the </span>
+            <span class="c1"># site of the division and to their current site</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">division</span><span class="p">)</span>\
+                <span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="n">d2</span><span class="p">,</span> <span class="n">division</span><span class="p">)</span>
+            
+        <span class="k">for</span> <span class="n">cell</span><span class="p">,</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">site</span><span class="p">))</span>
+            
+        <span class="k">return</span> <span class="bp">self</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="WorldLines.remove"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.WorldLines.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="s2">&quot;Remove the given cell&#39;s timeline.&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">worldlines</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="WorldLines.last_state_of"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.WorldLines.last_state_of">[docs]</a>    <span class="k">def</span> <span class="nf">last_state_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="s2">&quot;Return the last recorded event of the given cell.&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">worldlines</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="WorldLines.add_event"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.WorldLines.add_event">[docs]</a>    <span class="k">def</span> <span class="nf">add_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="s2">&quot;Add an event (a spacetime coordinate) for the cell.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worldlines</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+    <span class="c1"># ---</span>
+    
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="s2">&quot;Get the timeline of a cell.&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">worldlines</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+    <span class="c1"># ---</span>
+    
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;Iterate through the cell worldlines.&quot;</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">worldlines</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="WorldLines.show"><a class="viewcode-back" href="../../../source/cellsystem.logging.html#cellsystem.logging.geometric.WorldLines.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;Render the 3D worldlines as a plot.&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">cell</span><span class="p">,</span><span class="n">timeline</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">timeline</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>   <span class="c1"># End point</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
+    <span class="c1"># ---</span>
+<span class="c1"># --- WorldLines</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ad115.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

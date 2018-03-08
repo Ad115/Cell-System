@@ -1,0 +1,272 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>cellsystem.simulation.world &#8212; cellsystem 0.1.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for cellsystem.simulation.world</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">A world is the passive (or not?) stage where </span>
+<span class="sd">entities do their own thing :P</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rnd</span>
+
+
+<div class="viewcode-block" id="wrap"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.world.wrap">[docs]</a><span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">maxValue</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Auxiliary function to wrap an integer on maxValue.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">            &gt;&gt;&gt; # For positives: wrap(n, maxValue) = n % maxValue</span>
+<span class="sd">            &gt;&gt;&gt; [ wrap(i,3) for i in range(9) ]</span>
+<span class="sd">            [0, 1, 2, 0, 1, 2, 0, 1, 2]</span>
+
+<span class="sd">            &gt;&gt;&gt; # For negatives, the pattern is continued in a natural way</span>
+<span class="sd">            &gt;&gt;&gt; for i in range(-5, 5+1): print(f&#39;{i} : {wrap(i, 3)}&#39;)</span>
+<span class="sd">            ...</span>
+<span class="sd">            -3 : 0</span>
+<span class="sd">            -2 : 1</span>
+<span class="sd">            -1 : 2</span>
+<span class="sd">            0 : 0</span>
+<span class="sd">            1 : 1</span>
+<span class="sd">            2 : 2</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="n">maxValue</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">%=</span> <span class="n">maxValue</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># We must offset the integer to the positives</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">n</span><span class="o">//</span><span class="n">maxValue</span><span class="p">)</span><span class="o">*</span><span class="n">maxValue</span>
+    <span class="k">return</span> <span class="n">n</span></div>
+<span class="c1"># ---</span>
+
+<div class="viewcode-block" id="toroidal_wrap"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.world.toroidal_wrap">[docs]</a><span class="k">def</span> <span class="nf">toroidal_wrap</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">coord</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the coordinates wrapped on the grid dimensions.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">wrap</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim_size</span><span class="p">)</span> 
+                    <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">dim_size</span> 
+                        <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">grid_dimensions</span><span class="p">)</span> <span class="p">)</span></div>
+<span class="c1"># ---</span>
+
+
+
+<div class="viewcode-block" id="Site"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.world.Site">[docs]</a><span class="k">class</span> <span class="nc">Site</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A unit of space.</span>
+
+<span class="sd">    Cells inhabitate in these spaces and interact with their neighborhood.</span>
+
+<span class="sd">    Is aware of:</span>
+<span class="sd">            + World: The world it forms a part of.</span>
+<span class="sd">            + Coordinates &lt;i,j&gt;: Coordinates in the matrix.</span>
+<span class="sd">            + Guests: &lt;List&gt;: The guests currently inhabiting this site.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">world</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Assemble a site in which agents may inhabit.</span>
+
+<span class="sd">        :param world: The world which this forms a part of.</span>
+<span class="sd">        :param coordinates: The coordinates in the world.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">world</span> <span class="o">=</span> <span class="n">world</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coordinates</span> <span class="o">=</span> <span class="n">coordinates</span>  <span class="c1"># Set variable only once</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guests</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="c1"># ---</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Getter for the site&#39;s coordinates.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coordinates</span>
+    <span class="c1"># ---</span>
+
+<div class="viewcode-block" id="Site.add_guest"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.world.Site.add_guest">[docs]</a>    <span class="k">def</span> <span class="nf">add_guest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guest</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add the given cell as a new guest to this site.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guests</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">guest</span><span class="p">)</span>
+        <span class="n">guest</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="bp">self</span></div>
+    <span class="c1"># ---</span>
+
+<div class="viewcode-block" id="Site.remove_guest"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.world.Site.remove_guest">[docs]</a>    <span class="k">def</span> <span class="nf">remove_guest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guest</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove the given cell as guest for this site.</span>
+
+<span class="sd">        If the cell is not currently in this site, an error is throwed.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">guests</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">guest</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Guest with index </span><span class="si">{}</span><span class="s1"> is not at site (</span><span class="si">{}</span><span class="s1">)&#39;</span>
+                                            <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">guest</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">))</span></div>
+    <span class="c1"># ---</span>
+
+<div class="viewcode-block" id="Site.guest_count"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.world.Site.guest_count">[docs]</a>    <span class="k">def</span> <span class="nf">guest_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of guests residing in this site.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guests</span><span class="p">)</span></div>
+    <span class="c1"># ---</span>
+
+<div class="viewcode-block" id="Site.random_neighbor"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.world.Site.random_neighbor">[docs]</a>    <span class="k">def</span> <span class="nf">random_neighbor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a random site in the neighborhood of the current site.&quot;&quot;&quot;</span>
+        <span class="c1"># Select a neighbor</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">random_neighbor_of</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+    <span class="c1"># ---</span>
+<span class="c1"># --- Site</span>
+
+
+
+<span class="c1"># &lt; -----</span>
+<div class="viewcode-block" id="World"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.world.World">[docs]</a><span class="k">class</span> <span class="nc">World</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The space in which cells inhabit. </span>
+
+<span class="sd">    Aware of space (as a grid) and the passage of time (steps). It is</span>
+<span class="sd">    the main struture of the program, being the only observable and given it</span>
+<span class="sd">    coordinates all processes.</span>
+
+<span class="sd">    A system is aware of:</span>
+<span class="sd">            - Grid: The sites the action develops in.</span>
+<span class="sd">            - Cells: The cells that live, die and interact in the grid.</span>
+<span class="sd">            - Neighborhood: How many and which sites may directly influence or</span>
+<span class="sd">                            be influenced by another.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_dimensions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wrap</span><span class="o">=</span><span class="n">toroidal_wrap</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the world.</span>
+
+<span class="sd">        :param grid_dimensions: Tuple specifying rows and columns.</span>
+<span class="sd">        :param wrap: Callable. How does the grid treats out-of-range coordinates?</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Set dimensions</span>
+        <span class="k">if</span> <span class="n">grid_dimensions</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">grid_dimensions</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid_dimensions</span> <span class="o">=</span> <span class="n">grid_dimensions</span>
+        
+        <span class="c1"># Initialize grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wrap_function</span> <span class="o">=</span> <span class="n">wrap</span>  <span class="c1"># Toroidal wrapping behavior of the grid</span>
+        
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_dimensions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span> <span class="n">Site</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">))</span>
+                               <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+                                   <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span> <span class="p">)</span> <span class="c1"># Stored in 1D</span>
+        <span class="c1"># Initialize neighborhood</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">neighborhood</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                              <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                              <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">]</span>
+    <span class="c1"># ---</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">middle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the site at the middle of the world.&quot;&quot;&quot;</span>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_dimensions</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">at</span><span class="p">(</span> <span class="p">(</span><span class="n">rows</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">cols</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
+    <span class="c1"># ---</span>
+
+<div class="viewcode-block" id="World.at"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.world.World.at">[docs]</a>    <span class="k">def</span> <span class="nf">at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the site at the specified coordinates.&quot;&quot;&quot;</span>        
+        <span class="c1"># Wrap (toroidal coordinates)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrap_function</span><span class="p">:</span>
+            <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrap_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">)</span>
+            
+        <span class="c1"># The grid is 1D, so we must convert from 2D</span>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_dimensions</span>
+        <span class="n">ij</span> <span class="o">=</span> <span class="n">cols</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">ij</span><span class="p">]</span></div>
+    <span class="c1"># ---</span>
+
+<div class="viewcode-block" id="World.random_neighbor_of"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.world.World.random_neighbor_of">[docs]</a>    <span class="k">def</span> <span class="nf">random_neighbor_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">site</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the relative coordinates of the available neighbors.</span>
+
+<span class="sd">        Returns a container holding pairs of numbers. the prescence of an item</span>
+<span class="sd">        (a,b) means that a site at i,j has a neighbor at (i+a, j+b).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get the site coordinates</span>
+        <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="o">=</span> <span class="n">site</span><span class="o">.</span><span class="n">coordinates</span>
+        <span class="c1"># Select a neighbor</span>
+        <span class="n">n_i</span><span class="p">,</span> <span class="n">n_j</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neighborhood</span><span class="p">)</span>
+        <span class="c1"># Fetch the neighbor</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">at</span><span class="p">(</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">n_i</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="n">n_j</span><span class="p">)</span> <span class="p">)</span></div></div>
+    <span class="c1"># ---</span>
+<span class="c1"># --- World</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ad115.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

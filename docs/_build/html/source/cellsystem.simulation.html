@@ -1,0 +1,852 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>cellsystem.simulation package &#8212; cellsystem 0.1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cellsystem-simulation-package">
+<h1>cellsystem.simulation package<a class="headerlink" href="#cellsystem-simulation-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-cellsystem.simulation.cells">
+<span id="cellsystem-simulation-cells-module"></span><h2>cellsystem.simulation.cells module<a class="headerlink" href="#module-cellsystem.simulation.cells" title="Permalink to this headline">¶</a></h2>
+<p>Structures representing the biological entities.</p>
+<dl class="class">
+<dt id="cellsystem.simulation.cells.Cell">
+<em class="property">class </em><code class="descclassname">cellsystem.simulation.cells.</code><code class="descname">Cell</code><span class="sig-paren">(</span><em>lineage</em>, <em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#Cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.Cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A single cell.</p>
+<p>It acts according to it’s state, and the states of nearby cells and sites.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">+ Index</code></dt>
+<dd><p>A label that identifies it among others in the
+same lineage.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">+ Father</code></dt>
+<dd><p>The index (lineage label) of it’s father.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">+ CellLine</code></dt>
+<dd><p>The lineage this cell belongs to.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">+ Site</code></dt>
+<dd><p>The place in the grid this cell inhabits in.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">+ Age</code></dt>
+<dd><p>The timesteps this cell has passed through.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">+ Mutations</code></dt>
+<dd><p>The mutations in this cell relative to the cell
+lineage’s reference</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.Cell.add_to">
+<code class="descname">add_to</code><span class="sig-paren">(</span><em>site</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#Cell.add_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.Cell.add_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the cell to the site.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cellsystem.simulation.cells.Cell.ancestralGenome">
+<code class="descname">ancestralGenome</code><a class="headerlink" href="#cellsystem.simulation.cells.Cell.ancestralGenome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ancestral genome of the cell lineage.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cellsystem.simulation.cells.Cell.coordinates">
+<code class="descname">coordinates</code><a class="headerlink" href="#cellsystem.simulation.cells.Cell.coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coordinates of the site that the cell inhabits.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.Cell.deathProbability">
+<code class="descname">deathProbability</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#Cell.deathProbability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.Cell.deathProbability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cellular death probability.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.Cell.die">
+<code class="descname">die</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#Cell.die"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.Cell.die" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cellular death.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.Cell.divide">
+<code class="descname">divide</code><span class="sig-paren">(</span><em>preserve_father=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#Cell.divide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.Cell.divide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cell division.</p>
+<p>Get a new daughter of this cell and place it in a nearby
+neighboring site.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.Cell.divisionProbability">
+<code class="descname">divisionProbability</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#Cell.divisionProbability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.Cell.divisionProbability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Probability that this cell will divide if selected for division.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cellsystem.simulation.cells.Cell.genome">
+<code class="descname">genome</code><a class="headerlink" href="#cellsystem.simulation.cells.Cell.genome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Genome of the cell.</p>
+<p>It is assembled from the cell’s ancestral genome and it’s mutations.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.Cell.init_actions">
+<code class="descname">init_actions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#Cell.init_actions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.Cell.init_actions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list with the possible actions to take for this cell.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.Cell.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><em>site=None</em>, <em>father=None</em>, <em>mutations=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#Cell.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.Cell.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize grid site, mutations and father.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.Cell.migrate">
+<code class="descname">migrate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#Cell.migrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.Cell.migrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Migrate to a neighboring cell.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.Cell.migrationProbability">
+<code class="descname">migrationProbability</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#Cell.migrationProbability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.Cell.migrationProbability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Migration probability for this cell.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.Cell.mutate">
+<code class="descname">mutate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#Cell.mutate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.Cell.mutate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do a single site mutation.</p>
+<p>Note: The genome may not represent a nucleotide sequence, so these
+mutations may not represent SNPs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.Cell.mutationProbability">
+<code class="descname">mutationProbability</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#Cell.mutationProbability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.Cell.mutationProbability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Probability to mutate if selected for it.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cellsystem.simulation.cells.Cell.mutations">
+<code class="descname">mutations</code><a class="headerlink" href="#cellsystem.simulation.cells.Cell.mutations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Record of the mutations the cell has had.</p>
+<p>The mutations are relative to the ancestral genome.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.Cell.new_daughter">
+<code class="descname">new_daughter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#Cell.new_daughter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.Cell.new_daughter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a new daughter cell.</p>
+<p>Initialize with father and mutation attributes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.Cell.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>*args</em>, <em>log=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#Cell.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.Cell.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select an action and perform it.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.simulation.cells.CellAction">
+<em class="property">class </em><code class="descclassname">cellsystem.simulation.cells.</code><code class="descname">CellAction</code><span class="sig-paren">(</span><em>action</em>, <em>probability</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellAction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.CellAction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Cell action.</p>
+<p>Class used to represent actions that the cell could perform.</p>
+<dl class="method">
+<dt id="cellsystem.simulation.cells.CellAction.try_action">
+<code class="descname">try_action</code><span class="sig-paren">(</span><em>log=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellAction.try_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.CellAction.try_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform the action according to it’s probability.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.simulation.cells.CellLine">
+<em class="property">class </em><code class="descclassname">cellsystem.simulation.cells.</code><code class="descname">CellLine</code><span class="sig-paren">(</span><em>genome=None</em>, <em>genome_alphabet=None</em>, <em>recycle_dead=True</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.CellLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Handles the specimens of a specific cell lineage.</p>
+<p>A cell lineage is a group of cells that have a common ancestor, we
+represent the common ancestor by it’s ancestral genome.
+This structure is in charge of holding this ancestral code and managing
+the cells creating new cells when needed and cleaning up the dead ones.</p>
+<dl class="docutils">
+<dt>Atributes:</dt>
+<dd><ul class="first last simple">
+<li>Ancestral genome: A string-like object.</li>
+<li>Cells: The cells inherited from this cell line.</li>
+<li>Alive/Dead cells.</li>
+<li><dl class="first docutils">
+<dt>Current cell index: Each cell has a unique index. This is the</dt>
+<dd>index to place in the next cell to be born.</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="cellsystem.simulation.cells.CellLine.add_cell_to">
+<code class="descname">add_cell_to</code><span class="sig-paren">(</span><em>site</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.add_cell_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.CellLine.add_cell_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new, initialized cell to the given site.</p>
+<p>Return the added cell to the caller.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.CellLine.cell_to_recycle">
+<code class="descname">cell_to_recycle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.cell_to_recycle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.CellLine.cell_to_recycle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a cell from the dead ones.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.CellLine.handle_death">
+<code class="descname">handle_death</code><span class="sig-paren">(</span><em>dying</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.handle_death"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.CellLine.handle_death" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process a dying cell.</p>
+<p>This means removing from the alive cells and adding to the dead ones,
+maybe to recycle it when another is born.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.CellLine.new_cell">
+<code class="descname">new_cell</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.new_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.CellLine.new_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a new blank cell in this lineage and system.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.CellLine.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.CellLine.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move a step forward in time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.CellLine.recycle_cell">
+<code class="descname">recycle_cell</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.recycle_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.CellLine.recycle_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear previous information from a cell.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.CellLine.register_log">
+<code class="descname">register_log</code><span class="sig-paren">(</span><em>log</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.register_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.CellLine.register_log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.cells.CellLine.sample">
+<code class="descname">sample</code><span class="sig-paren">(</span><em>all=False</em>, <em>n=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.CellLine.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a sample of alive cells.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>all</strong> – If True, return all alive cells, else, return a sample of
+size n.</li>
+<li><strong>n</strong> – The size of the sample. If 1, return the cell without a
+container.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cellsystem.simulation.cells.CellLine.total_cells">
+<code class="descname">total_cells</code><a class="headerlink" href="#cellsystem.simulation.cells.CellLine.total_cells" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="cellsystem.simulation.cells.CellLine.validate_genome">
+<em class="property">static </em><code class="descname">validate_genome</code><span class="sig-paren">(</span><em>genome</em>, <em>alphabet</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.validate_genome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.cells.CellLine.validate_genome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the genome is assembled from the given alphabet.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-cellsystem.simulation.logging">
+<span id="cellsystem-simulation-logging-module"></span><h2>cellsystem.simulation.logging module<a class="headerlink" href="#module-cellsystem.simulation.logging" title="Permalink to this headline">¶</a></h2>
+<p>Logging capabilities for entities.</p>
+<p>The decorator defined here serves as an interface with the
+logging classes.</p>
+<p>It assumes a log has <cite>preparefor</cite> and <cite>log</cite> methods.</p>
+<dl class="function">
+<dt id="cellsystem.simulation.logging.logged">
+<code class="descclassname">cellsystem.simulation.logging.</code><code class="descname">logged</code><span class="sig-paren">(</span><em>action_name</em>, <em>prepare=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/logging.html#logged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.logging.logged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorate an action with logging.</p>
+<p>Allows to specify if a prelogging action is called.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cellsystem.simulation.system">
+<span id="cellsystem-simulation-system-module"></span><h2>cellsystem.simulation.system module<a class="headerlink" href="#module-cellsystem.simulation.system" title="Permalink to this headline">¶</a></h2>
+<p>System-related classes.</p>
+<p>This module defines a general system that can be used as
+the base of a computation graph.</p>
+<p>A system is composed of entities and interactions btw them,
+it coordinates all processes.</p>
+<dl class="class">
+<dt id="cellsystem.simulation.system.Entity">
+<em class="property">class </em><code class="descclassname">cellsystem.simulation.system.</code><code class="descname">Entity</code><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.Entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An entity is something that resides in the system.</p>
+<p>It processes information according to it’s internal state
+and the information flowing through the links it shares with
+other entities.</p>
+<dl class="docutils">
+<dt>An entity registers the following methods:</dt>
+<dd><ul class="first last simple">
+<li>process(time)</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="cellsystem.simulation.system.Entity.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>time</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#Entity.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.Entity.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.simulation.system.Interaction">
+<em class="property">class </em><code class="descclassname">cellsystem.simulation.system.</code><code class="descname">Interaction</code><span class="sig-paren">(</span><em>entities</em>, <em>effect</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#Interaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.Interaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A structure representing flow of information btw entities.</p>
+<dl class="method">
+<dt id="cellsystem.simulation.system.Interaction.append">
+<code class="descname">append</code><span class="sig-paren">(</span><em>effect</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#Interaction.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.Interaction.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Effects btw the same entities can be appended and executed in order</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.system.Interaction.process">
+<code class="descname">process</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#Interaction.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.Interaction.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes the interaction.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.simulation.system.Process">
+<em class="property">class </em><code class="descclassname">cellsystem.simulation.system.</code><code class="descname">Process</code><span class="sig-paren">(</span><em>entities</em>, <em>effects</em><span class="sig-paren">)</span><a class="headerlink" href="#cellsystem.simulation.system.Process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<dl class="attribute">
+<dt id="cellsystem.simulation.system.Process.effects">
+<code class="descname">effects</code><a class="headerlink" href="#cellsystem.simulation.system.Process.effects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cellsystem.simulation.system.Process.entities">
+<code class="descname">entities</code><a class="headerlink" href="#cellsystem.simulation.system.Process.entities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.simulation.system.System">
+<em class="property">class </em><code class="descclassname">cellsystem.simulation.system.</code><code class="descname">System</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.System" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>The global system and event dispatcher.</p>
+<p>Aware of the passage of time (steps). A system is
+composed of entities and interactions between them,
+at each time step, the system triggers the proceses
+associated with them.</p>
+<dl class="method">
+<dt id="cellsystem.simulation.system.System.add_entity">
+<code class="descname">add_entity</code><span class="sig-paren">(</span><em>entity</em>, <em>name</em>, <em>procesable=True</em>, <em>inithook=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.add_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.System.add_entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an entity to the graph.</p>
+<p>If procesable, the entity.process(time) method is called
+on each time step.</p>
+<p>Inithooks are callables called at initialization.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.system.System.add_interaction_to">
+<code class="descname">add_interaction_to</code><span class="sig-paren">(</span><em>container</em>, <em>effect</em>, <em>entitynames</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.add_interaction_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.System.add_interaction_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an interaction btw named entities to a dict-like container.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.system.System.link">
+<code class="descname">link</code><span class="sig-paren">(</span><em>effect</em>, <em>entitynames</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.System.link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an interation btw named entities.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.system.System.process_interactions_in">
+<code class="descname">process_interactions_in</code><span class="sig-paren">(</span><em>interactions</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.process_interactions_in"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.System.process_interactions_in" title="Permalink to this definition">¶</a></dt>
+<dd><p>From the dict-like container of interactions, process items.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.system.System.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>steps</em>, <em>init=None</em>, <em>after_step=None</em>, <em>before_step=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.System.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start running the simulation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.system.System.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.System.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize things before starting simulation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.system.System.stateof">
+<code class="descname">stateof</code><span class="sig-paren">(</span><em>entityname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.stateof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.System.stateof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask the entity for it’s state</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.system.System.step">
+<code class="descname">step</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.System.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a single step forward in time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.system.System.update_hooks">
+<code class="descname">update_hooks</code><span class="sig-paren">(</span><em>hooktype</em>, <em>newhooks</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.update_hooks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.system.System.update_hooks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the given hooks to the system.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-cellsystem.simulation.world">
+<span id="cellsystem-simulation-world-module"></span><h2>cellsystem.simulation.world module<a class="headerlink" href="#module-cellsystem.simulation.world" title="Permalink to this headline">¶</a></h2>
+<p>A world is the passive (or not?) stage where
+entities do their own thing :P</p>
+<dl class="class">
+<dt id="cellsystem.simulation.world.Site">
+<em class="property">class </em><code class="descclassname">cellsystem.simulation.world.</code><code class="descname">Site</code><span class="sig-paren">(</span><em>world</em>, <em>coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/world.html#Site"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.world.Site" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A unit of space.</p>
+<p>Cells inhabitate in these spaces and interact with their neighborhood.</p>
+<dl class="docutils">
+<dt>Is aware of:</dt>
+<dd><ul class="first last simple">
+<li>World: The world it forms a part of.</li>
+<li>Coordinates &lt;i,j&gt;: Coordinates in the matrix.</li>
+<li>Guests: &lt;List&gt;: The guests currently inhabiting this site.</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="cellsystem.simulation.world.Site.add_guest">
+<code class="descname">add_guest</code><span class="sig-paren">(</span><em>guest</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/world.html#Site.add_guest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.world.Site.add_guest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the given cell as a new guest to this site.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cellsystem.simulation.world.Site.coordinates">
+<code class="descname">coordinates</code><a class="headerlink" href="#cellsystem.simulation.world.Site.coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the site’s coordinates.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.world.Site.guest_count">
+<code class="descname">guest_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/world.html#Site.guest_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.world.Site.guest_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of guests residing in this site.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.world.Site.random_neighbor">
+<code class="descname">random_neighbor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/world.html#Site.random_neighbor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.world.Site.random_neighbor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a random site in the neighborhood of the current site.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.world.Site.remove_guest">
+<code class="descname">remove_guest</code><span class="sig-paren">(</span><em>guest</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/world.html#Site.remove_guest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.world.Site.remove_guest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the given cell as guest for this site.</p>
+<p>If the cell is not currently in this site, an error is throwed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.simulation.world.World">
+<em class="property">class </em><code class="descclassname">cellsystem.simulation.world.</code><code class="descname">World</code><span class="sig-paren">(</span><em>grid_dimensions=None</em>, <em>wrap=&lt;function toroidal_wrap&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/world.html#World"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.world.World" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>The space in which cells inhabit.</p>
+<p>Aware of space (as a grid) and the passage of time (steps). It is
+the main struture of the program, being the only observable and given it
+coordinates all processes.</p>
+<dl class="docutils">
+<dt>A system is aware of:</dt>
+<dd><ul class="first last simple">
+<li>Grid: The sites the action develops in.</li>
+<li>Cells: The cells that live, die and interact in the grid.</li>
+<li><dl class="first docutils">
+<dt>Neighborhood: How many and which sites may directly influence or</dt>
+<dd>be influenced by another.</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="cellsystem.simulation.world.World.at">
+<code class="descname">at</code><span class="sig-paren">(</span><em>coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/world.html#World.at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.world.World.at" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the site at the specified coordinates.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cellsystem.simulation.world.World.middle">
+<code class="descname">middle</code><a class="headerlink" href="#cellsystem.simulation.world.World.middle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the site at the middle of the world.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.world.World.random_neighbor_of">
+<code class="descname">random_neighbor_of</code><span class="sig-paren">(</span><em>site</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/world.html#World.random_neighbor_of"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.world.World.random_neighbor_of" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the relative coordinates of the available neighbors.</p>
+<p>Returns a container holding pairs of numbers. the prescence of an item
+(a,b) means that a site at i,j has a neighbor at (i+a, j+b).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="cellsystem.simulation.world.toroidal_wrap">
+<code class="descclassname">cellsystem.simulation.world.</code><code class="descname">toroidal_wrap</code><span class="sig-paren">(</span><em>grid</em>, <em>coord</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/world.html#toroidal_wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.world.toroidal_wrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the coordinates wrapped on the grid dimensions.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cellsystem.simulation.world.wrap">
+<code class="descclassname">cellsystem.simulation.world.</code><code class="descname">wrap</code><span class="sig-paren">(</span><em>n</em>, <em>maxValue</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/world.html#wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.world.wrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Auxiliary function to wrap an integer on maxValue.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># For positives: wrap(n, maxValue) = n % maxValue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span> <span class="n">wrap</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span> <span class="p">]</span>
+<span class="go">[0, 1, 2, 0, 1, 2, 0, 1, 2]</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># For negatives, the pattern is continued in a natural way</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{i}</span><span class="s1"> : {wrap(i, 3)}&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">-3 : 0</span>
+<span class="go">-2 : 1</span>
+<span class="go">-1 : 2</span>
+<span class="go">0 : 0</span>
+<span class="go">1 : 1</span>
+<span class="go">2 : 2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cellsystem.simulation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-cellsystem.simulation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="cellsystem.simulation.System">
+<em class="property">class </em><code class="descclassname">cellsystem.simulation.</code><code class="descname">System</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.System" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>The global system and event dispatcher.</p>
+<p>Aware of the passage of time (steps). A system is
+composed of entities and interactions between them,
+at each time step, the system triggers the proceses
+associated with them.</p>
+<dl class="method">
+<dt id="cellsystem.simulation.System.add_entity">
+<code class="descname">add_entity</code><span class="sig-paren">(</span><em>entity</em>, <em>name</em>, <em>procesable=True</em>, <em>inithook=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.add_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.System.add_entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an entity to the graph.</p>
+<p>If procesable, the entity.process(time) method is called
+on each time step.</p>
+<p>Inithooks are callables called at initialization.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.System.add_interaction_to">
+<code class="descname">add_interaction_to</code><span class="sig-paren">(</span><em>container</em>, <em>effect</em>, <em>entitynames</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.add_interaction_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.System.add_interaction_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an interaction btw named entities to a dict-like container.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.System.link">
+<code class="descname">link</code><span class="sig-paren">(</span><em>effect</em>, <em>entitynames</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.System.link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an interation btw named entities.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.System.process_interactions_in">
+<code class="descname">process_interactions_in</code><span class="sig-paren">(</span><em>interactions</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.process_interactions_in"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.System.process_interactions_in" title="Permalink to this definition">¶</a></dt>
+<dd><p>From the dict-like container of interactions, process items.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.System.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>steps</em>, <em>init=None</em>, <em>after_step=None</em>, <em>before_step=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.System.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start running the simulation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.System.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.System.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize things before starting simulation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.System.stateof">
+<code class="descname">stateof</code><span class="sig-paren">(</span><em>entityname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.stateof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.System.stateof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask the entity for it’s state</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.System.step">
+<code class="descname">step</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.System.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a single step forward in time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.System.update_hooks">
+<code class="descname">update_hooks</code><span class="sig-paren">(</span><em>hooktype</em>, <em>newhooks</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/system.html#System.update_hooks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.System.update_hooks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the given hooks to the system.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.simulation.CellLine">
+<em class="property">class </em><code class="descclassname">cellsystem.simulation.</code><code class="descname">CellLine</code><span class="sig-paren">(</span><em>genome=None</em>, <em>genome_alphabet=None</em>, <em>recycle_dead=True</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.CellLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Handles the specimens of a specific cell lineage.</p>
+<p>A cell lineage is a group of cells that have a common ancestor, we
+represent the common ancestor by it’s ancestral genome.
+This structure is in charge of holding this ancestral code and managing
+the cells creating new cells when needed and cleaning up the dead ones.</p>
+<dl class="docutils">
+<dt>Atributes:</dt>
+<dd><ul class="first last simple">
+<li>Ancestral genome: A string-like object.</li>
+<li>Cells: The cells inherited from this cell line.</li>
+<li>Alive/Dead cells.</li>
+<li><dl class="first docutils">
+<dt>Current cell index: Each cell has a unique index. This is the</dt>
+<dd>index to place in the next cell to be born.</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="cellsystem.simulation.CellLine.add_cell_to">
+<code class="descname">add_cell_to</code><span class="sig-paren">(</span><em>site</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.add_cell_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.CellLine.add_cell_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new, initialized cell to the given site.</p>
+<p>Return the added cell to the caller.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.CellLine.cell_to_recycle">
+<code class="descname">cell_to_recycle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.cell_to_recycle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.CellLine.cell_to_recycle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a cell from the dead ones.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.CellLine.handle_death">
+<code class="descname">handle_death</code><span class="sig-paren">(</span><em>dying</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.handle_death"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.CellLine.handle_death" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process a dying cell.</p>
+<p>This means removing from the alive cells and adding to the dead ones,
+maybe to recycle it when another is born.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.CellLine.new_cell">
+<code class="descname">new_cell</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.new_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.CellLine.new_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a new blank cell in this lineage and system.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.CellLine.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.CellLine.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move a step forward in time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.CellLine.recycle_cell">
+<code class="descname">recycle_cell</code><span class="sig-paren">(</span><em>cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.recycle_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.CellLine.recycle_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear previous information from a cell.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.CellLine.register_log">
+<code class="descname">register_log</code><span class="sig-paren">(</span><em>log</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.register_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.CellLine.register_log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.CellLine.sample">
+<code class="descname">sample</code><span class="sig-paren">(</span><em>all=False</em>, <em>n=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.CellLine.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a sample of alive cells.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>all</strong> – If True, return all alive cells, else, return a sample of
+size n.</li>
+<li><strong>n</strong> – The size of the sample. If 1, return the cell without a
+container.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cellsystem.simulation.CellLine.total_cells">
+<code class="descname">total_cells</code><a class="headerlink" href="#cellsystem.simulation.CellLine.total_cells" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="cellsystem.simulation.CellLine.validate_genome">
+<em class="property">static </em><code class="descname">validate_genome</code><span class="sig-paren">(</span><em>genome</em>, <em>alphabet</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/cells.html#CellLine.validate_genome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.CellLine.validate_genome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the genome is assembled from the given alphabet.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cellsystem.simulation.World">
+<em class="property">class </em><code class="descclassname">cellsystem.simulation.</code><code class="descname">World</code><span class="sig-paren">(</span><em>grid_dimensions=None</em>, <em>wrap=&lt;function toroidal_wrap&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/world.html#World"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.World" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>The space in which cells inhabit.</p>
+<p>Aware of space (as a grid) and the passage of time (steps). It is
+the main struture of the program, being the only observable and given it
+coordinates all processes.</p>
+<dl class="docutils">
+<dt>A system is aware of:</dt>
+<dd><ul class="first last simple">
+<li>Grid: The sites the action develops in.</li>
+<li>Cells: The cells that live, die and interact in the grid.</li>
+<li><dl class="first docutils">
+<dt>Neighborhood: How many and which sites may directly influence or</dt>
+<dd>be influenced by another.</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="cellsystem.simulation.World.at">
+<code class="descname">at</code><span class="sig-paren">(</span><em>coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/world.html#World.at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.World.at" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the site at the specified coordinates.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cellsystem.simulation.World.middle">
+<code class="descname">middle</code><a class="headerlink" href="#cellsystem.simulation.World.middle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the site at the middle of the world.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cellsystem.simulation.World.random_neighbor_of">
+<code class="descname">random_neighbor_of</code><span class="sig-paren">(</span><em>site</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cellsystem/simulation/world.html#World.random_neighbor_of"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cellsystem.simulation.World.random_neighbor_of" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the relative coordinates of the available neighbors.</p>
+<p>Returns a container holding pairs of numbers. the prescence of an item
+(a,b) means that a site at i,j has a neighbor at (i+a, j+b).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ad115.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/source/cellsystem.simulation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

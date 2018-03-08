@@ -1,0 +1,276 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>cellsystem.simulation.system &#8212; cellsystem 0.1.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for cellsystem.simulation.system</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">System-related classes.</span>
+
+<span class="sd">This module defines a general system that can be used as</span>
+<span class="sd">the base of a computation graph.</span>
+
+<span class="sd">A system is composed of entities and interactions btw them,</span>
+<span class="sd">it coordinates all processes.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+
+
+<div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;An entity is something that resides in the system.</span>
+
+<span class="sd">    It processes information according to it&#39;s internal state </span>
+<span class="sd">    and the information flowing through the links it shares with </span>
+<span class="sd">    other entities.</span>
+<span class="sd">    </span>
+<span class="sd">    An entity registers the following methods:</span>
+<span class="sd">        - process(time)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
+    
+<div class="viewcode-block" id="Entity.process"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.Entity.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+<span class="c1"># --- Entity</span>
+
+
+<div class="viewcode-block" id="Interaction"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.Interaction">[docs]</a><span class="k">class</span> <span class="nc">Interaction</span><span class="p">:</span>
+    <span class="s1">&#39;A structure representing flow of information btw entities.&#39;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entities</span><span class="p">,</span> <span class="n">effect</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entities</span> <span class="o">=</span> <span class="n">entities</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">effects</span> <span class="o">=</span> <span class="p">[</span><span class="n">effect</span><span class="p">]</span>
+        
+<div class="viewcode-block" id="Interaction.append"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.Interaction.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">effect</span><span class="p">):</span>
+        <span class="s1">&#39;Effects btw the same entities can be appended and executed in order&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">effects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">effect</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="Interaction.process"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.Interaction.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s1">&#39;Executes the interaction.&#39;</span>
+        <span class="k">for</span> <span class="n">effect</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">effects</span><span class="p">:</span>
+            <span class="n">effect</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="p">)</span></div></div>
+<span class="c1"># --- Interaction</span>
+
+
+<span class="s1">&#39;Representing an isolated process.&#39;</span>
+<span class="n">Process</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Process&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;entities&#39;</span><span class="p">,</span> <span class="s1">&#39;effects&#39;</span><span class="p">])</span>
+<span class="c1"># --- Process</span>
+
+
+<div class="viewcode-block" id="System"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.System">[docs]</a><span class="k">class</span> <span class="nc">System</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The global system and event dispatcher.</span>
+
+<span class="sd">    Aware of the passage of time (steps). A system is </span>
+<span class="sd">    composed of entities and interactions between them,</span>
+<span class="sd">    at each time step, the system triggers the proceses </span>
+<span class="sd">    associated with them.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="s1">&#39;Initialize an empty system.&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entities</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">procesable</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toentity</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toentityname</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">interactions</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">inithooks</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prehooks</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hooks</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># ---</span>
+    
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entityname</span><span class="p">):</span>
+        <span class="s1">&#39;Access the entities by name.&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">toentity</span><span class="p">[</span><span class="n">entityname</span><span class="p">]</span>
+    <span class="c1"># ---</span>
+
+<div class="viewcode-block" id="System.add_entity"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.System.add_entity">[docs]</a>    <span class="k">def</span> <span class="nf">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">procesable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inithook</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add an entity to the graph.</span>
+<span class="sd">        </span>
+<span class="sd">        If procesable, the entity.process(time) method is called </span>
+<span class="sd">        on each time step.</span>
+<span class="sd">        </span>
+<span class="sd">        Inithooks are callables called at initialization.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">procesable</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">procesable</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toentity</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">entity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toentityname</span><span class="p">[</span><span class="n">entity</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="c1"># Process hooks</span>
+        <span class="k">if</span> <span class="n">inithook</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_interaction_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inithooks</span><span class="p">,</span>
+                                    <span class="n">inithook</span><span class="p">,</span> 
+                                    <span class="p">[</span><span class="n">name</span><span class="p">])</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="System.process_interactions_in"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.System.process_interactions_in">[docs]</a>    <span class="k">def</span> <span class="nf">process_interactions_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interactions</span><span class="p">):</span>
+        <span class="s1">&#39;From the dict-like container of interactions, process items.&#39;</span>
+        <span class="k">for</span> <span class="n">interaction</span> <span class="ow">in</span> <span class="n">interactions</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">interaction</span><span class="o">.</span><span class="n">process</span><span class="p">()</span></div>
+    <span class="c1"># ---</span>
+        
+<div class="viewcode-block" id="System.step"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.System.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s1">&#39;Take a single step forward in time.&#39;</span>
+        <span class="c1"># Process pre-step hooks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_interactions_in</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prehooks</span><span class="p">)</span>
+        
+        <span class="c1"># Process linked items</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_interactions_in</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interactions</span><span class="p">)</span>
+        <span class="c1"># Process each entity</span>
+        <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">procesable</span><span class="p">:</span>
+            <span class="n">entity</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+            
+        <span class="c1"># Process post-step hooks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_interactions_in</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hooks</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">+=</span> <span class="mi">1</span></div>
+    <span class="c1"># ---</span>
+         
+<div class="viewcode-block" id="System.start"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.System.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s1">&#39;Initialize things before starting simulation.&#39;</span>
+        <span class="c1"># Init time</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Make the initialization actions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_interactions_in</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inithooks</span><span class="p">)</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="System.update_hooks"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.System.update_hooks">[docs]</a>    <span class="k">def</span> <span class="nf">update_hooks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hooktype</span><span class="p">,</span> <span class="n">newhooks</span><span class="p">):</span>
+        <span class="s1">&#39;Add the given hooks to the system.&#39;</span>
+        <span class="k">if</span> <span class="n">newhooks</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">hook</span> <span class="ow">in</span> <span class="n">newhooks</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_interaction_to</span><span class="p">(</span><span class="n">hooktype</span><span class="p">,</span> <span class="n">hook</span><span class="o">.</span><span class="n">effects</span><span class="p">,</span> <span class="n">hook</span><span class="o">.</span><span class="n">entities</span><span class="p">)</span></div>
+    <span class="c1"># ---</span>
+         
+<div class="viewcode-block" id="System.run"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.System.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">after_step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">before_step</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="s1">&#39;Start running the simulation.&#39;</span>
+        <span class="c1"># Handle hooks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_hooks</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inithooks</span><span class="p">,</span> <span class="n">init</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_hooks</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hooks</span><span class="p">,</span> <span class="n">after_step</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_hooks</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prehooks</span><span class="p">,</span> <span class="n">before_step</span><span class="p">)</span>
+        
+        <span class="c1"># Make sure things are initialized</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        
+        <span class="c1"># Take steps</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">()</span> </div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="System.stateof"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.System.stateof">[docs]</a>    <span class="k">def</span> <span class="nf">stateof</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entityname</span><span class="p">):</span>
+        <span class="s2">&quot;Ask the entity for it&#39;s state&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">entityname</span><span class="p">]</span><span class="o">.</span><span class="n">state</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="System.link"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.System.link">[docs]</a>    <span class="k">def</span> <span class="nf">link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">effect</span><span class="p">,</span> <span class="n">entitynames</span><span class="p">):</span>
+        <span class="s1">&#39;Add an interation btw named entities.&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_interaction_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interactions</span><span class="p">,</span>
+                                <span class="n">effect</span><span class="p">,</span> 
+                                <span class="n">entitynames</span><span class="p">)</span></div>
+    <span class="c1"># ---</span>
+    
+<div class="viewcode-block" id="System.add_interaction_to"><a class="viewcode-back" href="../../../source/cellsystem.simulation.html#cellsystem.simulation.system.System.add_interaction_to">[docs]</a>    <span class="k">def</span> <span class="nf">add_interaction_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">effect</span><span class="p">,</span> <span class="n">entitynames</span><span class="p">):</span>
+        <span class="s1">&#39;Add an interaction btw named entities to a dict-like container.&#39;</span>
+        <span class="n">entities</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toentity</span><span class="p">[</span><span class="n">ename</span><span class="p">]</span> 
+                                <span class="k">for</span> <span class="n">ename</span> <span class="ow">in</span> <span class="n">entitynames</span><span class="p">)</span>
+        
+        <span class="c1"># Check if there is already some link btw</span>
+        <span class="c1"># those same entities.</span>
+        <span class="k">if</span> <span class="n">entities</span> <span class="ow">in</span> <span class="n">container</span><span class="p">:</span>
+            <span class="c1"># Add the new effect</span>
+            <span class="n">container</span><span class="p">[</span><span class="n">entities</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">effect</span><span class="p">)</span>
+            
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Else, add the new link</span>
+            <span class="n">interaction</span> <span class="o">=</span> <span class="n">Interaction</span><span class="p">(</span><span class="n">entities</span><span class="p">,</span> <span class="n">effect</span><span class="p">)</span>
+            <span class="n">container</span><span class="p">[</span><span class="n">entities</span><span class="p">]</span> <span class="o">=</span> <span class="n">interaction</span></div></div>
+    <span class="c1"># ---</span>
+<span class="c1"># --- System</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ad115.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

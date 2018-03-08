@@ -1,0 +1,198 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CellSystem: A biological simulation framework. &#8212; cellsystem 0.1.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="CellSystem" href="readme.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cellsystem-a-biological-simulation-framework">
+<h1>CellSystem: A biological simulation framework.<a class="headerlink" href="#cellsystem-a-biological-simulation-framework" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<ul class="simple">
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+</ul>
+<div class="section" id="cellsystem">
+<h2>CellSystem<a class="headerlink" href="#cellsystem" title="Permalink to this headline">¶</a></h2>
+<a class="reference external image-reference" href="https://saythanks.io/inbox"><img alt="https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg" src="https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg" /></a>
+<p>An agent-based framework for the simulation of biological cell systems.</p>
+<p>This was created to simulate cancer growth, taking into account nutrients and cell migration while allowing to track mutations, cell division and cell position history to study tumour phylogeny reconstruction algorithms.</p>
+<img alt="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/sidebyside.png" src="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/sidebyside.png" />
+<img alt="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/spacetime.png" src="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/spacetime.png" />
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>A use case integrated in the repository:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cellsystem</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># The cell system will simulate cell growth</span>
+<span class="c1"># while tracking the steps in that process.</span>
+<span class="n">system</span> <span class="o">=</span> <span class="n">CellSystem</span><span class="p">(</span><span class="n">grid_dimensions</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># Initialize the first cell</span>
+<span class="c1"># in the middle of the grid</span>
+<span class="n">system</span><span class="o">.</span><span class="n">seed</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">New</span> <span class="n">cell</span> <span class="mi">0</span> <span class="n">added</span> <span class="o">@</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Take 35 steps forward in time</span>
+<span class="n">system</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Cell</span> <span class="n">no</span><span class="o">.</span> <span class="mi">0</span> <span class="n">dividing</span> <span class="o">@</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">New</span> <span class="n">cells</span><span class="p">:</span> <span class="mi">2</span> <span class="o">@</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="ow">and</span> <span class="mi">1</span> <span class="o">@</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">Cell</span> <span class="n">no</span><span class="o">.</span> <span class="mi">2</span> <span class="n">mutating</span> <span class="o">@</span> <span class="n">site</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="p">(</span><span class="n">father</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">Initial</span> <span class="n">mutations</span><span class="p">:</span> <span class="p">[]</span>
+        <span class="n">Initial</span> <span class="n">genome</span><span class="p">:</span> <span class="n">AAAAAAAAAA</span>
+    <span class="n">Final</span> <span class="n">mutations</span><span class="p">:</span> <span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)]</span>
+        <span class="n">Final</span> <span class="n">genome</span><span class="p">:</span> <span class="n">AAACAAAAAA</span>
+<span class="n">Cell</span> <span class="n">no</span><span class="o">.</span> <span class="mi">1</span> <span class="n">dividing</span> <span class="o">@</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">New</span> <span class="n">cells</span><span class="p">:</span> <span class="mi">4</span> <span class="o">@</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="ow">and</span> <span class="mi">3</span> <span class="o">@</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">Cell</span> <span class="n">no</span><span class="o">.</span> <span class="mi">2</span> <span class="n">death</span> <span class="o">@</span> <span class="n">site</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="p">(</span><span class="n">father</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">Cell</span> <span class="n">no</span><span class="o">.</span> <span class="mi">3</span> <span class="n">migrating</span> <span class="kn">from</span> <span class="nn">site</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="p">(</span><span class="n">father</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">New</span> <span class="n">site</span><span class="p">:</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">Cell</span> <span class="n">no</span><span class="o">.</span> <span class="mi">4</span> <span class="n">death</span> <span class="o">@</span> <span class="n">site</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="p">(</span><span class="n">father</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">Cell</span> <span class="n">no</span><span class="o">.</span> <span class="mi">3</span> <span class="n">dividing</span> <span class="o">@</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">New</span> <span class="n">cells</span><span class="p">:</span> <span class="mi">6</span> <span class="o">@</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="ow">and</span> <span class="mi">5</span> <span class="o">@</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">...</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Prepare to explore the simulation logs</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;log&#39;</span><span class="p">]</span>
+
+
+
+<span class="c1"># First, let&#39;s see the cells&#39; evolution in time and space!</span>
+<span class="n">history</span><span class="o">.</span><span class="n">geometry</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Remove the cells that died somewhere along the way</span>
+<span class="n">history</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="n">prune_death</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/worldlines.png" src="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/worldlines.png" />
+<img alt="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/worldlines_no_death.png" src="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/worldlines_no_death.png" />
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Prepare styling for the trees</span>
+<span class="n">tree_style</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;show_leaf_name&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s1">&#39;mode&#39;</span> <span class="p">:</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span>        <span class="c1"># Circular tree</span>
+            <span class="s1">&#39;arc_start&#39;</span> <span class="p">:</span> <span class="o">-</span><span class="mi">135</span><span class="p">,</span>  <span class="c1"># Degrees</span>
+            <span class="s1">&#39;arc_span&#39;</span> <span class="p">:</span> <span class="mi">270</span> <span class="p">}</span>   <span class="c1"># Degrees also</span>
+
+<span class="c1"># Lookup the tree formed by cellular division</span>
+<span class="n">history</span><span class="o">.</span><span class="n">ancestry</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">styling</span><span class="o">=</span><span class="n">tree_style</span><span class="p">)</span>
+
+<span class="c1"># Now, remove cells that are no longer alive</span>
+<span class="n">history</span><span class="o">.</span><span class="n">ancestry</span><span class="p">(</span><span class="n">prune_death</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">styling</span><span class="o">=</span><span class="n">tree_style</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/ancestry.png" src="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/ancestry.png" />
+<img alt="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/ancestry_no_death.png" src="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/ancestry_no_death.png" />
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Now, check out the tree formed by the mutations</span>
+<span class="n">history</span><span class="o">.</span><span class="n">mutations</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">styling</span><span class="o">=</span><span class="n">tree_style</span><span class="p">)</span>
+
+<span class="c1"># Remove genomes with no living representatives.</span>
+<span class="n">history</span><span class="o">.</span><span class="n">mutations</span><span class="p">(</span><span class="n">prune_death</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">styling</span><span class="o">=</span><span class="n">tree_style</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/mutations.png" src="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/mutations.png" />
+<img alt="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/mutations_no_death.png" src="https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/mutations_no_death.png" />
+<p><em>For more examples and usage, please refer to the [Wiki](wikigoeshere.com).</em></p>
+</div>
+<div class="section" id="meta">
+<h3>Meta<a class="headerlink" href="#meta" title="Permalink to this headline">¶</a></h3>
+<p><strong>Author</strong>: <a class="reference external" href="https://agargar.wordpress.com/">Ad115</a> - <a class="reference external" href="https://github.com/Ad115/">Github</a> – <a class="reference external" href="mailto:a&#46;garcia230395&#37;&#52;&#48;gmail&#46;com">a<span>&#46;</span>garcia230395<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+<p>Distributed under the MIT license. See <a class="reference external" href="https://github.com/Ad115/Cell-System/blob/master/LICENSE">LICENSE</a> for more information.</p>
+</div>
+<div class="section" id="contributing">
+<h3>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Check for open issues or open a fresh issue to start a discussion around a feature idea or a bug.</li>
+<li>Fork <a class="reference external" href="https://github.com/Ad115/Cell-System/">the repository</a> on GitHub to start making your changes to a feature branch, derived from the <strong>master</strong> branch.</li>
+<li>Write a test which shows that the bug was fixed or that the feature works as expected.</li>
+<li>Send a pull request and bug the maintainer until it gets merged and published.</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="readme.html" title="next chapter">CellSystem</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ad115.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
