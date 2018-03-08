@@ -114,7 +114,7 @@ A use case integrated in the repository:
 Meta
 ----
 
-Ad115 – `@Andresio115 <https://twitter.com/Andresio115>`_ – a.garcia230395@gmail.com
+**Author**: `Ad115 <https://agargar.wordpress.com/>` - `Github <https://github.com/Ad115/>` – a.garcia230395@gmail.com
 
 Distributed under the MIT license. See `LICENSE <https://github.com/Ad115/Cell-System/blob/master/LICENSE>`_ for more information.
 
