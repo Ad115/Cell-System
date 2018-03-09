@@ -177,12 +177,12 @@ class CellSystem(System):
 
     """
     
-    def __init__(self, *args, grid_dimensions=(100, 100), **kwargs):
+    def __init__(self, *args, grid_dims=(100, 100), **kwargs):
         """Initialization process."""
         super().__init__(*args, **kwargs)
         
         # Initialize world
-        self.add_entity( World(grid_dimensions=grid_dimensions), 
+        self.add_entity( World(shape=grid_dims), 
                          name='world', 
                          procesable=False)
         

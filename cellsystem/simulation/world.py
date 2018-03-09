@@ -36,7 +36,7 @@ def toroidal_wrap(grid, coord):
     """Return the coordinates wrapped on the grid dimensions."""
     return tuple(wrap(x, dim_size) 
                     for x,dim_size 
-                        in zip(coord, grid.grid_dimensions) )
+                        in zip(coord, grid.shape) )
 # ---
 
 
@@ -135,7 +135,7 @@ class World:
         self.grid = np.empty(shape, dtype=np.object)
         
         for coord in np.ndindex(shape):
-            self.grid[coord] = Site(world=self, coord)
+            self.grid[coord] = Site(self, coord)
         
         # Initialize neighborhood
         self.neighborhood = [ (-1,-1), (-1, 0), (-1, 1),
@@ -146,20 +146,18 @@ class World:
     @property
     def middle(self):
         """Get the site at the middle of the world."""
-        rows, cols = self.grid_dimensions
-        return self.at( (rows//2, cols//2) )
+        shape = self.shape
+        return self.at( tuple(x//2 for x in shape) )
     # ---
 
     def at(self, coordinates):
         """Get the site at the specified coordinates."""        
         # Wrap (toroidal coordinates)
         if self.wrap_function:
-            i,j = self.wrap_function(self, coordinates)
+            coordinates = self.wrap_function(self, coordinates)
             
         # The grid is 1D, so we must convert from 2D
-        rows, cols = self.grid_dimensions
-        ij = cols*i + j
-        return self.grid[ij]
+        return self.grid[coordinates]
     # ---
 
     def random_neighbor_of(self, site):
@@ -170,10 +168,11 @@ class World:
 
         """
         # Get the site coordinates
-        i,j = site.coordinates
+        coords = site.coordinates
         # Select a neighbor
-        n_i, n_j = rnd.choice(self.neighborhood)
+        n_coords = rnd.choice(self.neighborhood)
         # Fetch the neighbor
-        return self.at( (i+n_i, j+n_j) )
+        neighbor = tuple(x + nx for x,nx in zip(coords, n_coords))
+        return self.at(neighbor)
     # ---
 # --- World
