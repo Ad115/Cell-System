@@ -1,11 +1,8 @@
-"""
-
-A world is the passive (or not?) stage where 
-entities do their own thing :P
-
-"""
+"""Classes associated with physical space where entities live and interact."""
 
 import random as rnd
+
+import numpy as np
 
 
 def wrap(n, maxValue):
@@ -113,38 +110,33 @@ class World:
     """
     The space in which cells inhabit. 
 
-    Aware of space (as a grid) and the passage of time (steps). It is
-    the main struture of the program, being the only observable and given it
-    coordinates all processes.
+    It represents physical space and enforces rules and properties
+    like distance and closeness.
 
-    A system is aware of:
+    A world is aware of:
             - Grid: The sites the action develops in.
-            - Cells: The cells that live, die and interact in the grid.
             - Neighborhood: How many and which sites may directly influence or
                             be influenced by another.
 
     """
 
-    def __init__(self, grid_dimensions=None, wrap=toroidal_wrap):
+    def __init__(self, shape=(10, 10), wrap=toroidal_wrap):
         """Initialize the world.
 
-        :param grid_dimensions: Tuple specifying rows and columns.
+        :param shape: Shape of the grid, a tuple of integers.
         :param wrap: Callable. How does the grid treats out-of-range coordinates?
 
         """
-        # Set dimensions
-        if grid_dimensions is None:
-            grid_dimensions = (10, 10)
             
-        self.grid_dimensions = grid_dimensions
-        
-        # Initialize grid
+        self.shape = shape
         self.wrap_function = wrap  # Toroidal wrapping behavior of the grid
         
-        rows, cols = self.grid_dimensions
-        self.grid = tuple( Site(self, coordinates=(i,j))
-                               for i in range(rows)
-                                   for j in range(cols) ) # Stored in 1D
+        # Initialize grid
+        self.grid = np.empty(shape, dtype=np.object)
+        
+        for coord in np.ndindex(shape):
+            self.grid[coord] = Site(world=self, coord)
+        
         # Initialize neighborhood
         self.neighborhood = [ (-1,-1), (-1, 0), (-1, 1),
                               ( 0,-1), ( 0, 0), ( 0, 1),
