@@ -48,7 +48,6 @@ class Cell:
         + Father: The index (lineage label) of it's father.
         + CellLine: The lineage this cell belongs to.
         + Site: The place in the grid this cell inhabits in.
-        + Age: The timesteps this cell has passed through.
         + Mutations: The mutations in this cell relative to the cell
                      lineage's reference
 
