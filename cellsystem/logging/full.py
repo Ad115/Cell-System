@@ -4,6 +4,8 @@ from .treelogs import MutationsLog, AncestryLog
 from .simple import SimpleLog
 
 class FullLog(MultiLog):
+    "A combination of all the relevant logs."
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Register the relevant logs
@@ -13,9 +15,8 @@ class FullLog(MultiLog):
         self.register(SimpleLog(), name='simple')
     # ---
     
-    
     def geometry(self, prune_death=False):
-        "Fetch information of the cells' dynamic in physical space."
+        "Fetch information of the cells' dynamics in physical space."
         return self.logs['geometry'].worldlines(prune_death)
     # ---
     

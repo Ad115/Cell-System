@@ -8,7 +8,7 @@ from .geometric import GeometricLog
 from .treelogs import MutationsLog, AncestryLog
 from .simple import SimpleLog
 from .full import FullLog
-from .logging import logged
+from .logged import logged
 
 __all__ = ['FullLog', 'SimpleLog', 
            'MutationsLog', 'AncestryLog', 

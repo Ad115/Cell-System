@@ -75,7 +75,6 @@ class GeometricLog(WeakLog):
     def iter_states(self):
         "Generate the intermediate states."
         current_state = self.initial_state.copy()
-        yield current_state.copy()
         
         for change_type, change in self.iter_changes():
             # Perform change
@@ -238,15 +237,21 @@ class WorldLines:
         yield from self.worldlines.items()
     # ---
     
-    def show(self):
+    def show(self, div_marker='o', end_marker=''):
         "Render the 3D worldlines as a plot."
+        
         fig = plt.figure()
         ax = fig.gca(projection='3d')
 
         for cell,timeline in self:
             t, x, y = zip(*timeline)
             ax.plot(t, x, y)
-            ax.scatter(t[0], x[0], y[0], marker='o')   # End point
+            
+            # Mark the beginning of a worldline
+            ax.scatter(t[0], x[0], y[0], marker=div_marker)
+            # Mark the end of a worldline
+            ax.scatter(t[-1], x[-1], y[-1], marker=end_marker)
+            
             ax.set_xlabel('t')
             ax.set_ylabel('x')
             ax.set_zlabel('y')

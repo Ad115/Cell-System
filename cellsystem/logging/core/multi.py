@@ -8,6 +8,14 @@ class MultiLog(Log):
         self.logs = dict()
     # ---
     
+    def __getitem__(self, item):
+        return self.logs[item]
+    # ---
+    
+    def __delitem__(self, item):
+        del self.logs[item]
+    # ---
+    
     def register(self, log, name):
         'Register a named log entity.'
         
@@ -20,13 +28,15 @@ class MultiLog(Log):
     
     def preparefor(self, actionname, *args, **kwargs):
         'Save previous state before the entity takes the given action.'
-        for log in self.logs.values():
+        
+        for name,log in self.logs.items():    
             log.preparefor(actionname, *args, **kwargs)
     # ---
         
     def log(self, actionname, *args, **kwargs):
         'Log the action.'
-        for log in self.logs.values():
+        
+        for name,log in self.logs.items():
             log.log(actionname, *args, **kwargs)
     # ---
 # --- MultiLog
