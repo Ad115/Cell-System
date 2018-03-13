@@ -20,26 +20,23 @@ A use case integrated in the repository:
 
 .. code-block:: python
 
-    from cellsystem import *
+    >>> from cellsystem import *
 
     # The cell system will simulate cell growth
     # while tracking the steps in that process.
-    system = CellSystem(grid_dimensions=(10, 10))
+    >>> system = CellSystem(grid_dims=(100, 100))
 
     # Initialize the first cell
     # in the middle of the grid
-    system.seed()
-
-::
-
+    >>> system.seed()
+    
+    
     New cell 0 added @ (5, 5)
-        
-.. code-block:: python
+
 
     # Take 35 steps forward in time
-    system.run(steps=30)
-    
-::
+    >>> system.run(steps=30)
+
 
     Cell no. 0 dividing @ (5, 5)
     New cells: 2 @ (4, 5) and 1 @ (6, 6)
@@ -60,52 +57,56 @@ A use case integrated in the repository:
     ...
     ...
 
-.. code-block:: python
 
     # Prepare to explore the simulation logs
-    history = system['log']
-
+    >>> history = system['log']
 
 
     # First, let's see the cells' evolution in time and space!
-    history.geometry().show()
+    >>> history.geometry().show()
 
     # Remove the cells that died somewhere along the way
-    history.geometry(prune_death=True).show()
+    >>> history.geometry(prune_death=True).show()
+    
 
 .. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/geometry.png
 
 .. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/geometry_no_death.png
 
+
 .. code-block:: python
 
-    # Prepare styling for the trees
-    tree_style = {'show_leaf_name' : True,
-                'mode' : 'c',        # Circular tree
-                'arc_start' : -135,  # Degrees
-                'arc_span' : 270 }   # Degrees also
+    >>> tree_style = {'show_leaf_name' : True,
+    ...               'mode' : 'c',        # Circular
+    ...               'arc_start' : -135,  # Degrees
+    ...               'arc_span' : 270 }   # Degrees also
+
 
     # Lookup the tree formed by cellular division
-    history.ancestry().show(styling=tree_style)
+    >>> history.ancestry().show(styling=tree_style)
 
     # Now, remove cells that are no longer alive
-    history.ancestry(prune_death=True).show(styling=tree_style)
+    >>> history.ancestry(prune_death=True).show(styling=tree_style)
+
 
 .. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/ancestry.png
 
 .. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/ancestry_no_death.png
 
+
 .. code-block:: python
 
     # Now, check out the tree formed by the mutations 
-    history.mutations().show(styling=tree_style)
+    >>> history.mutations().show(styling=tree_style)
 
     # Remove genomes with no living representatives.
-    history.mutations(prune_death=True).show(styling=tree_style)
+    >>> history.mutations(prune_death=True).show(styling=tree_style)
+
 
 .. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/mutations.png
 
 .. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/mutations_no_death.png
+
 
 
 *For more examples and usage, please refer to the [Wiki](wikigoeshere.com).*
