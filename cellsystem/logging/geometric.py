@@ -237,7 +237,7 @@ class WorldLines:
         yield from self.worldlines.items()
     # ---
     
-    def show(self, div_marker='o', end_marker=''):
+    def show(self, div_marker='o', end_marker='', savefig=None):
         "Render the 3D worldlines as a plot."
         
         fig = plt.figure()
@@ -255,6 +255,11 @@ class WorldLines:
             ax.set_xlabel('t')
             ax.set_ylabel('x')
             ax.set_zlabel('y')
+            
+        # Save to a file
+        if savefig:
+            plt.savefig(savefig)
+            
         plt.show()
     # ---
 # --- WorldLines
