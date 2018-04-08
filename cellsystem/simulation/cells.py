@@ -3,37 +3,11 @@
 Structures representing the biological entities.
 """
 
-from ..logging import logged
+import numpy.random as np_random
 import random as rnd
 
-
-class CellAction:
-    """
-    Cell action.
-
-    Class used to represent actions that the cell could perform.
-
-    """
-
-    def __init__(self, action, probability):
-        """Initialize action object.
-
-        It is initialized with a function that when called will make
-        the cell perform the action and a function that when called will
-        calculate the probability to perform the action.
-
-
-        """
-        self.action = action
-        self.probability = probability
-
-    def try_action(self, cell, *args, **kwargs):
-        """Perform the action according to it's probability."""
-        # Sample according to the probability
-        if rnd.random() < self.probability(cell):
-            self.action(cell, *args, **kwargs)
-# --- CellAction
-
+from ..logging import logged
+from .action import Action
 
 
 class Cell:
@@ -90,7 +64,7 @@ class Cell:
     # ---
 
     @property
-    def ancestralGenome(self):
+    def ancestral_genome(self):
         """Ancestral genome of the cell lineage."""
         return self.lineage.genome
     # ---
@@ -103,7 +77,7 @@ class Cell:
 
         """
         # Get the original genome
-        bases = list(self.ancestralGenome)
+        bases = list(self.ancestral_genome)
         # Add mutations one by one
         for position, mutated in self.mutations:
             bases[position] = mutated
@@ -165,9 +139,12 @@ class Cell:
     def process(self, *args, **kwargs):
         """Select an action and perform it."""
         # Select an action
-        action = rnd.choice(self.actions)
+        actions, weights = self.actions
+        action = np_random.choice(actions, p=weights)
+        
         # Perform the action according to it's respective probability
-        action.try_action(self, *args, **kwargs)
+        p = action.probability(self)
+        action.try_action(self, *args, probability=p, **kwargs)
     # ---
 # --- Cell
 
@@ -192,18 +169,16 @@ class CellLine:
     """
 
     def __init__(self,
+                 *args,
                  genome=None,
                  genome_alphabet=None,
                  recycle_dead=True,
-                 *args,
                  **kwargs):
         """Creation of a cell lineage.
 
         Parameters:
             :param genome: (default 'AAAAAAAAAA') Sequence representing the 
                             base genome of the cells from this line.
-            :param genomeAlphabet: (default 'ACGT') The items of which the 
-                                    genome sequence is formed.
             :param recycle_dead: (default True) Repurpose dead cells when needed,
                                  this helps improve memory usage.
 
@@ -214,25 +189,19 @@ class CellLine:
         self.recycle_dead = recycle_dead
         self.current_index = 0
         self.cells = []
-        self.behaviors = []
         self.alive_cells = set()
         self.dead_cells = set()
-
-        # Set the default genome
-        if not genome:
+        self.behaviors = {'actions': [],
+                          'weights': [],
+                          'normalized_weights': []}
+        
+        if genome is None:
             genome = 10 * 'A'
         self.genome = genome
-
-        # Check if the genome alphabet option was set
-        if not genome_alphabet:
-            genome_alphabet = "ACGT"
+        
+        if genome_alphabet is None:
+            genome_alphabet = 'AGCT'
         self.genome_alphabet = genome_alphabet
-
-        # Validate the resulting genome/genome alphabet combination
-        if not self.validate_genome(genome, genome_alphabet):
-            # ERROR
-            raise ValueError('"genome" must contain only letters\
-                             present in the "genome_alphabet"' )
     # ---
         
     @property
@@ -240,36 +209,49 @@ class CellLine:
         return len(self.alive_cells)
     # ---
     
-    @staticmethod
-    def validate_genome(genome, alphabet):
-        "Check if the genome is assembled from the given alphabet."
-        # Eliminate dups
-        letters = set(genome)
-        # Are they valid?
-        return all((l in alphabet) for l in letters)
-    # ---
-    
     def fetch_behaviors(self):
         "The behaviors that the cells in this lineage perform."
-        return list(self.behaviors)
+            
+        return ( list(self.behaviors['actions']), 
+                 list(self.behaviors['normalized_weights']) )
     # ---
     
-    def add_behaviors(self, behaviors):
-        "Add the behaviors defining the cells from this cell line."
-        self.behaviors += behaviors
-    # ---    
-
-    @logged('newcell', prepare=False)
-    def add_cell_to(self, site):
-        """Add a new, initialized cell to the given site.
-
-        Return the added cell to the caller.
-
+    def add_behaviors(self, behaviors, weights=None):
+        """Add the behaviors defining the cells from this cell line.
+        
+        Params:
+           
+            behaviors (list of callables):
+                The list of actions that the cells in this
+                lineage will be able to perform.
+               
+            weights (optional list of numeric values):
+                The list of relative weights for selecting each action.
+                The bigger the weight of an action relative to the weights 
+                of the others, the more likely is that that action will be
+                selected by the cell at each step. default is all actions
+                have the same weights.
+                
+        Raises:
+            
+            ValueError:
+                If the weights are not of the same length as the behaviors.
+            
         """
-        new = self.new_cell()
-        new.add_to(site)
-        # Return the new cell
-        return new
+        if weights:
+            if len(weights) != len(behaviors):
+                raise ValueError('Weights must correspond to behaviors one-to-one.')
+        else:
+            # All actions have the same weight
+            weights = [1] * len(behaviors)
+            
+        self.behaviors['actions'] += behaviors
+        self.behaviors['weights'] += weights
+        
+        # Ensure normalization
+        all_weights = self.behaviors['weights']
+        total_w = sum(all_weights)
+        self.behaviors['normalized_weights'] = [w/total_w for w in all_weights]
     # ---
 
     def new_cell(self):

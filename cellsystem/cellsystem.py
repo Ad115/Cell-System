@@ -3,9 +3,11 @@ The cell simulation with logging.
 
 """
 
-from .simulation import System, CellLine, World, CellAction
+from .simulation import System, CellLine, World, Action
 from   .logging  import logged, FullLog
 import random as rnd
+
+
 
 class SimpleCells(CellLine):
     """A cell line representing simple cells with default behaviors.
@@ -18,34 +20,52 @@ class SimpleCells(CellLine):
         
     """
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, genome_alphabet=None, **kwargs):
         
-        # Initialize normally.
+        # Initialize as usual.
         super().__init__(*args, **kwargs)
         
         # Register the default actions
-        self.add_behaviors(self.init_behaviors())
+        self.add_behaviors(*self._init_behaviors())
     # ---
     
-    def init_behaviors(self):
-        """Assemble a list with behaviors for cells in this lineage."""
-        # Death action
-        death = CellAction(action = self.die, 
-                           probability = self.deathProbability)
+    def _init_behaviors(self):
+        """Initialize the behaviors for cells in this lineage."""
+        death = Action(action=self.die, 
+                       probability=self.death_probability)
         
-        # Division action
-        division = CellAction(action = self.divide, 
-                              probability = self.divisionProbability)
+        division = Action(action=self.divide, 
+                          probability=self.division_probability)
+        
+        migration = Action(action=self.migrate, 
+                           probability=self.migration_probability)
+        
+        mutation = Action(action=self.mutate, 
+                          probability=self.mutation_probability)
+        
+        
+        actions = [mutation, migration, division, death]
+        
+        # The relative weights of each action.
+        # If an action has a bigger weigth than 
+        # the others, it has a correspondingly
+        # bigger probability to be chosen
+        weights = [1] * len(actions)
+        
+        return actions, weights
+    # ---
+    
+    @logged('newcell', prepare=False)
+    def add_cell_to(self, site):
+        """Add a new, initialized cell to the given site.
 
-        # Migration action
-        migration = CellAction(action = self.migrate, 
-                               probability = self.migrationProbability)
+        Return the added cell to the caller.
 
-        # Mutation action
-        mutation = CellAction(action = self.mutate, 
-                              probability = self.mutationProbability)
-
-        return [mutation, migration, division, death]
+        """
+        new = self.new_cell()
+        new.add_to(site)
+        # Return the new cell
+        return new
     # ---
         
     @staticmethod
@@ -63,7 +83,7 @@ class SimpleCells(CellLine):
     # ---
 
     @staticmethod
-    def migrationProbability(cell):
+    def migration_probability(cell):
         """Migration probability for this cell."""
         return 1
     # ---
@@ -89,7 +109,7 @@ class SimpleCells(CellLine):
     # ---
 
     @staticmethod
-    def mutationProbability(cell):
+    def mutation_probability(cell):
         """Probability to mutate if selected for it."""
         return 1
     # ---
@@ -104,7 +124,7 @@ class SimpleCells(CellLine):
     # ---
 
     @staticmethod
-    def deathProbability(cell):
+    def death_probability(cell):
         """Cellular death probability."""
         # Avoid killing all cells.
         if cell.lineage.total_cells > 1:
@@ -114,7 +134,7 @@ class SimpleCells(CellLine):
     # ---
     
     @staticmethod
-    def _place_daughter(cell):
+    def _init_daughter(cell):
         "Add a new daughter of the cell in an appropriate site."
         
         # Create the daughter cell
@@ -137,7 +157,7 @@ class SimpleCells(CellLine):
 
         """
         # Create the daughter cell and add it to a site
-        daughter = SimpleCells._place_daughter(cell)
+        daughter = SimpleCells._init_daughter(cell)
 
         # If the preserveFather flag is set, we want a
         # father cell and a daughter cell after the division (like 
@@ -145,7 +165,7 @@ class SimpleCells(CellLine):
         # resulting cells to be daughters of the father cell.
         if not preserve_father:
             # New daughter placed on an appropriate site
-            other_daughter = SimpleCells._place_daughter(cell)
+            other_daughter = SimpleCells._init_daughter(cell)
             # Remove previous cell
             SimpleCells.die(cell)
             
@@ -153,12 +173,13 @@ class SimpleCells(CellLine):
     # ---
     
     @staticmethod
-    def divisionProbability(cell):
+    def division_probability(cell):
         """Probability that this cell will divide if selected for division."""
         return 1
     # ---
     
 # --- SimpleCells
+
 
 
 class CellSystem(System):
@@ -177,12 +198,16 @@ class CellSystem(System):
 
     """
     
-    def __init__(self, *args, grid_dims=(100, 100), **kwargs):
+    def __init__(self, *args, 
+                       grid_shape=(100, 100), 
+                       init_genome=None,
+                       **kwargs):
         """Initialization process."""
+        
         super().__init__(*args, **kwargs)
         
         # Initialize world
-        self.add_entity( World(shape=grid_dims), 
+        self.add_entity( World(shape=grid_shape), 
                          name='world', 
                          procesable=False)
         
@@ -192,7 +217,7 @@ class CellSystem(System):
                          procesable=False)
         
         # Initialize the cells
-        self.add_entity( SimpleCells(),
+        self.add_entity( SimpleCells(genome=init_genome),
                          name='cells')
         self['cells'].register_log(self['log'])
     # ---
