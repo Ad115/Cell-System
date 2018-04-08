@@ -12,6 +12,16 @@ This was created to simulate cancer growth, taking into account nutrients and ce
 .. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/sidebyside.png
 .. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/spacetime.png
 
+
+------------
+Installation
+------------
+
+You can install it from PyPI::
+
+    $ pip install cellsystem
+    
+
 -------
 Example
 -------
@@ -24,35 +34,43 @@ A use case integrated in the repository:
 
     # The cell system will simulate cell growth
     # while tracking the steps in that process.
-    >>> system = CellSystem(grid_dims=(100, 100))
+    >>> system = CellSystem(grid_shape=(100, 100))
 
     # Initialize the first cell
     # in the middle of the grid
     >>> system.seed()
     
     
-    New cell 0 added @ (5, 5)
+    New cell 0 added @ (50, 50)
 
 
     # Take 35 steps forward in time
     >>> system.run(steps=30)
 
 
-    Cell no. 0 dividing @ (5, 5)
-    New cells: 2 @ (4, 5) and 1 @ (6, 6)
-    Cell no. 2 mutating @ site (4, 5) (father 0)
-        Initial mutations: []
-            Initial genome: AAAAAAAAAA
-        Final mutations: [(3, 'C')]
-            Final genome: AAACAAAAAA
-    Cell no. 1 dividing @ (6, 6)
-        New cells: 4 @ (6, 6) and 3 @ (5, 6)
-    Cell no. 2 death @ site (4, 5) (father 0)
-    Cell no. 3 migrating from site (5, 6) (father 1)
-        New site: (4, 5)
-    Cell no. 4 death @ site (6, 6) (father 1)
-    Cell no. 3 dividing @ (4, 5)
-        New cells: 6 @ (3, 6) and 5 @ (3, 5)
+    Cell no. 0 mutating @ site (50, 50) (father None)
+             Initial mutations: []
+                         Initial genome: AAAAAAAAAA
+             Final mutations: [(4, 'G')]
+                         Final genome: AAAAGAAAAA
+    Cell no. 0 dividing @ (50, 50)
+        New cells: 1 @ (49, 50) and 2 @ (50, 51)
+    Cell no. 2 dividing @ (50, 51)
+        New cells: 3 @ (51, 52) and 4 @ (51, 52)
+    Cell no. 4 mutating @ site (51, 52) (father 2)
+             Initial mutations: [(4, 'G')]
+                         Initial genome: AAAAGAAAAA
+             Final mutations: [(4, 'G'), (7, 'A')]
+                         Final genome: AAAAGAAAAA
+    Cell no. 1 death @ site (49, 50) (father None)
+    Cell no. 3 death @ site (51, 52) (father 2)
+    Cell no. 4 mutating @ site (51, 52) (father 2)
+             Initial mutations: [(4, 'G'), (7, 'A')]
+                         Initial genome: AAAAGAAAAA
+             Final mutations: [(4, 'G'), (7, 'A'), (2, 'T')]
+                         Final genome: AATAGAAAAA
+    Cell no. 4 migrating from site (51, 52) (father 2)
+         New site: (50, 52)
     ...
     ...
     ...
