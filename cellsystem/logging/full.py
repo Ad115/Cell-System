@@ -4,7 +4,25 @@ from .treelogs import MutationsLog, AncestryLog
 from .printer import PrinterLog
 
 class FullLog(MultiLog):
-    "A combination of all the relevant logs."
+    """A log that records geometric information, mutations,
+    ancestry and prints the actions to the screen.
+    
+    Each part can be accesed with::
+    
+        log[{{logname}}]
+    
+    where {{logname}} can be one of: 'geometry', 'mutations', 
+    'ancestry' or 'printer'.
+    
+    also, each log can be (de)activated with::
+    
+        # Deactivate log
+        log[{{logname}}].silence()
+        
+        # Rectivate log
+        log[{{logname}}].activate()
+        
+    """
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -15,8 +33,8 @@ class FullLog(MultiLog):
         self.register(PrinterLog(), name='printer')
     # ---
     
-    def geometry(self, prune_death=False):
-        "Fetch information of the cells' dynamics in physical space."
+    def worldlines(self, prune_death=False):
+        "Fetch information of the cells' evolution in space and time."
         return self.logs['geometry'].worldlines(prune_death)
     # ---
     
