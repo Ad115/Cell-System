@@ -137,6 +137,9 @@ Meta
 
 Distributed under the MIT license. See `LICENSE <https://github.com/Ad115/Cell-System/blob/master/LICENSE>`_ for more information.
 
+Warning: The project is still in alpha stage, so the API is just stabilizing and may change in the near future. This also means
+that if you want to contribute, now is the right moment to make important change suggestions ;D
+
 ------------
 Contributing
 ------------
