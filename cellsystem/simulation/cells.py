@@ -5,10 +5,42 @@ Structures representing the biological entities.
 
 import numpy.random as np_random
 import random as rnd
+from functools import wraps
 
 from ..logging import logged
 from .action import Action
 
+
+
+def behavior(actionname, actionfn=None, probability=None, prepare=True):
+    """Assemble a cell behavior.
+    
+    Adds logging and asociates a name and a probability function
+    to the raw action function. Allows to specify if the logging of 
+    the action requires to prepare the log.
+    
+    Can be used as a function decorator or as a normal function.
+    """
+    # Auxiliary function
+    def make_behavior(actionfn):
+        """Decorated action."""
+        # Add logging
+        logged_action = logged(actionname, prepare=prepare)(actionfn)
+        
+        return Action(logged_action,
+                      probability, 
+                      actionname ) 
+    # ---
+    
+    if actionfn:
+        # Used as a function
+        return make_behavior(actionfn)
+    else:
+        # Used as a decorator
+        return make_behavior    
+# ---
+    
+    
 
 class Cell:
     """

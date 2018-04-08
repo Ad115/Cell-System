@@ -6,7 +6,7 @@ class Action:
 
     """
 
-    def __init__(self, action, probability=1, name=None):
+    def __init__(self, action, probability=None, name=None):
         """
         Params:
         
@@ -61,6 +61,9 @@ class Action:
             >>> action.try_action(probability=p)            
             
         """
+        if probability is None:
+            probability = 1
+        
         self.action = action
         self.probability = probability
         self.name=name

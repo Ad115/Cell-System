@@ -3,7 +3,7 @@ The cell simulation with logging.
 
 """
 
-from .simulation import System, CellLine, World, Action
+from .simulation import System, CellLine, World, behavior
 from   .logging  import logged, FullLog
 import random as rnd
 
@@ -31,28 +31,36 @@ class SimpleCells(CellLine):
     
     def _init_behaviors(self):
         """Initialize the behaviors for cells in this lineage."""
-        death = Action(action=self.die, 
-                       probability=self.death_probability)
         
-        division = Action(action=self.divide, 
-                          probability=self.division_probability)
-        
-        migration = Action(action=self.migrate, 
-                           probability=self.migration_probability)
-        
-        mutation = Action(action=self.mutate, 
-                          probability=self.mutation_probability)
-        
-        
-        actions = [mutation, migration, division, death]
+        behaviors = [
+                     # --- Cell mutation
+                     behavior('mutation',
+                              actionfn=self.mutation, 
+                              probability=self.mutation_probability),
+                     
+                     # --- Cell migration
+                     behavior('migration',
+                              actionfn=self.migration, 
+                              probability=self.migration_probability),
+                     
+                     # --- Cell division
+                     behavior('division',
+                              actionfn=self.division, 
+                              probability=self.division_probability),
+                     
+                     # --- Cell death
+                     behavior('death',
+                              actionfn=self.death, 
+                              probability=self.death_probability),
+        ]
         
         # The relative weights of each action.
         # If an action has a bigger weigth than 
         # the others, it has a correspondingly
         # bigger probability to be chosen
-        weights = [1] * len(actions)
+        weights = [1] * len(behaviors)
         
-        return actions, weights
+        return behaviors, weights
     # ---
     
     @logged('newcell', prepare=False)
@@ -67,10 +75,15 @@ class SimpleCells(CellLine):
         # Return the new cell
         return new
     # ---
+    
+    @staticmethod
+    def migration_probability(cell):
+        """Migration probability for this cell."""
+        return 1
+    # ---
         
     @staticmethod
-    @logged('migration')
-    def migrate(cell):
+    def migration(cell):
         """Migrate to a neighboring cell."""
         # Get the destination site
         next_site = cell.site.random_neighbor()
@@ -81,16 +94,15 @@ class SimpleCells(CellLine):
         
         return cell
     # ---
-
+    
     @staticmethod
-    def migration_probability(cell):
-        """Migration probability for this cell."""
+    def mutation_probability(cell):
+        """Probability to mutate if selected for it."""
         return 1
     # ---
     
     @staticmethod
-    @logged('mutation')
-    def mutate(cell):
+    def mutation(cell):
         """Do a single site mutation."""
         
         # Get the genome characteristics
@@ -109,21 +121,6 @@ class SimpleCells(CellLine):
     # ---
 
     @staticmethod
-    def mutation_probability(cell):
-        """Probability to mutate if selected for it."""
-        return 1
-    # ---
-
-    @staticmethod
-    @logged('death')
-    def die(cell):
-        """Cellular death."""
-        cell.site.remove_guest(cell)
-        cell.lineage.handle_death(cell)
-        return cell
-    # ---
-
-    @staticmethod
     def death_probability(cell):
         """Cellular death probability."""
         # Avoid killing all cells.
@@ -131,6 +128,14 @@ class SimpleCells(CellLine):
             return 0.6
         else:
             return 0
+    # ---
+    
+    @staticmethod
+    def death(cell):
+        """Cellular death."""
+        cell.site.remove_guest(cell)
+        cell.lineage.handle_death(cell)
+        return cell
     # ---
     
     @staticmethod
@@ -148,8 +153,13 @@ class SimpleCells(CellLine):
     # ---
     
     @staticmethod
-    @logged('division')
-    def divide(cell, preserve_father=False):
+    def division_probability(cell):
+        """Probability that this cell will divide if selected for division."""
+        return 1
+    # ---
+    
+    @staticmethod
+    def division(cell, preserve_father=False):
         """Cell division.
 
         Get a new daughter of this cell and place it in a nearby
@@ -167,15 +177,9 @@ class SimpleCells(CellLine):
             # New daughter placed on an appropriate site
             other_daughter = SimpleCells._init_daughter(cell)
             # Remove previous cell
-            SimpleCells.die(cell)
+            SimpleCells.death(cell)
             
         return daughter, other_daughter
-    # ---
-    
-    @staticmethod
-    def division_probability(cell):
-        """Probability that this cell will divide if selected for division."""
-        return 1
     # ---
     
 # --- SimpleCells
@@ -195,6 +199,9 @@ class CellSystem(System):
                
             3. A 'log' that follows and makes a record of the 
                cells' actions.
+               
+    Each part can be accessed by ``system['cells']``, ``system['world']``
+    and ``system['log']`` respectively.
 
     """
     
