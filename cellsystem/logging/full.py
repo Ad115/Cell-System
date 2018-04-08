@@ -1,7 +1,7 @@
 from .core import MultiLog
 from .geometric import GeometricLog
 from .treelogs import MutationsLog, AncestryLog
-from .simple import SimpleLog
+from .printer import PrinterLog
 
 class FullLog(MultiLog):
     "A combination of all the relevant logs."
@@ -12,7 +12,7 @@ class FullLog(MultiLog):
         self.register(GeometricLog(), name='geometry')
         self.register(MutationsLog(), name='mutations')
         self.register(AncestryLog(), name='ancestry')
-        self.register(SimpleLog(), name='simple')
+        self.register(PrinterLog(), name='printer')
     # ---
     
     def geometry(self, prune_death=False):

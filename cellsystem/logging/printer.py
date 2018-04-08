@@ -1,6 +1,6 @@
 from .core import Log
 
-class SimpleLog(Log):
+class PrinterLog(Log):
     'Simple logger that limits to print the action.'
     
     def preparefor_division(self, cell):
