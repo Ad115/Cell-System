@@ -81,10 +81,10 @@ A use case integrated in the repository:
 
 
     # First, let's see the cells' evolution in time and space!
-    >>> history.geometry().show()
+    >>> history.worldlines().show()
 
     # Remove the cells that died somewhere along the way
-    >>> history.geometry(prune_death=True).show()
+    >>> history.worldlines(prune_death=True).show()
     
 
 .. image:: https://raw.githubusercontent.com/Ad115/Cell-System/master/assets/geometry.png
