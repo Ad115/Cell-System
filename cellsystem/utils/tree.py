@@ -15,24 +15,31 @@ class Tree:
     def __getattr__(self, name):
         'Delegate tree methods to the internal tree.'
         return getattr(self.tree, name)
+    # ---
     
     def copy(self):
         'Make a copy of the tree.'
         return self.__class__(tree=self.tree)
+    # ---
     
-    def show(self, *args, inline=False, styling=None, **kwargs):
+    def show(self, *args, inline=False, styling=None, savefig=None, **kwargs):
         "Display the tree."
+        
+        # Assemble the treestyle object
+        ts = kwargs.get('tree_style', ete3.TreeStyle())
+        
+        kwargs['tree_style'] = ts
         
         # Check if a tree styling dict was specified
         if styling:
-            # Assemble the treestyle object
-            ts = ete3.TreeStyle()
             for key,value in styling.items():
                 setattr(ts, key, value)
                 
-            # Update the arguments list
-            kwargs['tree_style'] = ts
                 
+        # Check if user wants to save the image
+        if savefig:
+            self.tree.render(savefig, *args, **kwargs)
+        
         # Inline Jupyter output
         if inline:
             return self.tree.render('%%inline', *args, **kwargs)

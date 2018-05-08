@@ -258,7 +258,7 @@ class WorldLines:
             
         # Save to a file
         if savefig:
-            plt.savefig(savefig)
+            return plt.savefig(savefig)
             
         plt.show()
     # ---
