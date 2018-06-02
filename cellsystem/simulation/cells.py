@@ -3,8 +3,8 @@
 Structures representing the biological entities.
 """
 
-import numpy.random as np_random
-import random as rnd
+import numpy as np
+import random
 from functools import wraps
 
 from ..logging import logged
@@ -167,12 +167,24 @@ class Cell:
         self.site = site
         site.add_guest(self)
     # ---    
+    
+    def choose_action(self, actions, weights):
+        "Select an action with the probability given by the weights."
+        r = random.random()
+        sum = 0
+        
+        for w, action in zip(weights, actions):
+            sum += w
+            if sum >= r:
+                break
+        return action
+    # ---   
 
     def process(self, *args, **kwargs):
         """Select an action and perform it."""
         # Select an action
         actions, weights = self.actions
-        action = np_random.choice(actions, p=weights)
+        action = self.choose_action(actions, weights)
         
         # Perform the action according to it's respective probability
         p = action.probability(self)
@@ -332,7 +344,7 @@ class CellLine:
         if all:
             n = len(self.alive_cells)
         # Return a sample of size n
-        return rnd.sample(self.alive_cells, n)
+        return random.sample(self.alive_cells, n)
     # ---
 
     def handle_death(self, dying):
