@@ -83,7 +83,7 @@ class SimpleCells(CellLine):
     # ---
         
     @staticmethod
-    def migration(cell):
+    def migration(cell, *args, **kwargs):
         """Migrate to a neighboring cell."""
         # Get the destination site
         next_site = cell.site.random_neighbor()
@@ -102,7 +102,7 @@ class SimpleCells(CellLine):
     # ---
     
     @staticmethod
-    def mutation(cell):
+    def mutation(cell, *args, **kwargs):
         """Do a single site mutation."""
         
         # Get the genome characteristics
@@ -131,7 +131,7 @@ class SimpleCells(CellLine):
     # ---
     
     @staticmethod
-    def death(cell):
+    def death(cell, *args, **kwargs):
         """Cellular death."""
         cell.site.remove_guest(cell)
         cell.lineage.handle_death(cell)
@@ -159,7 +159,7 @@ class SimpleCells(CellLine):
     # ---
     
     @staticmethod
-    def division(cell, preserve_father=False):
+    def division(cell, *args, preserve_father=False, **kwargs):
         """Cell division.
 
         Get a new daughter of this cell and place it in a nearby
@@ -190,18 +190,20 @@ class CellSystem(System):
     """A system simulating cell growth.
     
     A cell system is a system subclass, with 
-    the automatic initialization of three main entities:
+    the automatic initialization of two main entities:
         
-            1. Cells represented by a cell line.
+            1. Cells represented by a cell line, and;
             
             2. A 'world' representing the space that the cells 
-               inhabit, and;
+               inhabit.
                
-            3. A 'log' that follows and makes a record of the 
-               cells' actions.
+    Each part can be accessed by ``system['cells']`` and 
+    ``system['world']`` respectively.
                
-    Each part can be accessed by ``system['cells']``, ``system['world']``
-    and ``system['log']`` respectively.
+    Also, the system has a 'log' that follows and makes a record 
+    of the cells' actions. This record is in ``system.log``
+               
+    
 
     """
     
@@ -218,15 +220,12 @@ class CellSystem(System):
                          name='world', 
                          procesable=False)
         
-        # Initialize log
-        self.add_entity( FullLog(),
-                         name='log',
-                         procesable=False)
-        
         # Initialize the cells
         self.add_entity( SimpleCells(genome=init_genome),
                          name='cells')
-        self['cells'].register_log(self['log'])
+        
+        # Initialize log
+        self.register_log( FullLog() )
     # ---
     
     def seed(self):
@@ -235,6 +234,6 @@ class CellSystem(System):
         world = self['world']
         # Add cell
         self['cells'].add_cell_to( world.middle, 
-                                   log=self['log'])
+                                   log=self.log )
     # ---
 # --- CellSystem

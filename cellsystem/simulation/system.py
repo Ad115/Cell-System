@@ -26,7 +26,7 @@ class Entity:
     def __init__(self):
         self.state = None
     
-    def process(self, time):
+    def process(self, time, log=None):
         pass
 # --- Entity
 
@@ -62,6 +62,9 @@ class System:
     composed of entities and interactions between them,
     at each time step, the system triggers the proceses 
     associated with them.
+    
+    A log can be attached to the system to keep record of
+    the actions and processes of the entities. 
 
     """
 
@@ -74,6 +77,7 @@ class System:
         
         self.interactions = {}
         self.time = None
+        self.log = None
         
         self.inithooks = {}
         self.prehooks = {}
@@ -83,6 +87,11 @@ class System:
     def __getitem__(self, entityname):
         'Access the entities by name.'
         return self.toentity[entityname]
+    # ---
+    
+    def register_log(self, log):
+        "Add a log that will be triggered by some action of the entities."
+        self.log = log
     # ---
 
     def add_entity(self, entity, name, procesable=True, inithook=None):
@@ -112,8 +121,11 @@ class System:
             interaction.process()
     # ---
         
-    def step(self):
+    def step(self, log=None):
         'Take a single step forward in time.'
+        if log is None:
+            log=self.log    
+            
         # Process pre-step hooks
         self.process_interactions_in(self.prehooks)
         
@@ -121,7 +133,7 @@ class System:
         self.process_interactions_in(self.interactions)
         # Process each entity
         for entity in self.procesable:
-            entity.process(self.time)
+            entity.process(time=self.time, log=log)
             
         # Process post-step hooks
         self.process_interactions_in(self.hooks)
@@ -145,7 +157,7 @@ class System:
                 self.add_interaction_to(hooktype, hook.effects, hook.entities)
     # ---
          
-    def run(self, steps, init=None, after_step=None, before_step=None):
+    def run(self, steps, init=None, after_step=None, before_step=None, log=None):
         'Start running the simulation.'
         # Handle hooks
         self.update_hooks(self.inithooks, init)
@@ -157,7 +169,7 @@ class System:
         
         # Take steps
         for _ in range(steps):
-            self.step() 
+            self.step(log=log) 
     # ---
     
     def stateof(self, entityname):

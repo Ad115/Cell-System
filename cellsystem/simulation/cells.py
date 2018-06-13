@@ -357,14 +357,10 @@ class CellLine:
         self.alive_cells.remove(dying)
         self.dead_cells.add(dying)
     # ---
-    
-    def register_log(self, log):
-        self.log = log
-    # ---
         
     def process(self, *args, **kwargs):
         'Move a step forward in time.'
         for cell in self.sample(all=True):
-            cell.process(log=self.log)
+            cell.process(*args, **kwargs)
     # ---
 # --- CellLine
