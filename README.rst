@@ -132,7 +132,7 @@ also, worlds with different geometry and with diffusion, cells with other charac
 other kinds of logs. Change the rate of death, movement, etc of each cell and even add new cell behaviors!
 
 For now the documentation for doing so is scattered through the class documentation strings, but a good place to start is 
-by watching the source of the **cellsystem.CellSystem** class.
+by watching the source of the `cellsystem.CellSystem <https://cellsystem.readthedocs.io/en/latest/source/cellsystem.html#cellsystem.cellsystem.CellSystem>`_ class.
 
 ----
 Meta
