@@ -127,7 +127,12 @@ A use case integrated in the repository:
 
 
 
-*For more examples and usage, please refer to the [Wiki](wikigoeshere.com).*
+Almost every aspect of the simulation is customizable. You can add several types of different interacting cell lines,
+also, worlds with different geometry and with diffusion, cells with other characteristics that can be logged, 
+other kinds of logs. Change the rate of death, movement, etc of each cell and even add new cell behaviors!
+
+For now the documentation for doing so is scattered through the class documentation strings, but a good place to start is 
+by watching the source of the **cellsystem.CellSystem** class.
 
 ----
 Meta
@@ -137,8 +142,6 @@ Meta
 
 Distributed under the MIT license. See `LICENSE <https://github.com/Ad115/Cell-System/blob/master/LICENSE>`_ for more information.
 
-Warning: The project is still in alpha stage, so the API is just stabilizing and may change in the near future. This also means
-that if you want to contribute, now is the right moment to make important change suggestions ;D
 
 ------------
 Contributing

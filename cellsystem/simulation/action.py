@@ -1,22 +1,10 @@
 from numpy import random as rnd
 
 class Action:
-    """Objects of this class represent
-    actions with an associated probability.
-
-    """
-
-    def __init__(self, action, probability=None, name=None):
-        """
-        Params:
-        
-            action (function): The procedure to be executed.
-            
-            probability (optional numeric or function):
-                    The numeric probability or probability function.
-                    Default is 1 (do always).
-                    
-        A complex action (with several arguments) can be executed
+    """Objects of this class represent actions with an 
+    associated probability.
+    
+    A complex action (with several arguments) can be executed
         by passing the arguments to the ``try_action`` method::
             
             >>> def complex_fn(a,b,c,d): return a,b,c,d
@@ -59,6 +47,17 @@ class Action:
             >>> p = action.probability(1,2,3,4)
             
             >>> action.try_action(probability=p)            
+    """
+
+    def __init__(self, action, probability=None, name=None):
+        """
+        Params:
+        
+            action (function): The procedure to be executed.
+            
+            probability (optional numeric or function):
+                    The numeric probability or probability function.
+                    Default is 1 (do always).
             
         """
         if probability is None:

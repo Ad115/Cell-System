@@ -2,7 +2,26 @@ from .log import Log
 
 
 class MultiLog(Log):
-    'An aggregate of logs.'
+    """A logger class that aggregates together other logs.
+    
+    Each log call is broadcasted to the child logs.
+    
+    Example:
+        ```
+        >>> ml = MultiLog()
+        
+        # Add a new log
+        >>> ml.add(PrinterLog(), 'printer')
+        
+        # Access a log
+        >>> printer = ml['printer']
+        >>> printer.silence()
+        
+        # Remove a log
+        >>> del ml['printer']
+        ```
+    
+    """
     
     def __init__(self):
         self.logs = dict()

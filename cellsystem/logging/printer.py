@@ -1,7 +1,7 @@
 from .core import Log
 
 class PrinterLog(Log):
-    'Simple logger that limits to print the action.'
+    'Simple logger that prints the steps to the screen.'
     
     def preparefor_division(self, cell):
         print("Cell no. {} dividing @ {}".format(cell.index,

@@ -10,14 +10,22 @@ import random as rnd
 
 
 class SimpleCells(CellLine):
-    """A cell line representing simple cells with default behaviors.
+    """A cell line representing simple cells with default .
     
     A cell from this line performs:
         - Cell division,
         - Cell death,
         - Cell migration,
         - Cell genome mutation.
-        
+    
+    Each behavior has an associated probability and it
+    is possible to assign different weights to them,
+    so that some behaviors are more probable to be selected
+    than others. Also, it is easy to change the behaviors
+    (add more, remove, change, etc.), to do this, subclass
+    and add your own behaviors as in the '_init_behaviors'
+    method of this class.
+    
     """
     
     def __init__(self, *args, genome_alphabet=None, **kwargs):
@@ -52,6 +60,11 @@ class SimpleCells(CellLine):
                      behavior('death',
                               actionfn=self.death, 
                               probability=self.death_probability),
+                     
+                     # The behavior function handles the probabilistic nature
+                     # of the behavior execution and adds the capability to
+                     # integrate a log that triggers when the action is performed.
+                     # More info: See the source for the behavior function.
         ]
         
         # The relative weights of each action.
@@ -203,7 +216,102 @@ class CellSystem(System):
     Also, the system has a 'log' that follows and makes a record 
     of the cells' actions. This record is in ``system.log``
                
+    Example:
     
+    .. code-block:: python
+    
+        >>> from cellsystem import *
+
+        # The cell system will simulate cell growth
+        # while saving a log of the process.
+        >>> system = CellSystem(grid_shape=(100, 100),
+                                init_genome='AAAAAAAAAA')
+
+        # Initialize the first cell
+        # in the middle of the grid
+        >>> system.seed()
+
+        New cell 0 added @ (50, 50)
+
+        # Take 10 steps forward in time
+        >>> system.run(steps=10)
+
+        Cell no. 0 mutating @ site (50, 50) (father None)
+                        Initial mutations: []
+                                Initial genome: AAAAAAAAAA
+                        Final mutations: [(9, 'G')]
+                                Final genome: AAAAAAAAAG
+        Cell no. 0 migrating from site (50, 50) (father None)
+                New site: (50, 50)
+        Cell no. 0 dividing @ (50, 50)
+                New cells: 1 @ (49, 49) and 2 @ (49, 51)
+        Cell no. 2 mutating @ site (49, 51) (father None)
+                        Initial mutations: [(9, 'G')]
+                                Initial genome: AAAAAAAAAG
+                        Final mutations: [(9, 'G'), (8, 'T')]
+                                Final genome: AAAAAAAATG
+        Cell no. 1 death @ site (49, 49) (father None)
+        Cell no. 2 dividing @ (49, 51)
+                New cells: 3 @ (48, 51) and 4 @ (49, 50)
+        Cell no. 4 dividing @ (49, 50)
+                New cells: 5 @ (50, 50) and 6 @ (50, 51)
+        Cell no. 3 migrating from site (48, 51) (father 2)
+                New site: (49, 50)
+        Cell no. 6 mutating @ site (50, 51) (father 4)
+                        Initial mutations: [(9, 'G'), (8, 'T')]
+                                Initial genome: AAAAAAAATG
+                        Final mutations: [(9, 'G'), (8, 'T'), (8, 'A')]
+                                Final genome: AAAAAAAAAG
+        Cell no. 5 dividing @ (50, 50)
+                New cells: 7 @ (51, 51) and 8 @ (50, 50)
+        ...
+        ...
+        ...
+
+        # Prepare to explore the simulation logs
+        >>> history = system['log']
+        
+        # Watch the ancestry tree
+        >>> print(history.ancestry())
+
+            /-1
+            |
+            |         /-13
+            |      /-|
+        -- /-|   /-|   \-14
+            |  |  |
+            |  |   \-10
+            |  |
+            \-|      /-7
+                |   /-|
+                |  |  |   /-11
+                |  |   \-|
+                \-|     |   /-15
+                |      \-|
+                |         \-16
+                |
+                    \-6
+
+        # Let's see the mutational history
+        >>> print(history.mutations())
+
+                    /- /-AAAAAACAAG
+                |
+        -- /- /- /-|--AAAAAAAATG
+                |
+                    \-CAAAAAAATG
+                    
+        # Now, let's see the cells' evolution in time and space!
+        >>> history.worldlines().show()
+    
+    Each log can be deactivated and reactivated at will, also,
+    it is possible to add, remove and modify logs according to 
+    your own needs. This can be done by subclassing.
+    
+    Also, it is possible to handle more then one world or cell line
+    and to change them completely and add any other entity that may 
+    be useful. See the __init__ method of this class for an example
+    of how this is done.
 
     """
     
@@ -218,7 +326,8 @@ class CellSystem(System):
         # Initialize world
         self.add_entity( World(shape=grid_shape), 
                          name='world', 
-                         procesable=False)
+                         procesable=False) # <- This means that this
+                                           #    is a passive entity.
         
         # Initialize the cells
         self.add_entity( SimpleCells(genome=init_genome),

@@ -156,7 +156,6 @@ class World:
         if self.wrap_function:
             coordinates = self.wrap_function(self, coordinates)
             
-        # The grid is 1D, so we must convert from 2D
         return self.grid[coordinates]
     # ---
 

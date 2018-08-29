@@ -8,6 +8,8 @@ the base of a computation graph.
 A system is composed of entities and interactions btw them,
 it coordinates all processes.
 
+This has a bigger functionality than it is needed, it would be useful to make a cleanup.
+
 """
 
 import collections

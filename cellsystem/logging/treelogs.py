@@ -65,6 +65,8 @@ class AncestryLog(TreeLog):
     Each leaf represents a cell. When that cell divides,
     the leaf branches into leaves representing the daughters.
     
+    The current state of an object 'tree' is handily accessible
+    by 'print(tree)'
     """
     def add_child(self, *args, **kwargs):
         # First add the node normally to the tree
@@ -101,6 +103,9 @@ class MutationsLog(TreeLog):
     Each leaf represents a genome that may be present in one or more
     cells. When one of those cells mutates, the new genome is added as
     a child of that leaf. 
+    
+    The current state of an object 'tree' is handily accessible
+    by 'print(tree)'
     """
     
     def log_newcell(self, cell):

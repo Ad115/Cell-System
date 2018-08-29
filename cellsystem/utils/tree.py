@@ -64,6 +64,7 @@ class Tree:
     # ---
     
     def __str__(self):
+        "A handy ASCII code representation of the tree."
         return self.tree.__str__()
     # ---
 # --- Tree

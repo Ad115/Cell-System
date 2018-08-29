@@ -4,8 +4,10 @@ from .treelogs import MutationsLog, AncestryLog
 from .printer import PrinterLog
 
 class FullLog(MultiLog):
-    """A log that records geometric information, mutations,
-    ancestry and prints the actions to the screen.
+    """An aggregate log that records geometric information, 
+    mutations, ancestry and prints the actions to the screen.
+    (Technically is a multilog that contains a GeometricLog,
+    a MutationsLog, an AncestryLog and a PrinterLog.)
     
     Each part can be accesed with::
     
@@ -19,7 +21,7 @@ class FullLog(MultiLog):
         # Deactivate log
         log[{{logname}}].silence()
         
-        # Rectivate log
+        # Reactivate log
         log[{{logname}}].activate()
         
     """

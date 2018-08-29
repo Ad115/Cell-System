@@ -17,7 +17,11 @@ from .core import WeakLog
 
 
 class GeometricLog(WeakLog):
-    """Registers the geometric positions of the cells."""
+    """Registers the geometric positions of the cells in time.
+    
+    One may view the state of a GeometricLog object 'glog' by
+    'glog.worldlines().show()'
+    """
 
     def __init__(self, *args, **kwargs):
         """Maintains a changes record."""
@@ -141,7 +145,21 @@ class WorldLines:
     """A class that represents the worldlines of a set of cells.
     
     A worldline is the place in time and space that a cell occupies throughout
-    it's existence.
+    it's existence. 
+    
+    In other words, it stores for each cell 'c', a list of
+    space-time points in which the cell has been (a spacetime point is
+    a pair t, x where t is time and x is the geometric position of the
+    cell at that time).
+    
+    A world line may store a state similar to:
+    
+            # wl is an initialized Worldline object
+            >>> wl.worldlines
+            {0: [(0, 50, 50), (1, 51, 51), (2, 52, 50)], 
+             1: [(3, 51, 50), (2, 52, 50), (4, 51, 50), (5, 51, 50), (6, 51, 50)], 
+             2: [(3, 52, 49), (2, 52, 50), (4, 52, 49), (5, 52, 48), (6, 52, 48)]
+            }
     """
     
     def __init__(self, initial_state=None, time=0):

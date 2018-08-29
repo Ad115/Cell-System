@@ -1,5 +1,8 @@
 class Log:
-    "A logger class that registers certain actions."
+    """The base for logger classes that trigger when
+    certain actions are performed.
+    
+    """
     
     def __init__(self, *args, **kwargs):
         self.silenced = False
@@ -12,7 +15,7 @@ class Log:
     
     def activate(self):
         "Activate the log if deactivated."
-        self._silenced = False
+        self.silenced = False
     # ---
     
     def preparefor(self, actionname, *args, **kwargs):
